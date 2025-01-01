@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 
-function DraggableDiv() {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+function DraggableDiv({ xPos = 0, yPos = 0}) {
+  const [position, setPosition] = useState({ x: xPos, y: yPos });
   const divRef = useRef(null);
 
   const handleMouseDown = (e) => {
