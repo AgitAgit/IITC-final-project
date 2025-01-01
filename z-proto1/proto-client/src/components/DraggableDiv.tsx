@@ -5,6 +5,7 @@ function DraggableDiv({ xPos = 0, yPos = 0}) {
   const divRef = useRef(null);
 
   const handleMouseDown = (e) => {
+    const windowYPosition = window.scrollY;
     const rect = divRef.current.getBoundingClientRect();
     const offsetX = e.clientX - rect.left;
     const offsetY = e.clientY - rect.top;
@@ -12,7 +13,9 @@ function DraggableDiv({ xPos = 0, yPos = 0}) {
     const handleMouseMove = (e) => {
       setPosition({
         x: e.clientX - offsetX,
-        y: e.clientY - offsetY,
+        y: e.clientY - offsetY + windowYPosition,
+        // x: e.clientX,
+        // y: e.clientY
       });
     };
 
