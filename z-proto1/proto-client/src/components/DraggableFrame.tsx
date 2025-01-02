@@ -26,7 +26,7 @@ function DraggableFrame({ fillerElement, div, handleDeleteElement }) {
         };
 
         const handleMouseUp = () => {
-            console.log("div.getSelfPosition", div.getSelfPosition());
+            // console.log("div.getSelfPosition", div.getSelfPosition());
             window.removeEventListener('mousemove', handleMouseMove);
             window.removeEventListener('mouseup', handleMouseUp);
         };
