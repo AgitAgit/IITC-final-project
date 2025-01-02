@@ -7,7 +7,7 @@ import DraggableFrame from './DraggableFrame'
 //add an item DONE
 //move an item DONE
 //edit an item
-//delete an item
+//delete an item DONE
 //for now lets stick with div elements
 function BasicEditor() {
     const pageRef = useRef();
