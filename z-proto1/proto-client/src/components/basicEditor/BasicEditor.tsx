@@ -9,7 +9,7 @@ import EditableText from './EditableText'
 
 //add an item DONE
 //move an item DONE
-//edit an item
+//edit an item DONE
 //delete an item DONE
 //for now lets stick with div elements
 function BasicEditor() {
