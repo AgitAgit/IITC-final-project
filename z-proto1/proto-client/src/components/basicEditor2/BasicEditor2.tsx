@@ -10,7 +10,7 @@ function ButtonRandom(){
 
 
 //goal1: 
-// generate a menue with 3 buttons, each one generate a different component;
+// generate a menu with 3 buttons, each one generate a different component;
 //The buttons should create new elements using drag and drop mechanics;
 
 //goal2: 
