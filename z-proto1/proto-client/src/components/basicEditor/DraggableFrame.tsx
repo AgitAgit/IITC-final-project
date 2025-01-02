@@ -1,9 +1,16 @@
-import React, { useRef, useState } from 'react';
+import React, { ReactNode, useRef, useState } from 'react';
 
 // window.addEventListener('mouseup', () => {console.log('mouse up event occurred!')});
 //should try and remove this on unmounting, perhaps using the useEffect return function.
-
-function DraggableFrame({ fillerElement, div, handleDeleteElement }) {
+export type DraggableFrameProps = {
+    fillerElement: HTMLElement | ReactNode,
+    div: {
+        id:string,
+        position:{x:number, y:number}
+    },
+    handleDeleteElement: () => void
+}
+function DraggableFrame({ fillerElement, div, handleDeleteElement }:DraggableFrameProps) {
     const [position, setPosition] = useState({ x: div.position.x, y: div.position.y });
     const divRef = useRef(null);
 
