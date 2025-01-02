@@ -1,6 +1,8 @@
 import React from 'react'
 import { useRef, useState } from 'react'
 
+import { type Position, type Component  } from './basicEditorTypes'
+
 import DraggableDiv from './DraggableDiv'
 import DraggableFrame from './DraggableFrame'
 import EditableText from './EditableText'
@@ -12,16 +14,21 @@ import EditableText from './EditableText'
 //for now lets stick with div elements
 function BasicEditor() {
     const pageRef = useRef();
-    const [divs, setDivs] = useState([{id:0, position: {x:50, y:50}, getSelfPosition:function(){return this.position}, setSelfPosition:function(newPosition){this.position = newPosition} }]);
+    const [divs, setDivs] = useState([]);
     
     function handleAddDiv(divPosition = {x:0, y:0}){
         console.log("divs:", divs);
         console.log("divs[divs.length - 1]", divs[divs.length - 1]);
-        console.log("divs[divs.length - 1].id", divs[divs.length - 1].id);
-        const newId = divs[divs.length - 1].id + 1;
-        setDivs(prev => [...prev, {id:newId, position:divPosition, getSelfPosition:function(){return this.position}, setSelfPosition:function(position){this.position = position}}]);
+        console.log("divs[divs.length - 1].id", divs[divs.length - 1]?.id);
+        const newId = divs[divs.length - 1]?.id + 1 || 0;
+        if(divs.length === 0) setDivs([{id:newId, position:divPosition, getSelfPosition:function(){return this.position}, setSelfPosition:function(position){this.position = position}}]);
+        else setDivs(prev => [...prev, {id:newId, position:divPosition, getSelfPosition:function(){return this.position}, setSelfPosition:function(position){this.position = position}}]);
     }
-    
+
+    function handleAddElement(divPosition = {x:0, y:0}, baseComponent = 'ButtonRandom'){
+        return [ <ButtonRandom />, <ButtonRandom />, <ButtonRandom />]
+    }
+
     function handleDeleteElement(id:number){
         setDivs(prev => prev.filter(element => element.id !== id));
     }
@@ -29,13 +36,14 @@ function BasicEditor() {
     const item = <p>baba3000</p>;
     return (
     <div ref={pageRef} style={{height: '2000px'}}>
+        {handleAddElement()}
         BasicEditor
         {item}
         <button onClick={handleAddDiv}>Add a new div</button>
         {/* {divs.map(div => {
             return <DraggableDiv xPos={div.x} yPos={div.y} />
         })} */}
-        {divs.map(div => {
+        {divs.length > 0 && divs.map(div => {
             return <DraggableFrame key={div.id} fillerElement={<EditableText />} div={div} handleDeleteElement={handleDeleteElement} />
         })}
     </div>
