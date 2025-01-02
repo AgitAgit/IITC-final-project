@@ -1,0 +1,3 @@
+Create a component menu with 2 different pre-made components and add it to the editor
+
+Stop and make a written plan for basicEditor2 and related components;
