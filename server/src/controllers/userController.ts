@@ -12,21 +12,14 @@ export const getUserById = async (
 ): Promise<void> => {
   try {
     const userId = req.user?.id;
+    console.log(userId);
 
     if (!userId) {
       res.status(400).json({ message: "User not authenticated" });
       return;
     }
 
-    const user: IUser | null = await User.findById(userId)
-      .select("-password")
-      .populate({
-        path: "sites",
-        populate: {
-          path: "owner",
-          select: "username email",
-        },
-      });
+    const user: IUser | null = await User.findById(userId);
 
     if (!user) {
       res.status(404).json({ message: "User not found." });
@@ -87,11 +80,10 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
       role: newUser.role,
     };
 
-    // Send cookie with token
     res.cookie("token", token, {
       httpOnly: false,
       secure: process.env.NODE_ENV === "production",
-      maxAge: 3600000, // 1 hour
+      maxAge: 3600000,
       sameSite: "strict",
     });
 
@@ -165,14 +157,12 @@ export const updateUser = async (
       sites,
     }: IUser = req.body;
 
-    // חיפוש המשתמש לפי ID
     const user = await User.findById(userId);
     if (!user) {
       res.status(404).json({ message: "User not found." });
       return;
     }
 
-    // עדכון הסיסמה אם נמסרה
     if (password) {
       const hashedPassword = await bcrypt.hash(password, 10);
       user.password = hashedPassword;

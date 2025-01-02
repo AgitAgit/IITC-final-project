@@ -2,7 +2,11 @@ import express, { Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+
 import userRoutes from "./routes/userRoutes";
+import siteRoutes from "./routes/siteRoutes";
+import pageRoutes from "./routes/pageRoutes";
+import componentRoutes from "./routes/componentRoutes";
 
 dotenv.config();
 
@@ -31,6 +35,9 @@ app.get("/", (req: Request, res: Response): void => {
 });
 
 app.use("/api/users", userRoutes);
+app.use("/api/sites", siteRoutes);
+app.use("/api/pages", pageRoutes);
+app.use("/api/components", componentRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

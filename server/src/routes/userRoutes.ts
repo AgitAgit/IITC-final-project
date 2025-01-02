@@ -7,7 +7,7 @@ import {
   deleteUser,
   getUserById,
 } from "../controllers/userController";
-import { authenticateUser } from "../middleware/authMiddleware";
+import { authenticateUser } from "../riddleware/authMiddleware";
 
 const router = express.Router();
 
