@@ -1,10 +1,9 @@
 import { Request } from "express";
+import { IUser } from "./userTypes";
 
 export interface AuthenticatedRequest extends Request {
-  userId: string;
-  user: { id: string };
+  user?: IUser;
 }
-
 export interface AuthenticatedRequestOptional extends Request {
   userId?: string;
 }

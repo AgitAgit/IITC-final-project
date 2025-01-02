@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import userRoutes from "./routes/userRoutes";
 
 dotenv.config();
 
@@ -29,11 +30,7 @@ app.get("/", (req: Request, res: Response): void => {
   res.status(200).send({ message: "Server is alive !" });
 });
 
-// import userRoutes from "./routes/userRoutes";
-
-// app.use("/api/users", userRoutes);
-
-
+app.use("/api/users", userRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

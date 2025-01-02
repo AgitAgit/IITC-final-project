@@ -5,8 +5,11 @@ export interface IUser extends Document {
   username: string;
   email: string;
   password: string;
-  createdAt: Date;
+  googleId: string;
+  profileImage: string;
+  role: string;
   sites: mongoose.Schema.Types.ObjectId[];
+  createdAt: Date;
 }
 
 export type IUserWithoutId = Omit<IUser, "id">;

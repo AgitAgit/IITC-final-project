@@ -1,5 +1,5 @@
 import mongoose, { Schema, Model } from "mongoose";
-import { IComponent } from "../types/componentTypes"; 
+import { IComponent } from "../types/componentTypes";
 
 const componentsSchema: Schema<IComponent> = new mongoose.Schema({
   page: { type: mongoose.Schema.Types.ObjectId, ref: "Page", required: true },
@@ -10,6 +10,9 @@ const componentsSchema: Schema<IComponent> = new mongoose.Schema({
   style: { type: Object, default: {} },
 });
 
-const Component: Model<IComponent> = mongoose.model<IComponent>("Component", componentsSchema);
+const Component: Model<IComponent> = mongoose.model<IComponent>(
+  "Component",
+  componentsSchema
+);
 
 export default Component;
