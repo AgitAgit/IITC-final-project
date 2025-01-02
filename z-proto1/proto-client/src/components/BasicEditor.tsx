@@ -3,6 +3,7 @@ import { useRef, useState } from 'react'
 
 import DraggableDiv from './DraggableDiv'
 import DraggableFrame from './DraggableFrame'
+import EditableText from './EditableText'
 
 //add an item DONE
 //move an item DONE
@@ -35,7 +36,7 @@ function BasicEditor() {
             return <DraggableDiv xPos={div.x} yPos={div.y} />
         })} */}
         {divs.map(div => {
-            return <DraggableFrame key={div.id} fillerElement={item} div={div} handleDeleteElement={handleDeleteElement} />
+            return <DraggableFrame key={div.id} fillerElement={<EditableText />} div={div} handleDeleteElement={handleDeleteElement} />
         })}
     </div>
   )
