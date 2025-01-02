@@ -25,9 +25,9 @@ function BasicEditor() {
         else setDivs(prev => [...prev, {id:newId, position:divPosition, getSelfPosition:function(){return this.position}, setSelfPosition:function(position){this.position = position}}]);
     }
 
-    function handleAddElement(divPosition = {x:0, y:0}, baseComponent = 'ButtonRandom'){
-        return [ <ButtonRandom />, <ButtonRandom />, <ButtonRandom />]
-    }
+    // function handleAddElement(divPosition = {x:0, y:0}, baseComponent = 'ButtonRandom'){
+    //     return [ <ButtonRandom />, <ButtonRandom />, <ButtonRandom />]
+    // }
 
     function handleDeleteElement(id:number){
         setDivs(prev => prev.filter(element => element.id !== id));
@@ -36,7 +36,6 @@ function BasicEditor() {
     const item = <p>baba3000</p>;
     return (
     <div ref={pageRef} style={{height: '2000px'}}>
-        {handleAddElement()}
         BasicEditor
         {item}
         <button onClick={handleAddDiv}>Add a new div</button>
