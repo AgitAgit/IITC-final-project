@@ -4,3 +4,7 @@ VIEWPORT at which the event occurred(as opposed to the coordinate within the pag
 
 What if I want to check what is the position of a mouse event/ dom element relative 
 to its parent dom element?
+
+
+POSSIBLE IMPROVEMENTS:
+Could add a drag to bottom to scroll functionality

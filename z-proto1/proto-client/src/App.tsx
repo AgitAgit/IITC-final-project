@@ -1,7 +1,6 @@
 import './App.css'
 import BasicEditor from './components/BasicEditor'
 
-
 function App() {
   return(
     <>

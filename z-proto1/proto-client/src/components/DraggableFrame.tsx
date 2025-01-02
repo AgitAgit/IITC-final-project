@@ -1,10 +1,10 @@
 import React, { useRef, useState } from 'react';
 
-window.addEventListener('mouseup', () => {console.log('mouse up event occurred!')});
+// window.addEventListener('mouseup', () => {console.log('mouse up event occurred!')});
 //should try and remove this on unmounting, perhaps using the useEffect return function.
 
-function DraggableFrame({ fillerElement, xPos = 0, yPos = 0 }) {
-    const [position, setPosition] = useState({ x: xPos, y: yPos });
+function DraggableFrame({ fillerElement, div, handleDeleteElement }) {
+    const [position, setPosition] = useState({ x: div.position.x, y: div.position.y });
     const divRef = useRef(null);
 
     const handleMouseDown = (e) => {
@@ -14,15 +14,19 @@ function DraggableFrame({ fillerElement, xPos = 0, yPos = 0 }) {
         const offsetY = e.clientY - rect.top;
 
         const handleMouseMove = (e) => {
-            setPosition({
-                x: e.clientX - offsetX,
-                y: e.clientY - offsetY + windowYPosition,
-                // x: e.clientX,
-                // y: e.clientY
-            });
+            const newPosition = { x: e.clientX - offsetX, y: e.clientY - offsetY + windowYPosition }
+            // setPosition({
+            //     x: e.clientX - offsetX,
+            //     y: e.clientY - offsetY + windowYPosition,
+            //     // x: e.clientX,
+            //     // y: e.clientY
+            // });
+            setPosition(newPosition);
+            div.setSelfPosition(newPosition);
         };
 
         const handleMouseUp = () => {
+            console.log("div.getSelfPosition", div.getSelfPosition());
             window.removeEventListener('mousemove', handleMouseMove);
             window.removeEventListener('mouseup', handleMouseUp);
         };
@@ -31,17 +35,24 @@ function DraggableFrame({ fillerElement, xPos = 0, yPos = 0 }) {
         window.addEventListener('mouseup', handleMouseUp);
     };
 
+    function handleFrameClick() {
+        console.log("div", div);
+    }
+
     return (
-        <div 
-        ref={divRef}
-        style={{
-            position: "absolute",
-            top: position.y,
-            left: position.x,
-            cursor: 'grab',
-            border: '1px solid black'
-        }}
-            onMouseDown={handleMouseDown}>
+        <div
+            ref={divRef}
+            style={{
+                position: "absolute",
+                top: position.y,
+                left: position.x,
+                cursor: 'grab',
+                border: '1px solid black'
+            }}
+            onMouseDown={handleMouseDown}
+            onClick={handleFrameClick}
+        >
+            <button onClick={() => handleDeleteElement(div.id)}>Delete</button>
             DraggableFrame
             {fillerElement}
         </div>
