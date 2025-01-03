@@ -9,14 +9,14 @@ function ButtonRandom() {
   function handleClick() {
     setNum(Math.ceil(Math.random() * 100));
   }
-  return <button onClick={handleClick} style={{width:'2rem'}}>{num}</button>
+  return <button onClick={handleClick} style={{ width: '2rem' }}>{num}</button>
 }
 
 function RedRectangle() {
   return <div style={{
-    width:'8rem',
-    height:'4rem',
-    backgroundColor:'red'
+    width: '8rem',
+    height: '4rem',
+    backgroundColor: 'red'
   }}></div>
 }
 
@@ -43,48 +43,58 @@ enum genElement {
 }
 
 type ElementDiv = {
-  div:{
+  div: {
     id: number;
-  position: {
+    position: {
       x: number;
       y: number;
-  };
-  getSelfPosition: () => {
+    };
+    getSelfPosition: () => {
       x: number;
       y: number;
-  };
-  setSelfPosition: (position: Position) => void;
-}
+    };
+    setSelfPosition: (position: Position) => void;
+  }
   body: ReactNode;
+}
+
+type PageSnapshot = {
+  page_name:string
 }
 
 function BasicEditor2() {
   const [renderElements, setRenderElements] = useState<ElementDiv[]>([])
   const isRenderElementsEmpty = renderElements.length === 0;
 
-  function handleDeleteElement(id:number){
+  function handleDeleteElement(id: number) {
     setRenderElements(prev => prev.filter(element => element.div.id !== id))
   }
-// : MouseEventHandler<HTMLDivElement>
-//add itemName attribute to the divs? instead of passing it to handleGeneratorClick to satisfy typescript?
+  // : MouseEventHandler<HTMLDivElement>
+  //add itemName attribute to the divs? instead of passing it to handleGeneratorClick to satisfy typescript?
   const handleGeneratorClick = function (e: MouseEvent<HTMLDivElement, MouseEvent>, itemName: string) {
     console.log("render elements:", renderElements)
     let newElement;
-    const position = { x: e.clientX, y:e.clientY };//might need to add offset of window.scrollY
-    const newDiv = { id: 0, position, getSelfPosition:function(){return this.position}, setSelfPosition:function(position:Position){this.position = position} };
+    const position = { x: e.clientX, y: e.clientY };//might need to add offset of window.scrollY
+    const newDiv = { id: 0, position, getSelfPosition: function () { return this.position }, setSelfPosition: function (position: Position) { this.position = position } };
     if (!isRenderElementsEmpty) newDiv.id = renderElements[renderElements.length - 1].div.id + 1;
     if (itemName === genElement.editable_text) {
-       newElement = {div:newDiv, body:<DraggableFrame key={newDiv.id} fillerElement={<EditableText />} div={newDiv} handleDeleteElement={handleDeleteElement} />}
+      newElement = { div: newDiv, body: <DraggableFrame key={newDiv.id} fillerElement={<EditableText />} div={newDiv} handleDeleteElement={handleDeleteElement} /> }
     }
     else if (itemName === genElement.button_random) {
-      newElement = {div:newDiv, body:<DraggableFrame key={newDiv.id} fillerElement={<ButtonRandom />} div={newDiv} handleDeleteElement={handleDeleteElement} />}
+      newElement = { div: newDiv, body: <DraggableFrame key={newDiv.id} fillerElement={<ButtonRandom />} div={newDiv} handleDeleteElement={handleDeleteElement} /> }
     }
     else if (itemName === genElement.red_rectangle) {
-      newElement = {div:newDiv, body:<DraggableFrame key={newDiv.id} fillerElement={<RedRectangle />} div={newDiv} handleDeleteElement={handleDeleteElement} />}
+      newElement = { div: newDiv, body: <DraggableFrame key={newDiv.id} fillerElement={<RedRectangle />} div={newDiv} handleDeleteElement={handleDeleteElement} /> }
     }
     if (!newElement) return;
     if (isRenderElementsEmpty) setRenderElements([newElement]);
     else setRenderElements(prev => [...prev, newElement]);
+  }
+
+  function generatePageSnapshot():PageSnapshot{
+    const snapshot = { page_name:'baba page 3000'};
+    console.log("page snapshot:", snapshot);
+    return snapshot;
   }
 
   return (
