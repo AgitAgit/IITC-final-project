@@ -3,7 +3,6 @@ import Page from "../models/pageModel";
 import Site from "../models/siteModel";
 import Component from "../models/componentModel";
 
-// יצירת עמוד חדש וקישור לאתר
 export const createPage = async (
   req: Request,
   res: Response
@@ -11,14 +10,12 @@ export const createPage = async (
   try {
     const { siteId, title, url, style } = req.body;
 
-    // בדיקת קיום האתר
     const site = await Site.findById(siteId);
     if (!site) {
       res.status(404).json({ message: "Site not found" });
       return;
     }
 
-    // בדיקה האם יש כבר עמוד עם title או url זהה באותו אתר
     const existingPage = await Page.findOne({
       site: siteId,
       $or: [{ title }, { url }],
@@ -31,7 +28,6 @@ export const createPage = async (
       return;
     }
 
-    // יצירת עמוד חדש
     const page = new Page({
       site: siteId,
       title,
@@ -40,7 +36,6 @@ export const createPage = async (
     });
     await page.save();
 
-    // קישור העמוד לאתר
     site.pages.push(page._id as any);
     await site.save();
 
@@ -57,7 +52,6 @@ export const getPagesBySiteId = async (
   try {
     const { siteId } = req.params;
 
-    // שליפת כל הדפים שקשורים ל-siteId המסוים
     const pages = await Page.find({ site: siteId }).populate("components");
 
     if (!pages || pages.length === 0) {
@@ -73,7 +67,6 @@ export const getPagesBySiteId = async (
   }
 };
 
-// קריאת כל העמודים
 export const getAllPages = async (
   req: Request,
   res: Response
@@ -86,7 +79,6 @@ export const getAllPages = async (
   }
 };
 
-// קריאת עמוד לפי ID
 export const getPageById = async (
   req: Request,
   res: Response
@@ -108,7 +100,6 @@ export const getPageById = async (
   }
 };
 
-// עדכון עמוד
 export const updatePage = async (
   req: Request,
   res: Response
@@ -133,7 +124,6 @@ export const updatePage = async (
   }
 };
 
-// מחיקת עמוד
 export const deletePage = async (
   req: Request,
   res: Response
@@ -147,14 +137,12 @@ export const deletePage = async (
       return;
     }
 
-    // הסרת העמוד מהאתר
     const site = await Site.findById(page.site);
     if (site) {
       site.pages = site.pages.filter((pageId) => pageId.toString() !== id);
       await site.save();
     }
 
-    // מחיקת רכיבים שקשורים לעמוד
     await Component.deleteMany({ page: id });
 
     res.status(200).json({ message: "Page deleted successfully" });
