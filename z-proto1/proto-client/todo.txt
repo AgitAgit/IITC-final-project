@@ -1,3 +1,13 @@
-Create a component menu with 2 different pre-made components and add it to the editor
+basic editor1
 
-Stop and make a written plan for basicEditor2 and related components;
+basic editor2
+//goal1: 
+// generate a menu with 3 buttons, each one generate a different component;
+//The buttons should create new elements using drag and drop mechanics;
+
+//goal2: 
+// generate a page layout object that records all the objects and their positions and data;
+// save 2 pre-made pages and toggle between them;
+
+only those goals. Improvements to typing and order should happen in further versions.
+Don't abstract too early.

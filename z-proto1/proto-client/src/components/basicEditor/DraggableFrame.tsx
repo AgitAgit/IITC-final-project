@@ -5,10 +5,10 @@ import React, { ReactNode, useRef, useState } from 'react';
 export type DraggableFrameProps = {
     fillerElement: HTMLElement | ReactNode,
     div: {
-        id:string,
+        id:number,
         position:{x:number, y:number}
     },
-    handleDeleteElement: () => void
+    handleDeleteElement: (id:number) => void
 }
 function DraggableFrame({ fillerElement, div, handleDeleteElement }:DraggableFrameProps) {
     const [position, setPosition] = useState({ x: div.position.x, y: div.position.y });
