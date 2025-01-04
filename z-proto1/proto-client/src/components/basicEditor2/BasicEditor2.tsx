@@ -77,8 +77,6 @@ function BasicEditor2() {
   const [renderElements, setRenderElements] = useState<ElementDiv[]>([])
   const isRenderElementsEmpty = renderElements.length === 0;
 
-
-  const setSelfPosition = function (position: Position) { this.position = position }
   function handleDeleteElement(id: number) {
     setRenderElements(prev => prev.filter(element => element.div.id !== id))
   }
@@ -88,7 +86,7 @@ function BasicEditor2() {
     // console.log("render elements:", renderElements)
     let newElement;
     const position = { x: e.clientX, y: e.clientY };//might need to add offset of window.scrollY
-    const newDiv: DataDiv = { id: 0, position, elementName: itemName, getSelfPosition: function () { return this.position }, setSelfPosition, content: {}, setSelfContent: function (newContent: ContentObject) { this.content = newContent } };
+    const newDiv: DataDiv = { id: 0, position, elementName: itemName, getSelfPosition: function () { return this.position }, setSelfPosition: function (position: Position) { this.position = position }, content: {}, setSelfContent: function (newContent: ContentObject) { this.content = newContent } };
     if (!isRenderElementsEmpty) newDiv.id = renderElements[renderElements.length - 1].div.id + 1;
     if (itemName === genElement.editable_text) {
       newDiv.content.initialText = "default text";
