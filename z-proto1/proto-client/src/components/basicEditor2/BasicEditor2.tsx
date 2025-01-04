@@ -30,7 +30,8 @@ const generatorStyle = {
 // DONE generate a menu with 3 buttons, each one generate a different component; DONE
 
 //goal2: 
-// generate a page layout object that records all the objects and their positions and data;
+//DONE generate a page layout string that records all the objects and their positions DONE
+// and data;
 // save 2 pre-made pages and toggle between them;
 
 //goal3:
@@ -49,6 +50,7 @@ type ElementDiv = {
       x: number;
       y: number;
     };
+    elementName:genElement
     getSelfPosition: () => {
       x: number;
       y: number;
@@ -71,11 +73,11 @@ function BasicEditor2() {
   }
   // : MouseEventHandler<HTMLDivElement>
   //add itemName attribute to the divs? instead of passing it to handleGeneratorClick to satisfy typescript?
-  const handleGeneratorClick = function (e: MouseEvent<HTMLDivElement, MouseEvent>, itemName: string) {
+  const handleGeneratorClick = function (e: MouseEvent<HTMLDivElement, MouseEvent>, itemName: genElement) {
     console.log("render elements:", renderElements)
     let newElement;
     const position = { x: e.clientX, y: e.clientY };//might need to add offset of window.scrollY
-    const newDiv = { id: 0, position, getSelfPosition: function () { return this.position }, setSelfPosition: function (position: Position) { this.position = position } };
+    const newDiv = { id: 0, position, elementName:itemName,getSelfPosition: function () { return this.position }, setSelfPosition: function (position: Position) { this.position = position } };
     if (!isRenderElementsEmpty) newDiv.id = renderElements[renderElements.length - 1].div.id + 1;
     if (itemName === genElement.editable_text) {
       newElement = { div: newDiv, body: <DraggableFrame key={newDiv.id} fillerElement={<EditableText />} div={newDiv} handleDeleteElement={handleDeleteElement} /> }
@@ -91,15 +93,50 @@ function BasicEditor2() {
     else setRenderElements(prev => [...prev, newElement]);
   }
 
-  function generatePageSnapshot():PageSnapshot{
-    const snapshot = { page_name:'baba page 3000'};
+  const hydrateElement = function (element:ElementDiv) {
+    let newElement;
+    const itemName = element.div.elementName;
+    // const newDiv = { id: 0, position, getSelfPosition: function () { return this.position }, setSelfPosition: function (position: Position) { this.position = position } };
+    const newDiv = element.div;
+    if (!isRenderElementsEmpty) newDiv.id = renderElements[renderElements.length - 1].div.id + 1;
+    if (itemName === genElement.editable_text) {
+      newElement = { div: newDiv, body: <DraggableFrame key={newDiv.id} fillerElement={<EditableText />} div={newDiv} handleDeleteElement={handleDeleteElement} /> }
+    }
+    else if (itemName === genElement.button_random) {
+      newElement = { div: newDiv, body: <DraggableFrame key={newDiv.id} fillerElement={<ButtonRandom />} div={newDiv} handleDeleteElement={handleDeleteElement} /> }
+    }
+    else if (itemName === genElement.red_rectangle) {
+      newElement = { div: newDiv, body: <DraggableFrame key={newDiv.id} fillerElement={<RedRectangle />} div={newDiv} handleDeleteElement={handleDeleteElement} /> }
+    }
+    if (!newElement) return;
+    // if (isRenderElementsEmpty) setRenderElements([newElement]);
+    // else setRenderElements(prev => [...prev, newElement]);
+    return newElement;
+  }
+
+  function regenerateFromSnapshot(){
+    const snapshot = localStorage.getItem("latest_snapshot");
+    if(!snapshot) return;
     console.log("page snapshot:", snapshot);
+    const dryElements = JSON.parse(snapshot);
+    const hydratedElements = dryElements.map(element => hydrateElement(element))
+    console.log("dry elements:",dryElements);
+    console.log("hydrated elements:", hydratedElements)
+    setRenderElements(hydratedElements);
+  }
+
+  function generatePageSnapshot(){
+    const snapshot = JSON.stringify(renderElements);
+    console.log("page snapshot:", snapshot);
+    localStorage.setItem("latest_snapshot", snapshot);
     return snapshot;
   }
 
   return (
 
     <div>
+    <button onClick={generatePageSnapshot}>create snapshot</button>
+    <button onClick={regenerateFromSnapshot}>recreate snapshot</button>
       <div style={{ margin: '0', padding: '0', width: '100vw', border: '1px solid pink' }}>
         <div style={generatorStyle} onClick={(e) => handleGeneratorClick(e, genElement.editable_text)}>
           +Editable Text Element
