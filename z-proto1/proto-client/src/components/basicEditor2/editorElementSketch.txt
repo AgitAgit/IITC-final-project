@@ -1,0 +1,15 @@
+lessons from basicEditor2 for basic editor 3:
+
+need to simplify the elements and stop wrapping them in a Draggable frame, and make them draggable
+instead.
+
+each editor element should have
+objectName?
+componentName(so the pageRender function can create/recreate it based on its component)
+position state object(so the pageRender can recreate it's location)(passed to the component)
+    determines the objects state via css.
+content state object(so the pageRender can recreate it's content)(passed to the component as prop)
+
+note: json.stringify eliminates funcitons from the object as they are not considered
+valid json types. I will need to add them again in the rehydration stage, or store them differently
+somehow.

@@ -11,3 +11,5 @@ basic editor2
 
 only those goals. Improvements to typing and order should happen in further versions.
 Don't abstract too early.
+
+I need to edit editableText and ButtonRandom so the receive props with content.
