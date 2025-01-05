@@ -4,7 +4,6 @@ import { Request, Response } from "express";
 import User from "../models/userModel";
 import { IUser } from "../types/userTypes";
 import { AuthenticatedRequest } from "../types/expressTypes";
-import Joi from "joi";
 
 export const getUserById = async (
   req: AuthenticatedRequest,
@@ -36,23 +35,16 @@ export const getUserById = async (
 
 export const signUp = async (req: Request, res: Response): Promise<void> => {
   try {
-    const schema = Joi.object({
-      username: Joi.string().min(3).max(30).required(),
-      email: Joi.string().email().required(),
-      password: Joi.string().min(8).required(),
-    });
-
-    const { error } = schema.validate(req.body);
-    if (error) {
-      res.status(400).json({ message: error.details[0].message });
-      return;
-    }
-
     const { username, email, password } = req.body;
 
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
+    const existingUserEmail = await User.findOne({ email });
+    if (existingUserEmail) {
       res.status(400).json({ message: "Email is already registered." });
+      return;
+    }
+    const existingUserName = await User.findOne({ username });
+    if (existingUserName) {
+      res.status(400).json({ message: "userName is already registered." });
       return;
     }
 
@@ -82,8 +74,7 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
 
     res.cookie("token", token, {
       httpOnly: false,
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 3600000,
+      secure: true,
       sameSite: "strict",
     });
 
@@ -128,8 +119,7 @@ export const logIn = async (req: Request, res: Response): Promise<void> => {
 
     res.cookie("token", token, {
       httpOnly: false,
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 3600000,
+      secure: true,
       sameSite: "strict",
     });
 

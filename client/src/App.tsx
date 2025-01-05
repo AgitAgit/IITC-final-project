@@ -2,8 +2,10 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Landing from "./pages/Landing";
 import Layout from "./pages/Layout";
 import Error from "./pages/Error";
+import Login from "./pages/Login";
 
 import "./App.css";
+import SignUp from "./pages/SignUp";
 
 function App() {
   const router = createBrowserRouter([
@@ -14,10 +16,6 @@ function App() {
           path: "/",
           element: <Landing />,
         },
-        // {
-        //   path: "/About",
-        //   element: <About />,
-        // },
         // {
         //   path: "/Profile/:id",
         //   element: <Profile />,
@@ -32,6 +30,14 @@ function App() {
           element: <Error />,
         },
       ],
+    },
+    {
+      path: "/login",
+      element: <Login />,
+    },
+    {
+      path: "/signup",
+      element: <SignUp />,
     },
     // {
     //   path: "/login",
