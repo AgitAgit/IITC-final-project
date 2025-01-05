@@ -4,6 +4,11 @@ import { IUser } from "./userTypes";
 // export interface AuthenticatedRequest extends Request {
 //   user?: IUser;
 // }
+
+export interface AuthenticatedRequest extends Request {
+  user?: Partial<IUser>;
+}
+
 export interface AuthenticatedRequestOptional extends Request {
   userId?: string;
 }

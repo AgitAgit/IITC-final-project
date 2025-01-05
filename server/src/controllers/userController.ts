@@ -71,7 +71,6 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
       createdAt: newUser.createdAt,
       role: newUser.role,
     };
-
     res.cookie("token", token, {
       httpOnly: false,
       secure: true,
