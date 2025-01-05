@@ -35,23 +35,19 @@ export const getUserById = async (
 
 export const signUp = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { username, email, password } = req.body;
+    const { firstName, lastName, email, password } = req.body;
 
     const existingUserEmail = await User.findOne({ email });
     if (existingUserEmail) {
       res.status(400).json({ message: "Email is already registered." });
       return;
     }
-    const existingUserName = await User.findOne({ username });
-    if (existingUserName) {
-      res.status(400).json({ message: "userName is already registered." });
-      return;
-    }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = await User.create({
-      username,
+      firstName,
+      lastName,
       email,
       password: hashedPassword,
     });
@@ -66,7 +62,8 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
 
     const userResponse = {
       id: newUser._id,
-      username: newUser.username,
+      firstName: newUser.firstName,
+      lastName: newUser.lastName,
       email: newUser.email,
       createdAt: newUser.createdAt,
       role: newUser.role,
@@ -81,7 +78,7 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
       message: "User created successfully",
       user: userResponse,
     });
-    console.log("user created sucessefully", userResponse);
+    console.log("User created successfully", userResponse);
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Internal server error" });
@@ -110,7 +107,8 @@ export const logIn = async (req: Request, res: Response): Promise<void> => {
 
     const userResponse = {
       id: user._id,
-      username: user.username,
+      firstName: user.firstName,
+      lastName: user.lastName,
       email: user.email,
       createdAt: user.createdAt,
       role: user.role,
@@ -122,7 +120,7 @@ export const logIn = async (req: Request, res: Response): Promise<void> => {
       sameSite: "strict",
     });
 
-    res.status(200).json({ message: "Login successful", userResponse });
+    res.status(200).json({ message: "Login successful", user: userResponse });
   } catch (err) {
     res.status(500).json({ message: "Server error", error: err });
   }
@@ -134,10 +132,10 @@ export const updateUser = async (
 ): Promise<void> => {
   try {
     const userId = req.params.id;
-    console.log(userId);
 
     const {
-      username,
+      firstName,
+      lastName,
       email,
       password,
       googleId,
@@ -157,7 +155,8 @@ export const updateUser = async (
       user.password = hashedPassword;
     }
 
-    if (username) user.username = username;
+    if (firstName) user.firstName = firstName;
+    if (lastName) user.lastName = lastName;
     if (email) user.email = email;
     if (googleId) user.googleId = googleId;
     if (profileImage) user.profileImage = profileImage;
