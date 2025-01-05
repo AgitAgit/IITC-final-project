@@ -12,3 +12,7 @@ export interface AuthenticatedRequest extends Request {
 export interface AuthenticatedRequestOptional extends Request {
   userId?: string;
 }
+
+export interface AuthenticatedRequest extends Request {
+  user?: Partial<IUser>;
+}
