@@ -79,12 +79,6 @@ export type PageSnapshot = {
   page_name: string
 }
 
-export enum StorageSlots {
-  latest_snapshot = "latest_snapshot",
-  storage1 = "storage1",
-  storage2 = "storage2"
-}
-
 function BasicEditor2() {
   const [renderElements, setRenderElements] = useState<ElementDiv[]>([])
   const isRenderElementsEmpty = renderElements.length === 0;
@@ -121,7 +115,6 @@ function BasicEditor2() {
     else setRenderElements(prev => [...prev, newElement]);
   }
 
-  //missing the deleteElement funciton hydration.
   const hydrateElement = function (element: ElementDiv) {
     let newElement;
     const itemName = element.div.elementName;
@@ -149,8 +142,13 @@ function BasicEditor2() {
     return newElement;
   }
 
+<<<<<<< HEAD
   function regenerateFromSnapshot(storageSlot:StorageSlots) {
     const snapshot = localStorage.getItem(storageSlot);
+=======
+  function regenerateFromSnapshot() {
+    const snapshot = localStorage.getItem("latest_snapshot");
+>>>>>>> parent of 62ca9ba (commit)
     if (!snapshot) return;
     console.log("regenerate from storate slot:", storageSlot);//LAST HERE. why does the regeneration not delete the former elements on the screen?
     // console.log("page snapshot:", snapshot);
@@ -161,25 +159,27 @@ function BasicEditor2() {
     setRenderElements(hydratedElements);
   }
 
+<<<<<<< HEAD
   function generatePageSnapshot(storageSlot:StorageSlots) {
     console.log("saving snapshot to storage slot:", storageSlot);
     const snapshot = JSON.stringify(renderElements);
     // console.log("page snapshot:", snapshot);
     console.log("parsed page snapshot:", JSON.parse(snapshot));
     localStorage.setItem(storageSlot, snapshot);
+=======
+  function generatePageSnapshot() {
+    const snapshot = JSON.stringify(renderElements);
+    console.log("page snapshot:", snapshot);
+    localStorage.setItem("latest_snapshot", snapshot);
+>>>>>>> parent of 62ca9ba (commit)
     return snapshot;
   }
 
   return (
 
     <div>
-      <button onClick={() => generatePageSnapshot(StorageSlots.latest_snapshot)}>create snapshot</button>
-      <button onClick={() => regenerateFromSnapshot(StorageSlots.latest_snapshot)}>recreate latest snapshot</button>
-      <button onClick={() => generatePageSnapshot(StorageSlots.storage1)}>save to storage1</button>
-      <button onClick={() => generatePageSnapshot(StorageSlots.storage2)}>save to storage2</button>
-      <button onClick={() => regenerateFromSnapshot(StorageSlots.storage1)}>retrieve storage1</button>
-      <button onClick={() => regenerateFromSnapshot(StorageSlots.storage2)}>retrieve storage2</button>
-
+      <button onClick={generatePageSnapshot}>create snapshot</button>
+      <button onClick={regenerateFromSnapshot}>recreate snapshot</button>
       <div style={{ margin: '0', padding: '0', width: '100vw', border: '1px solid pink' }}>
         <div style={generatorStyle} onClick={(e) => handleGeneratorClick(e, genElement.editable_text)}>
           +Editable Text Element
