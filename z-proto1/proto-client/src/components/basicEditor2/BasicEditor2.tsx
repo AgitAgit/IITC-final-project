@@ -142,13 +142,8 @@ function BasicEditor2() {
     return newElement;
   }
 
-<<<<<<< HEAD
-  function regenerateFromSnapshot(storageSlot:StorageSlots) {
-    const snapshot = localStorage.getItem(storageSlot);
-=======
   function regenerateFromSnapshot() {
     const snapshot = localStorage.getItem("latest_snapshot");
->>>>>>> parent of 62ca9ba (commit)
     if (!snapshot) return;
     console.log("regenerate from storate slot:", storageSlot);//LAST HERE. why does the regeneration not delete the former elements on the screen?
     // console.log("page snapshot:", snapshot);
@@ -159,19 +154,10 @@ function BasicEditor2() {
     setRenderElements(hydratedElements);
   }
 
-<<<<<<< HEAD
-  function generatePageSnapshot(storageSlot:StorageSlots) {
-    console.log("saving snapshot to storage slot:", storageSlot);
-    const snapshot = JSON.stringify(renderElements);
-    // console.log("page snapshot:", snapshot);
-    console.log("parsed page snapshot:", JSON.parse(snapshot));
-    localStorage.setItem(storageSlot, snapshot);
-=======
   function generatePageSnapshot() {
     const snapshot = JSON.stringify(renderElements);
     console.log("page snapshot:", snapshot);
     localStorage.setItem("latest_snapshot", snapshot);
->>>>>>> parent of 62ca9ba (commit)
     return snapshot;
   }
 
