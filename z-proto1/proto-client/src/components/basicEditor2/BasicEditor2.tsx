@@ -1,12 +1,17 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { type MouseEventHandler, type MouseEvent, type ReactNode } from 'react';
 import EditableText from '../basicEditor/EditableText';
 import DraggableFrame from '../basicEditor/DraggableFrame';
 import { Position } from '../basicEditor/basicEditorTypes';
 import EditableText2 from './EditableText2';
 
-function ButtonRandom() {
-  const [num, setNum] = useState(0);
+function ButtonRandom({ dataDiv }: { dataDiv: DataDiv }) {
+  const [num, setNum] = useState(dataDiv.content.initialNum || 0);
+  useEffect(() => {
+    const newContent = { initialNum: num };
+    dataDiv.setSelfContent(newContent);
+    // dataDiv.setSelfContent({})
+  }, [num])
   function handleClick() {
     setNum(Math.ceil(Math.random() * 100));
   }
@@ -32,7 +37,7 @@ const generatorStyle = {
 
 //goal2: 
 //DONE generate a page layout string that records all the objects and their positions DONE
-// and data;
+//DONE and data DONE;
 // save 2 pre-made pages and toggle between them;
 
 //goal3:
@@ -80,20 +85,23 @@ function BasicEditor2() {
   function handleDeleteElement(id: number) {
     setRenderElements(prev => prev.filter(element => element.div.id !== id))
   }
+  const getSelfPosition = function () { return this.position };
+  const setSelfPosition = function (position: Position) { this.position = position }
+  const setSelfContent = function (newContent: ContentObject) { this.content = newContent };
   // : MouseEventHandler<HTMLDivElement>
   //add itemName attribute to the divs? instead of passing it to handleGeneratorClick to satisfy typescript?
   const handleGeneratorClick = function (e: MouseEvent<HTMLDivElement, MouseEvent>, itemName: genElement) {
     // console.log("render elements:", renderElements)
     let newElement;
     const position = { x: e.clientX, y: e.clientY };//might need to add offset of window.scrollY
-    const newDiv: DataDiv = { id: 0, position, elementName: itemName, getSelfPosition: function () { return this.position }, setSelfPosition: function (position: Position) { this.position = position }, content: {}, setSelfContent: function (newContent: ContentObject) { this.content = newContent } };
+    const newDiv: DataDiv = { id: 0, position, elementName: itemName, getSelfPosition, setSelfPosition, content: {}, setSelfContent };
     if (!isRenderElementsEmpty) newDiv.id = renderElements[renderElements.length - 1].div.id + 1;
     if (itemName === genElement.editable_text) {
       newDiv.content.initialText = "default text";
       newElement = { div: newDiv, body: <DraggableFrame key={newDiv.id} fillerElement={<EditableText2 dataDiv={newDiv} />} div={newDiv} handleDeleteElement={handleDeleteElement} /> }
     }
     else if (itemName === genElement.button_random) {
-      newElement = { div: newDiv, body: <DraggableFrame key={newDiv.id} fillerElement={<ButtonRandom />} div={newDiv} handleDeleteElement={handleDeleteElement} /> }
+      newElement = { div: newDiv, body: <DraggableFrame key={newDiv.id} fillerElement={<ButtonRandom dataDiv={newDiv}/>} div={newDiv} handleDeleteElement={handleDeleteElement} /> }
     }
     else if (itemName === genElement.red_rectangle) {
       newElement = { div: newDiv, body: <DraggableFrame key={newDiv.id} fillerElement={<RedRectangle />} div={newDiv} handleDeleteElement={handleDeleteElement} /> }
@@ -108,13 +116,15 @@ function BasicEditor2() {
     const itemName = element.div.elementName;
     // const newDiv = { id: 0, position, getSelfPosition: function () { return this.position }, setSelfPosition: function (position: Position) { this.position = position } };
     const newDiv = element.div;
-    newDiv.setSelfContent = 
+    newDiv.getSelfPosition = getSelfPosition;
+    newDiv.setSelfPosition = setSelfPosition;
+    newDiv.setSelfContent = setSelfContent;
     if (!isRenderElementsEmpty) newDiv.id = renderElements[renderElements.length - 1].div.id + 1;
     if (itemName === genElement.editable_text) {
       newElement = { div: newDiv, body: <DraggableFrame key={newDiv.id} fillerElement={<EditableText2 dataDiv={newDiv} />} div={newDiv} handleDeleteElement={handleDeleteElement} /> }
     }
     else if (itemName === genElement.button_random) {
-      newElement = { div: newDiv, body: <DraggableFrame key={newDiv.id} fillerElement={<ButtonRandom />} div={newDiv} handleDeleteElement={handleDeleteElement} /> }
+      newElement = { div: newDiv, body: <DraggableFrame key={newDiv.id} fillerElement={<ButtonRandom dataDiv={newDiv}/>} div={newDiv} handleDeleteElement={handleDeleteElement} /> }
     }
     else if (itemName === genElement.red_rectangle) {
       newElement = { div: newDiv, body: <DraggableFrame key={newDiv.id} fillerElement={<RedRectangle />} div={newDiv} handleDeleteElement={handleDeleteElement} /> }
