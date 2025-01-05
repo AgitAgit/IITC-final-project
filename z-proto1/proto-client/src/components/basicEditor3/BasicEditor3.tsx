@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { type Position } from '../basicEditor/basicEditorTypes'
 import { DataObject3Content, DataObject3Style, DataObject3, RenderElement3 } from './BasicEditor3Types';
+import DraggableFrame3 from './DraggableFrame3';
 
 
 
@@ -39,8 +40,11 @@ function BasicEditor3() {
         const id = uuidv4();
     }
 
+    const testRenderElement = {data:{id:'test',position:{x:0, y:0}, content:{}, style:{}}, body:<div>test test test</div>}; 
   return (
-    <div>BasicEditor3</div>
+    <div>BasicEditor3
+      <DraggableFrame3 renderElement={testRenderElement} baseFunctions={baseFunctions} />
+    </div>
   )
 }
 

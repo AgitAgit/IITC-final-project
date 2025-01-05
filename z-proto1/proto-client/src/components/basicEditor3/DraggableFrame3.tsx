@@ -1,4 +1,4 @@
-import React, { type ReactNode, useState, useEffect } from 'react'
+import React, { type ReactNode, useState, useEffect, useRef } from 'react'
 
 import { type DataObject3, DataObject3Content, DataObject3Style, RenderElement3, BaseFunctions } from './BasicEditor3Types'
 import { Position } from '../basicEditor/basicEditorTypes'
@@ -10,6 +10,7 @@ export type DraggableFrame3Props = {
 
 function DraggableFrame3({ renderElement, baseFunctions }: DraggableFrame3Props) {
     const [position, setPosition] = useState<Position>(renderElement.data.position);
+    const divRef = useRef();
 
     const handleMouseDown = (e) => {
         const windowYPosition = window.scrollY;
@@ -33,10 +34,14 @@ function DraggableFrame3({ renderElement, baseFunctions }: DraggableFrame3Props)
     };
 
     return (
-        <div style={{
+            <div 
+            ref={divRef}
+            onMouseDown={handleMouseDown}
+            style={{
             position: 'absolute',
             left: position.x,
             top: position.y,
+            cursor: "grab",
             border: '1px solid red'//remove this later...
         }}>
             {renderElement.body}
