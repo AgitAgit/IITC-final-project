@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react'
+
 import { type MouseEventHandler, type MouseEvent, type ReactNode } from 'react';
+import { Position } from '../basicEditor/basicEditorTypes';
+import { genElement, type ContentObject, type DataDiv, type ElementDiv} from './basicEditor2Types.ts';
+
 import EditableText from '../basicEditor/EditableText';
 import DraggableFrame from '../basicEditor/DraggableFrame';
 // import DraggableFrame2 from './DraggableFrame2';
 import DraggableFrame1_2 from './DraggableFrame1_2';
-import { Position } from '../basicEditor/basicEditorTypes';
 import EditableText2 from './EditableText2';
 
 function ButtonRandom({ dataDiv }: { dataDiv: DataDiv }) {
@@ -46,40 +49,7 @@ const generatorStyle = {
 // save 2 pre-made pages and toggle between them;
 //The buttons should create new elements using drag and drop mechanics;
 
-export enum genElement {
-  editable_text = "editable_text",
-  button_random = "button_random",
-  red_rectangle = "red_rectangle"
-}
 
-export type ContentObject = {
-  [key: string]: any;
-}
-
-export type DataDiv = {
-  id: number;
-  position: {
-    x: number;
-    y: number;
-  };
-  elementName: genElement
-  getSelfPosition: () => {
-    x: number;
-    y: number;
-  };
-  setSelfPosition: (position: Position) => void;
-  content: ContentObject;
-  setSelfContent: (newContent: ContentObject) => void;
-}
-
-export type ElementDiv = {
-  div: DataDiv
-  body: ReactNode;
-}
-
-export type PageSnapshot = {
-  page_name: string
-}
 
 
 //for some reason right now recreatesnapshot does not overwrite the state of the screen.

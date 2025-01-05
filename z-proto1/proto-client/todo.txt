@@ -2,14 +2,16 @@ basic editor1
 
 basic editor2
 //goal1: 
-// generate a menu with 3 buttons, each one generate a different component;
-//The buttons should create new elements using drag and drop mechanics;
+DONE// generate a menu with 3 buttons, each one generate a different component;DONE
+POSTPONED//The buttons should create new elements using drag and drop mechanics;POSTPONED
 
 //goal2: 
-// generate a page layout object that records all the objects and their positions and data;
-// save 2 pre-made pages and toggle between them;
+DONE// generate a page layout object that records all the objects and their positions and data; DONE
+POSTPONED// save 2 pre-made pages and toggle between them;POSTPONED
 
 only those goals. Improvements to typing and order should happen in further versions.
 Don't abstract too early.
 
 I need to edit editableText and ButtonRandom so the receive props with content.
+
+basic editor3
