@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { type MouseEventHandler, type MouseEvent, type ReactNode } from 'react';
 import EditableText from '../basicEditor/EditableText';
-// import DraggableFrame from '../basicEditor/DraggableFrame';
-import DraggableFrame2 from './DraggableFrame2';
+import DraggableFrame from '../basicEditor/DraggableFrame';
+// import DraggableFrame2 from './DraggableFrame2';
+import DraggableFrame1_2 from './DraggableFrame1_2';
 import { Position } from '../basicEditor/basicEditorTypes';
 import EditableText2 from './EditableText2';
 
@@ -39,9 +40,10 @@ const generatorStyle = {
 //goal2: 
 //DONE generate a page layout string that records all the objects and their positions DONE
 //DONE and data DONE;
-// save 2 pre-made pages and toggle between them;
 
+//These will wait for further versions:
 //goal3:
+// save 2 pre-made pages and toggle between them;
 //The buttons should create new elements using drag and drop mechanics;
 
 export enum genElement {
@@ -79,6 +81,13 @@ export type PageSnapshot = {
   page_name: string
 }
 
+
+//for some reason right now recreatesnapshot does not overwrite the state of the screen.
+//meaning, either it does not overwrite renderElements, or it does not overwrite localstorage.
+//In regards to position seems like local storage is written and read properly.
+//could It be a failure to...
+//I added useEffect to DraggableFrame1_2 that sets the position to the position received in
+//the props. It solved the problem.
 function BasicEditor2() {
   const [renderElements, setRenderElements] = useState<ElementDiv[]>([])
   const isRenderElementsEmpty = renderElements.length === 0;
@@ -99,16 +108,16 @@ function BasicEditor2() {
     if (!isRenderElementsEmpty) newDiv.id = renderElements[renderElements.length - 1].div.id + 1;
     if (itemName === genElement.editable_text) {
       newDiv.content.initialText = "default text";
-      // newElement = { div: newDiv, body: <DraggableFrame key={newDiv.id} fillerElement={<EditableText2 dataDiv={newDiv} />} div={newDiv} handleDeleteElement={handleDeleteElement} /> }
-      newElement = { div: newDiv, body: <DraggableFrame2 key={newDiv.id} elementDiv={{body:<EditableText2 dataDiv={newDiv} />, div:newDiv}} handleDeleteElement={handleDeleteElement} /> }
+      newElement = { div: newDiv, body: <DraggableFrame1_2 key={newDiv.id} fillerElement={<EditableText2 dataDiv={newDiv} />} div={newDiv} handleDeleteElement={handleDeleteElement} /> }
+      // newElement = { div: newDiv, body: <DraggableFrame2 key={newDiv.id} elementDiv={{body:<EditableText2 dataDiv={newDiv} />, div:newDiv}} handleDeleteElement={handleDeleteElement} /> }
     }
     else if (itemName === genElement.button_random) {
-      // newElement = { div: newDiv, body: <DraggableFrame key={newDiv.id} fillerElement={<ButtonRandom dataDiv={newDiv}/>} div={newDiv} handleDeleteElement={handleDeleteElement} /> }
-      newElement = { div: newDiv, body: <DraggableFrame2 key={newDiv.id} elementDiv={{body:<ButtonRandom dataDiv={newDiv}/>, div:newDiv}} handleDeleteElement={handleDeleteElement} /> }
+      newElement = { div: newDiv, body: <DraggableFrame1_2 key={newDiv.id} fillerElement={<ButtonRandom dataDiv={newDiv}/>} div={newDiv} handleDeleteElement={handleDeleteElement} /> }
+      // newElement = { div: newDiv, body: <DraggableFrame2 key={newDiv.id} elementDiv={{body:<ButtonRandom dataDiv={newDiv}/>, div:newDiv}} handleDeleteElement={handleDeleteElement} /> }
     }
     else if (itemName === genElement.red_rectangle) {
-      // newElement = { div: newDiv, body: <DraggableFrame key={newDiv.id} fillerElement={<RedRectangle />} div={newDiv} handleDeleteElement={handleDeleteElement} /> }
-      newElement = { div: newDiv, body: <DraggableFrame2 key={newDiv.id} elementDiv={{body:<RedRectangle/>, div:newDiv}} handleDeleteElement={handleDeleteElement} /> }
+      newElement = { div: newDiv, body: <DraggableFrame1_2 key={newDiv.id} fillerElement={<RedRectangle />} div={newDiv} handleDeleteElement={handleDeleteElement} /> }
+      // newElement = { div: newDiv, body: <DraggableFrame2 key={newDiv.id} elementDiv={{body:<RedRectangle/>, div:newDiv}} handleDeleteElement={handleDeleteElement} /> }
     }
     if (!newElement) return;
     if (isRenderElementsEmpty) setRenderElements([newElement]);
@@ -123,18 +132,17 @@ function BasicEditor2() {
     newDiv.getSelfPosition = getSelfPosition;
     newDiv.setSelfPosition = setSelfPosition;
     newDiv.setSelfContent = setSelfContent;
-    // if (!isRenderElementsEmpty) newDiv.id = renderElements[renderElements.length - 1].div.id + 1;
     if (itemName === genElement.editable_text) {
-      // newElement = { div: newDiv, body: <DraggableFrame key={newDiv.id} fillerElement={<EditableText2 dataDiv={newDiv} />} div={newDiv} handleDeleteElement={handleDeleteElement} /> }
-      newElement = { div: newDiv, body: <DraggableFrame2 key={newDiv.id} elementDiv={{body:<EditableText2 dataDiv={newDiv} />, div:newDiv}} handleDeleteElement={handleDeleteElement} /> }
+      newElement = { div: newDiv, body: <DraggableFrame1_2 key={newDiv.id} fillerElement={<EditableText2 dataDiv={newDiv} />} div={newDiv} handleDeleteElement={handleDeleteElement} /> }
+      // newElement = { div: newDiv, body: <DraggableFrame2 key={newDiv.id} elementDiv={{body:<EditableText2 dataDiv={newDiv} />, div:newDiv}} handleDeleteElement={handleDeleteElement} /> }
     }
     else if (itemName === genElement.button_random) {
-      // newElement = { div: newDiv, body: <DraggableFrame key={newDiv.id} fillerElement={<ButtonRandom dataDiv={newDiv}/>} div={newDiv} handleDeleteElement={handleDeleteElement} /> }
-      newElement = { div: newDiv, body: <DraggableFrame2 key={newDiv.id} elementDiv={{body:<ButtonRandom dataDiv={newDiv} />, div:newDiv}} handleDeleteElement={handleDeleteElement} /> }
+      newElement = { div: newDiv, body: <DraggableFrame1_2 key={newDiv.id} fillerElement={<ButtonRandom dataDiv={newDiv}/>} div={newDiv} handleDeleteElement={handleDeleteElement} /> }
+      // newElement = { div: newDiv, body: <DraggableFrame2 key={newDiv.id} elementDiv={{body:<ButtonRandom dataDiv={newDiv} />, div:newDiv}} handleDeleteElement={handleDeleteElement} /> }
     }
     else if (itemName === genElement.red_rectangle) {
-      // newElement = { div: newDiv, body: <DraggableFrame key={newDiv.id} fillerElement={<RedRectangle />} div={newDiv} handleDeleteElement={handleDeleteElement} /> }
-      newElement = { div: newDiv, body: <DraggableFrame2 key={newDiv.id} elementDiv={{body:<RedRectangle/>, div:newDiv}} handleDeleteElement={handleDeleteElement} /> }
+      newElement = { div: newDiv, body: <DraggableFrame1_2 key={newDiv.id} fillerElement={<RedRectangle />} div={newDiv} handleDeleteElement={handleDeleteElement} /> }
+      // newElement = { div: newDiv, body: <DraggableFrame2 key={newDiv.id} elementDiv={{body:<RedRectangle/>, div:newDiv}} handleDeleteElement={handleDeleteElement} /> }
     }
     if (!newElement) return;
     // if (isRenderElementsEmpty) setRenderElements([newElement]);
@@ -143,9 +151,10 @@ function BasicEditor2() {
   }
 
   function regenerateFromSnapshot() {
+    // setRenderElements([]);
+    console.log("render elements:",renderElements)
     const snapshot = localStorage.getItem("latest_snapshot");
     if (!snapshot) return;
-    console.log("regenerate from storate slot:", storageSlot);//LAST HERE. why does the regeneration not delete the former elements on the screen?
     // console.log("page snapshot:", snapshot);
     const dryElements = JSON.parse(snapshot);
     const hydratedElements = dryElements.map(element => hydrateElement(element))
