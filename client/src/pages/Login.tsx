@@ -37,9 +37,21 @@ const Login = () => {
     },
     onError: (error) => {
       console.error("Login failed:", error);
-      setErrorMessage(
-        "The username or password is incorrect. Please try again."
-      );
+
+      if (error.message === "Network Error") {
+        setErrorMessage("An error has occurred. Please try again later.");
+      } else if (
+        error.message === "User not found." ||
+        error.message === "Invalid credentials."
+      ) {
+        setErrorMessage(
+          "The username or password is incorrect. Please try again."
+        );
+      } else {
+        setErrorMessage(
+          "An unexpected error has occurred. Please try again later."
+        );
+      }
     },
   });
 
