@@ -1,8 +1,9 @@
 import React, {useState, useRef, useEffect, ReactNode} from 'react'
+import { v4 as uuidv4 } from 'uuid';
 
 import { type Position } from '../basicEditor/basicEditorTypes'
+import { DataObject3Content, DataObject3Style, DataObject3, RenderElement3 } from './BasicEditor3Types';
 
-import { v4 as uuidv4 } from 'uuid';
 
 
 //goal1 
@@ -24,26 +25,6 @@ import { v4 as uuidv4 } from 'uuid';
 //integrate with the back to save and retrieve some pages.
 
 
-
-export type DataObject3Content = {
-    [key:string]:any;
-}
-
-export type DataObject3Style = {
-    [key:string]:any;
-}
-
-export type DataObject3 = {
-    position: Position;
-    content: DataObject3Content;
-    style: DataObject3Style;
-}
-
-export type RenderElement3 = {
-    data:DataObject3
-    body: ReactNode
-}
-
 function BasicEditor3() {
     const [renderElements, setRenderElements] = useState<RenderElement3[]>([]);
     
@@ -57,7 +38,7 @@ function BasicEditor3() {
     function addRenderElement(){
         const id = uuidv4();
     }
-    
+
   return (
     <div>BasicEditor3</div>
   )
