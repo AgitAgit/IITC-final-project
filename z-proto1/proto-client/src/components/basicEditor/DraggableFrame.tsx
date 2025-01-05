@@ -33,7 +33,7 @@ function DraggableFrame({ fillerElement, div, handleDeleteElement }:DraggableFra
         };
 
         const handleMouseUp = () => {
-            console.log("div.getSelfPosition", div.getSelfPosition());
+            // console.log("div.getSelfPosition", div.getSelfPosition());
             window.removeEventListener('mousemove', handleMouseMove);
             window.removeEventListener('mouseup', handleMouseUp);
         };
@@ -43,7 +43,7 @@ function DraggableFrame({ fillerElement, div, handleDeleteElement }:DraggableFra
     };
 
     function handleFrameClick() {
-        console.log("div", div);
+        // console.log("div", div);
     }
 
     return (

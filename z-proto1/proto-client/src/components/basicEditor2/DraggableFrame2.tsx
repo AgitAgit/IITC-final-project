@@ -10,7 +10,7 @@ export type DraggableFrameProps = {
 function DraggableFrame2({ elementDiv, handleDeleteElement }:DraggableFrameProps) {
     const fillerElement = elementDiv.body;
     const div = elementDiv.div;
-    const [position, setPosition] = useState({ x: div.position.x, y: div.position.y });
+    const [position, setPosition] = useState({ x: elementDiv.div.position.x, y: elementDiv.div.position.y });
     const divRef = useRef(null);
 
     const handleMouseDown = (e) => {
@@ -32,7 +32,7 @@ function DraggableFrame2({ elementDiv, handleDeleteElement }:DraggableFrameProps
         };
 
         const handleMouseUp = () => {
-            console.log("div.getSelfPosition", div.getSelfPosition());
+            // console.log("div.getSelfPosition", div.getSelfPosition());
             window.removeEventListener('mousemove', handleMouseMove);
             window.removeEventListener('mouseup', handleMouseUp);
         };
@@ -42,7 +42,7 @@ function DraggableFrame2({ elementDiv, handleDeleteElement }:DraggableFrameProps
     };
 
     function handleFrameClick() {
-        console.log("div", div);
+        // console.log("div", div);
     }
 
     return (
