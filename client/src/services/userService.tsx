@@ -1,7 +1,8 @@
 import { usersCliant } from "../lib/api";
 
 export const signUpService = async (userData: {
-  username: string;
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
 }): Promise<any> => {

@@ -6,20 +6,23 @@ import { useMutation } from "@tanstack/react-query";
 import { signUpService } from "../Services/userService";
 
 interface SignUpData {
-  username: string;
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
 }
 
 interface FieldErrors {
-  username?: string;
+  firstName?: string;
+  lastName?: string;
   email?: string;
   password?: string;
 }
 
 const SignUp = () => {
   const [formData, setFormData] = useState<SignUpData>({
-    username: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
   });
@@ -28,7 +31,6 @@ const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const emailRef = useRef<HTMLInputElement>(null);
-  const usernameRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,9 +51,6 @@ const SignUp = () => {
       if (err?.message === "Email is already registered.") {
         setFieldErrors({ email: "Email is already registered." });
         emailRef.current?.focus();
-      } else if (err?.message === "userName is already registered.") {
-        setFieldErrors({ username: "Username is already registered." });
-        usernameRef.current?.focus();
       } else {
         console.error("Error during sign-up:", err.message || err);
         alert("Registration failed. Please try again.");
@@ -61,7 +60,12 @@ const SignUp = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData.username && formData.email && formData.password) {
+    if (
+      formData.firstName &&
+      formData.lastName &&
+      formData.email &&
+      formData.password
+    ) {
       mutate(formData);
     }
   };
@@ -70,7 +74,11 @@ const SignUp = () => {
     navigate("/login");
   };
 
-  const isFormValid = formData.username && formData.email && formData.password;
+  const isFormValid =
+    formData.firstName &&
+    formData.lastName &&
+    formData.email &&
+    formData.password;
 
   return (
     <div className="flex flex-col items-center justify-center px-8 text-center gap-5">
@@ -101,31 +109,44 @@ const SignUp = () => {
         <form className="space-y-6" onSubmit={handleSubmit}>
           <div>
             <label
-              htmlFor="username"
+              htmlFor="firstName"
               className="block text-left text-sm font-medium text-gray-700 opacity-70"
             >
-              User Name
+              First Name
             </label>
             <div className="relative group w-full min-w-[285px]">
               <input
                 type="text"
-                id="username"
-                name="username"
-                placeholder="Your username"
-                value={formData.username}
+                id="firstName"
+                name="firstName"
+                placeholder="Your first name"
+                value={formData.firstName}
                 onChange={handleChange}
-                ref={usernameRef}
                 className="w-full p-2 border-b-2 border-gray-300 focus:outline-none focus:border-transparent"
               />
               <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-black group-focus-within:w-full transition-all duration-300"></span>
             </div>
-            {fieldErrors.username && (
-              <p className="text-red-500 text-sm mt-1">
-                {fieldErrors.username}
-              </p>
-            )}
           </div>
-
+          <div>
+            <label
+              htmlFor="lastName"
+              className="block text-left text-sm font-medium text-gray-700 opacity-70"
+            >
+              Last name
+            </label>
+            <div className="relative group w-full min-w-[285px]">
+              <input
+                type="text"
+                id="lastName"
+                name="lastName"
+                placeholder="Your last name"
+                value={formData.lastName}
+                onChange={handleChange}
+                className="w-full p-2 border-b-2 border-gray-300 focus:outline-none focus:border-transparent"
+              />
+              <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-black group-focus-within:w-full transition-all duration-300"></span>
+            </div>
+          </div>
           <div>
             <label
               htmlFor="email"
