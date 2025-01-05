@@ -10,6 +10,7 @@ export type DataObject3Style = {
 }
 
 export type DataObject3 = {
+    id:string;
     position: Position;
     content: DataObject3Content;
     style: DataObject3Style;
