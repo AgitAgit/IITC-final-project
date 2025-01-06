@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, ComponentType } from "react";
 import { Position } from "../basicEditor/basicEditorTypes";
 
 export type DataObject3Content = {

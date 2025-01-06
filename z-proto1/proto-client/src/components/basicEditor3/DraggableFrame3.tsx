@@ -59,7 +59,6 @@ function DraggableFrame3({ renderElement, baseFunctions }: DraggableFrame3Props)
             baseFunctions.setStyle(renderElement.data.id, style);
         }
     }
-
     return (
             <div 
             ref={divRef}
@@ -72,8 +71,8 @@ function DraggableFrame3({ renderElement, baseFunctions }: DraggableFrame3Props)
             cursor: "grab",
             border: '1px solid red'//remove this later...
         }}>
-            {renderElement.body}
-            {/* <DynamicComponent element={renderElement.body} propsForElement={}/> */}
+            {/* {renderElement.body} */}
+            <DynamicComponent element={renderElement.body} propsForElement={{}}/>
         </div>
     )
 }
