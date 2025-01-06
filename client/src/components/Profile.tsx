@@ -31,7 +31,7 @@ function ProfileDropdown() {
         className="flex items-center justify-center w-14 h-14 rounded-full bg-black cursor-pointer"
       >
         <span className="text-white text-xl ml-4">
-          {isLoggedIn ? "P" : "G"}
+          {isLoggedIn ? "U" : "G"}
         </span>
         <span
           className={`ml-2 w-3 h-3 border-solid border-t-2 border-r-2 border-transparent border-white transform ${
