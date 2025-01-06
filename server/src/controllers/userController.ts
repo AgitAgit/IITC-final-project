@@ -4,7 +4,6 @@ import { Request, Response } from "express";
 import User from "../models/userModel";
 import { IUser } from "../types/userTypes";
 import { AuthenticatedRequest } from "../types/expressTypes";
-import Joi from "joi";
 
 export const getUserById = async (
   req: AuthenticatedRequest,
@@ -12,21 +11,14 @@ export const getUserById = async (
 ): Promise<void> => {
   try {
     const userId = req.user?.id;
+    console.log(userId);
 
     if (!userId) {
       res.status(400).json({ message: "User not authenticated" });
       return;
     }
 
-    const user: IUser | null = await User.findById(userId)
-      .select("-password")
-      .populate({
-        path: "sites",
-        populate: {
-          path: "owner",
-          select: "username email",
-        },
-      });
+    const user: IUser | null = await User.findById(userId);
 
     if (!user) {
       res.status(404).json({ message: "User not found." });
@@ -43,22 +35,10 @@ export const getUserById = async (
 
 export const signUp = async (req: Request, res: Response): Promise<void> => {
   try {
-    const schema = Joi.object({
-      username: Joi.string().min(3).max(30).required(),
-      email: Joi.string().email().required(),
-      password: Joi.string().min(8).required(),
-    });
+    const { firstName, lastName, email, password } = req.body;
 
-    const { error } = schema.validate(req.body);
-    if (error) {
-      res.status(400).json({ message: error.details[0].message });
-      return;
-    }
-
-    const { username, email, password } = req.body;
-
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
+    const existingUserEmail = await User.findOne({ email });
+    if (existingUserEmail) {
       res.status(400).json({ message: "Email is already registered." });
       return;
     }
@@ -66,7 +46,8 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = await User.create({
-      username,
+      firstName,
+      lastName,
       email,
       password: hashedPassword,
     });
@@ -81,17 +62,15 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
 
     const userResponse = {
       id: newUser._id,
-      username: newUser.username,
+      firstName: newUser.firstName,
+      lastName: newUser.lastName,
       email: newUser.email,
       createdAt: newUser.createdAt,
       role: newUser.role,
     };
-
-    // Send cookie with token
     res.cookie("token", token, {
       httpOnly: false,
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 3600000, // 1 hour
+      secure: true,
       sameSite: "strict",
     });
 
@@ -99,7 +78,7 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
       message: "User created successfully",
       user: userResponse,
     });
-    console.log("user created sucessefully", userResponse);
+    console.log("User created successfully", userResponse);
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Internal server error" });
@@ -128,7 +107,8 @@ export const logIn = async (req: Request, res: Response): Promise<void> => {
 
     const userResponse = {
       id: user._id,
-      username: user.username,
+      firstName: user.firstName,
+      lastName: user.lastName,
       email: user.email,
       createdAt: user.createdAt,
       role: user.role,
@@ -136,12 +116,11 @@ export const logIn = async (req: Request, res: Response): Promise<void> => {
 
     res.cookie("token", token, {
       httpOnly: false,
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 3600000,
+      secure: true,
       sameSite: "strict",
     });
 
-    res.status(200).json({ message: "Login successful", userResponse });
+    res.status(200).json({ message: "Login successful", user: userResponse });
   } catch (err) {
     res.status(500).json({ message: "Server error", error: err });
   }
@@ -153,10 +132,10 @@ export const updateUser = async (
 ): Promise<void> => {
   try {
     const userId = req.params.id;
-    console.log(userId);
 
     const {
-      username,
+      firstName,
+      lastName,
       email,
       password,
       googleId,
@@ -165,20 +144,19 @@ export const updateUser = async (
       sites,
     }: IUser = req.body;
 
-    // חיפוש המשתמש לפי ID
     const user = await User.findById(userId);
     if (!user) {
       res.status(404).json({ message: "User not found." });
       return;
     }
 
-    // עדכון הסיסמה אם נמסרה
     if (password) {
       const hashedPassword = await bcrypt.hash(password, 10);
       user.password = hashedPassword;
     }
 
-    if (username) user.username = username;
+    if (firstName) user.firstName = firstName;
+    if (lastName) user.lastName = lastName;
     if (email) user.email = email;
     if (googleId) user.googleId = googleId;
     if (profileImage) user.profileImage = profileImage;

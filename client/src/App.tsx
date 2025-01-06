@@ -5,6 +5,7 @@ import Error from "./pages/Error";
 import TemplatesPage from "./pages/Templates";
 
 import "./App.css";
+import SignUp from "./pages/SignUp";
 
 function App() {
   const router = createBrowserRouter([
@@ -24,6 +25,14 @@ function App() {
           element: <Error />,
         },
       ],
+    },
+    {
+      path: "/login",
+      element: <Login />,
+    },
+    {
+      path: "/signup",
+      element: <SignUp />,
     },
     // {
     //   path: "/login",
