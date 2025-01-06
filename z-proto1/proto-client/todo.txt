@@ -14,3 +14,6 @@ Don't abstract too early.
 I need to edit editableText and ButtonRandom so the receive props with content.
 
 basic editor3
+
+basic editor4
+pass the renderElements data through useContext?

@@ -4,6 +4,19 @@ import { type DataObject3, DataObject3Content, DataObject3Style, RenderElement3,
 import { Position } from '../basicEditor/basicEditorTypes'
 import { ColorRectangle3 } from './BasicEditor3Components'
 
+interface Props {
+  element: React.ComponentType<any>; // Type for the dynamic component
+  propsForElement: any; // Type for the props to be passed
+}
+
+const DynamicComponent: React.FC<Props> = ({ element, propsForElement }) => {
+  return (
+    <>
+      {React.createElement(element, propsForElement)} 
+    </>
+  );
+};
+
 export type DraggableFrame3Props = {
     renderElement: RenderElement3
     baseFunctions: BaseFunctions
@@ -60,6 +73,7 @@ function DraggableFrame3({ renderElement, baseFunctions }: DraggableFrame3Props)
             border: '1px solid red'//remove this later...
         }}>
             {renderElement.body}
+            {/* <DynamicComponent element={renderElement.body} propsForElement={}/> */}
         </div>
     )
 }

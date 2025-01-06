@@ -29,6 +29,7 @@ import { RedRectangle3, ColorRectangle3 } from './BasicEditor3Components';
 //integrate with the back to save and retrieve some pages.
 
 
+//should I try to pass each components data through useContext?
 function BasicEditor3() {
   const testRenderElement: RenderElement3 = { data: { id: 'test', renderElementName: RenderElementNames.red_square, position: { x: 0, y: 0 }, content: {}, style: {} }, body: <div>test test test</div> };
   const [renderElements, setRenderElements] = useState<RenderElement3[]>([testRenderElement]);
