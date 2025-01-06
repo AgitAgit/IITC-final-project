@@ -27,7 +27,24 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-    --radius: 0.5rem
+    --radius: 0.5rem;
+    --grid-gutter-width: 16px;
+    --grid-column-width: calc((100vw - 208px) / 12);
+  }
+  /* Medium screens (744px and above) */
+  @media (min-width: 744px) {
+    :root {
+      --grid-gutter-width: 24px;
+      --grid-column-width: calc((100vw - 312px) / 12);
+    }
+  }
+
+  /* Large screens (1280px and above) */
+  @media (min-width: 1280px) {
+    :root {
+      --grid-gutter-width: 40px;
+      --grid-column-width: calc((100vw - 520px) / 12);
+    }
   }
   .dark {
     --background: 222.2 84% 4.9%;
@@ -53,7 +70,7 @@
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%
+    --chart-5: 340 75% 55%;
   }
 }
 @layer base {
@@ -63,4 +80,8 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+.text--title2 {
+  font-size: calc(2.0227272727272725rem + 3.6363636363636362vw);
+  font-size: clamp(44px, 2.0227272727272725rem + 3.6363636363636362vw, 46px);
 }

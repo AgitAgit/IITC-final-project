@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Landing from "./pages/Landing";
 import Layout from "./pages/Layout";
 import Error from "./pages/Error";
-import Login from "./pages/Login";
+import TemplatesPage from "./pages/Templates";
 
 import "./App.css";
 import SignUp from "./pages/SignUp";
@@ -16,15 +16,10 @@ function App() {
           path: "/",
           element: <Landing />,
         },
-        // {
-        //   path: "/Profile/:id",
-        //   element: <Profile />,
-        // },
-        // {
-        //   path: "/Chat",
-        //   element: <Chat />
-
-        // },
+        {
+          path: "/templates",
+          element: <TemplatesPage />,
+        },
         {
           path: "*",
           element: <Error />,

@@ -1,28 +1,93 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 import {
   NavigationMenu,
   NavigationMenuContent,
-  NavigationMenuIndicator,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  NavigationMenuViewport,
 } from "./ui/navigation-menu";
+import ProfileDropdown from "./Profile";
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const [isTop, setIsTop] = useState(true);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsTop(window.scrollY === 0);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const handleMouseEnter = () => {
+    setIsMenuOpen(true);
+    console.log("Mouse Enter Triggered");
+  };
+
+  const handleMouseLeave = () => {
+    setIsMenuOpen(false);
+  };
+
+  useEffect(() => {
+    console.log(isMenuOpen);
+  }, [isMenuOpen]);
+
+  const headerTextColor =
+    location.pathname === "/"
+      ? "text-white"
+      : location.pathname === "/templates"
+      ? "text-black"
+      : "text-white";
+
+  const headerLogoColor =
+    location.pathname === "/"
+      ? "fill-white"
+      : location.pathname === "/templates"
+      ? "fill-black"
+      : "fill-white";
+
+  const headerStartButton =
+    location.pathname === "/templates"
+      ? "hidden"
+      : location.pathname === "/"
+      ? "block"
+      : "hidden";
+
+  const headerJustify =
+    location.pathname === "/templates"
+      ? "justify-evenly"
+      : location.pathname === "/"
+      ? "justify-between"
+      : "justify-evenly";
 
   return (
-    <header className="fixed top-0 z-50 w-full shadow-md transition-all duration-300 bg-transparent">
-      <div className="container mx-auto flex items-center justify-between p-4">
+    <header
+      className={`${
+        isMenuOpen ? "text-white" : headerTextColor
+      } fixed top-0 left-0 z-50 w-full transition-all duration-300 ${
+        isMenuOpen || !isTop ? "bg-black" : "bg-transparent"
+      }`}
+    >
+      <div
+        className={`container mx-auto flex items-center ${headerJustify} p-4`}
+      >
         {/* Logo */}
         <div>
-          <Link to="/" className="text-xl font-bold hover:opacity-45">
+          <Link to="/" className="hover:opacity-45">
             <svg
-              className="logo-path fill-white"
+              className={`${
+                isMenuOpen ? "fill-white" : headerLogoColor
+              } logo-path w-[250px] h-auto -ml-16`}
               xmlns="http://www.w3.org/2000/svg"
               width="166px"
               height="24px"
@@ -79,56 +144,80 @@ const Header: React.FC = () => {
             </svg>
           </Link>
         </div>
-        {/* Buttons */}
+        {/* Buttons div */}
         <div className="flex items-center gap-4">
           {/* First Button: NavigationMenu */}
           <NavigationMenu>
             <NavigationMenuList>
               <NavigationMenuItem>
-                <NavigationMenuTrigger>Item One</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <NavigationMenuLink
-                    onClick={() => navigate("/page1")}
-                    className="hover:underline"
-                  >
+                <NavigationMenuTrigger
+                  className="px-4 py-2 bg-transparent text-base"
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <b>PRODUCTS</b>
+                </NavigationMenuTrigger>
+                <NavigationMenuContent
+                  className={`overflow-hidden transition-all duration-1000 ease-in-out transform origin-top border-t-2 border-white ${
+                    isMenuOpen
+                      ? "scale-y-100 opacity-100"
+                      : "scale-y-0 opacity-0"
+                  }`}
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <NavigationMenuLink className="hover:underline">
                     Page 1
                   </NavigationMenuLink>
                 </NavigationMenuContent>
               </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
+          {/* Link Button */}
+          <button
+            onClick={() => navigate("/templates")}
+            className="px-4 py-2 bg-transparent text-base"
+          >
+            <b>TEMPLATES</b>
+          </button>
           {/* Second Button: NavigationMenu */}
           <NavigationMenu>
             <NavigationMenuList>
               <NavigationMenuItem>
-                <NavigationMenuTrigger>Item Two</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <NavigationMenuLink
-                    onClick={() => navigate("/page2")}
-                    className="hover:underline"
-                  >
+                <NavigationMenuTrigger
+                  className="px-4 py-2 bg-transparent text-base"
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <b>RESOURCES</b>
+                </NavigationMenuTrigger>
+                <NavigationMenuContent
+                  className={`overflow-hidden transition-all duration-1000 ease-in-out transform origin-top ${
+                    isMenuOpen
+                      ? "scale-y-100 opacity-100"
+                      : "scale-y-0 opacity-0"
+                  }`}
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <NavigationMenuLink className="hover:underline">
                     Page 2
                   </NavigationMenuLink>
                 </NavigationMenuContent>
               </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
-          {/* Third Button */}
+        </div>
+        {/* Get Started button div */}
+        <div className="flex gap-5">
+          <ProfileDropdown />
           <button
-            onClick={() => navigate("/page3")}
-            className="px-4 py-2 bg-gray-100 text-gray-800 rounded-md hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-600"
+            onClick={() => navigate("/templates")}
+            className={`text-black px-6 py-1 h-12 mt-1 bg-white text-sm font-semibold hover:bg-slate-100 ${headerStartButton}`}
           >
-            Button 3
+            Get Started
           </button>
         </div>
-
-        {/* Get Started button */}
-        <button
-          onClick={() => navigate("/get-started")}
-          className="px-6 py-2 bg-white font-semibold hover:bg-slate-100 "
-        >
-          Get Started
-        </button>
       </div>
     </header>
   );
