@@ -2,7 +2,7 @@ import React, {useState, useRef, useEffect, ReactNode} from 'react'
 import { v4 as uuidv4 } from 'uuid';
 
 import { type Position } from '../basicEditor/basicEditorTypes'
-import { DataObject3Content, DataObject3Style, DataObject3, RenderElement3 } from './BasicEditor3Types';
+import { DataObject3Content, DataObject3Style, DataObject3, RenderElement3, RenderElementNames } from './BasicEditor3Types';
 import DraggableFrame3 from './DraggableFrame3';
 
 
@@ -36,11 +36,16 @@ function BasicEditor3() {
         setStyle: function(id:string, newStyle:DataObject3Style){}
     }
 
-    function addRenderElement(){
+    function addRenderElement(renderElementName:RenderElementNames, position:Position = {x:50, y:50}, content:DataObject3Content = {}, style:DataObject3Style = {}){
         const id = uuidv4();
+        let body;
+        const newRenderElement:RenderElement3 = {data:{id, renderElementName, position, content, style}, body} 
     }
 
-    const testRenderElement = {data:{id:'test',position:{x:0, y:0}, content:{}, style:{}}, body:<div>test test test</div>}; 
+    function mapRenderElements():ReactNode[]{
+      return  [];  
+    }
+    const testRenderElement:RenderElement3 = {data:{id:'test', renderElementName:RenderElementNames.red_square,position:{x:0, y:0}, content:{}, style:{}}, body:<div>test test test</div>}; 
   return (
     <div>BasicEditor3
       <DraggableFrame3 renderElement={testRenderElement} baseFunctions={baseFunctions} />

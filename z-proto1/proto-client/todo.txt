@@ -3,7 +3,6 @@ basic editor1
 basic editor2
 //goal1: 
 DONE// generate a menu with 3 buttons, each one generate a different component;DONE
-POSTPONED//The buttons should create new elements using drag and drop mechanics;POSTPONED
 
 //goal2: 
 DONE// generate a page layout object that records all the objects and their positions and data; DONE
