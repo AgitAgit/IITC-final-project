@@ -2,10 +2,11 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Landing from "./pages/Landing";
 import Layout from "./pages/Layout";
 import Error from "./pages/Error";
+import SignUp from "./pages/SignUp";
+import Login from "./pages/Login";
 import TemplatesPage from "./pages/Templates";
 
 import "./App.css";
-import SignUp from "./pages/SignUp";
 
 function App() {
   const router = createBrowserRouter([
@@ -34,14 +35,6 @@ function App() {
       path: "/signup",
       element: <SignUp />,
     },
-    // {
-    //   path: "/login",
-    //   element: <Login />,
-    // },
-    // {
-    //   path: "/signUp",
-    //   element: <SignUp />,
-    // },
   ]);
 
   return <RouterProvider router={router} />;
