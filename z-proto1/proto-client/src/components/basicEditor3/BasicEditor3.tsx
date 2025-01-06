@@ -1,10 +1,11 @@
-import React, {useState, useRef, useEffect, ReactNode} from 'react'
+import React, { useState, useRef, useEffect, ReactNode } from 'react'
 import { v4 as uuidv4 } from 'uuid';
 
 import { type Position } from '../basicEditor/basicEditorTypes'
 import { DataObject3Content, DataObject3Style, DataObject3, RenderElement3, RenderElementNames } from './BasicEditor3Types';
-import DraggableFrame3 from './DraggableFrame3';
 
+import DraggableFrame3 from './DraggableFrame3';
+import { RedRectangle3 } from './BasicEditor3Components';
 
 
 //goal1 
@@ -21,34 +22,43 @@ import DraggableFrame3 from './DraggableFrame3';
 
 //goal3
 //add a style property to dataObject3 and some way to dynamically change some aspect of the components css such as background color.
+//should I add some editor interface to draggableFrame? it could update the style with
+//the baseFunctions.setStyle it gets.
 
 //goal4
 //integrate with the back to save and retrieve some pages.
 
 
 function BasicEditor3() {
-    const [renderElements, setRenderElements] = useState<RenderElement3[]>([]);
-    
-    const baseFunctions = {
-        deleteObject: function(id:string){},
-        setPosition: function(id:string, newPosition:Position){},
-        setContent: function(id:string, newContent:DataObject3Content){},
-        setStyle: function(id:string, newStyle:DataObject3Style){}
-    }
+  const testRenderElement: RenderElement3 = { data: { id: 'test', renderElementName: RenderElementNames.red_square, position: { x: 0, y: 0 }, content: {}, style: {} }, body: <div>test test test</div> };
+  const [renderElements, setRenderElements] = useState<RenderElement3[]>([testRenderElement]);
+  const isRenderElements = !(renderElements.length === 0);
 
-    function addRenderElement(renderElementName:RenderElementNames, position:Position = {x:50, y:50}, content:DataObject3Content = {}, style:DataObject3Style = {}){
-        const id = uuidv4();
-        let body;
-        const newRenderElement:RenderElement3 = {data:{id, renderElementName, position, content, style}, body} 
-    }
+  const baseFunctions = {
+    deleteObject: function (id: string) { },
+    setPosition: function (id: string, newPosition: Position) { },
+    setContent: function (id: string, newContent: DataObject3Content) { },
+    setStyle: function (id: string, newStyle: DataObject3Style) { }
+  }
 
-    function mapRenderElements():ReactNode[]{
-      return  [];  
-    }
-    const testRenderElement:RenderElement3 = {data:{id:'test', renderElementName:RenderElementNames.red_square,position:{x:0, y:0}, content:{}, style:{}}, body:<div>test test test</div>}; 
+  function addRenderElement(renderElementName: RenderElementNames, position: Position = { x: 50, y: 50 }, content: DataObject3Content = {}, style: DataObject3Style = {}) {
+    const id = uuidv4();
+    let body;
+    if(renderElementName === RenderElementNames.red_rectangle3) body = <RedRectangle3 /> 
+    const newRenderElement: RenderElement3 = { data: { id, renderElementName, position, content, style }, body }
+  }
+
+  function mapRenderElements(): ReactNode[] {
+    return isRenderElements ? 
+    renderElements.map(element => 
+    <DraggableFrame3 renderElement={element} baseFunctions={baseFunctions} />) 
+    : []
+  }
   return (
     <div>BasicEditor3
-      <DraggableFrame3 renderElement={testRenderElement} baseFunctions={baseFunctions} />
+      <div>
+        {mapRenderElements()}
+      </div>
     </div>
   )
 }
