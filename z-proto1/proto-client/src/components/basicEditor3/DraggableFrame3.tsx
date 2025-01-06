@@ -1,12 +1,16 @@
 import React, { type ReactNode, useState, useEffect, useRef } from 'react'
 
-import { type DataObject3, DataObject3Content, DataObject3Style, RenderElement3, BaseFunctions } from './BasicEditor3Types'
+import { type DataObject3, DataObject3Content, DataObject3Style, RenderElement3, BaseFunctions, RenderElementNames } from './BasicEditor3Types'
 import { Position } from '../basicEditor/basicEditorTypes'
+import { ColorRectangle3 } from './BasicEditor3Components'
 
 export type DraggableFrame3Props = {
     renderElement: RenderElement3
     baseFunctions: BaseFunctions
 }
+
+//temporary test for colorRectangle3 and changing styles.
+const ColorRectangle3Styles = [ {width:'8rem', height:'4rem' ,backgroundColor:'red'},{width:'8rem', height:'4rem', backgroundColor:'green'},{width:'8rem', height:'4rem', backgroundColor:'blue'}];
 
 function DraggableFrame3({ renderElement, baseFunctions }: DraggableFrame3Props) {
     const [position, setPosition] = useState<Position>(renderElement.data.position);
@@ -33,10 +37,21 @@ function DraggableFrame3({ renderElement, baseFunctions }: DraggableFrame3Props)
         window.addEventListener('mouseup', handleMouseUp);
     };
 
+    //temporary test
+    function handleChangeStyle(){
+        const choice = Math.floor(Math.random() * 3);
+        const style = ColorRectangle3Styles[choice];
+        if(renderElement.data.renderElementName === RenderElementNames.color_rectangle3){
+            console.log("@ss", "\n\render id",renderElement.data.id,"\nstyle",style);
+            baseFunctions.setStyle(renderElement.data.id, style);
+        }
+    }
+
     return (
             <div 
             ref={divRef}
             onMouseDown={handleMouseDown}
+            onClick={handleChangeStyle}
             style={{
             position: 'absolute',
             left: position.x,

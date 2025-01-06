@@ -5,7 +5,7 @@ import { type Position } from '../basicEditor/basicEditorTypes'
 import { DataObject3Content, DataObject3Style, DataObject3, RenderElement3, RenderElementNames } from './BasicEditor3Types';
 
 import DraggableFrame3 from './DraggableFrame3';
-import { RedRectangle3 } from './BasicEditor3Components';
+import { RedRectangle3, ColorRectangle3 } from './BasicEditor3Components';
 
 
 //goal1 
@@ -35,27 +35,49 @@ function BasicEditor3() {
   const isRenderElements = !(renderElements.length === 0);
 
   const baseFunctions = {
-    deleteObject: function (id: string) { },
+    deleteObject: function (id: string) {
+      setRenderElements(prev => prev.filter(element => element.data.id !== id))
+    },
     setPosition: function (id: string, newPosition: Position) { },
     setContent: function (id: string, newContent: DataObject3Content) { },
-    setStyle: function (id: string, newStyle: DataObject3Style) { }
+    setStyle: function (id: string, newStyle: DataObject3Style) {
+      //I want to edit only the element with matching id
+      setRenderElements(prev => prev.map(element => {
+        //delete this "if" later
+        if(element.data.id === id) { console.log("new style:", newStyle) }
+        return element.data.id === id ? { data: { ...element.data, style: newStyle }, body: element.body } : element
+      }
+      ))
+    }
   }
 
   function addRenderElement(renderElementName: RenderElementNames, position: Position = { x: 50, y: 50 }, content: DataObject3Content = {}, style: DataObject3Style = {}) {
-    const id = uuidv4();
-    let body;
-    if(renderElementName === RenderElementNames.red_rectangle3) body = <RedRectangle3 /> 
-    const newRenderElement: RenderElement3 = { data: { id, renderElementName, position, content, style }, body }
+    try {
+      const id = uuidv4();
+      let body;
+      if (renderElementName === RenderElementNames.red_rectangle3) body = <RedRectangle3 />
+      if(renderElementName === RenderElementNames.color_rectangle3) body = <ColorRectangle3 style={{width:'8rem', height:'4rem', backgroundColor:'purple'}}/>
+      const newRenderElement: RenderElement3 = { data: { id, renderElementName, position, content, style }, body }
+      if (isRenderElements) setRenderElements(prev => [...prev, newRenderElement]);
+      else setRenderElements([newRenderElement]);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   function mapRenderElements(): ReactNode[] {
-    return isRenderElements ? 
-    renderElements.map(element => 
-    <DraggableFrame3 renderElement={element} baseFunctions={baseFunctions} />) 
-    : []
+    return isRenderElements ?
+      renderElements.map(element => 
+        <DraggableFrame3 key={element.data.id} renderElement={element} baseFunctions={baseFunctions} />
+      )
+      : []
   }
   return (
     <div>BasicEditor3
+      <div>
+        <button onClick={() => addRenderElement(RenderElementNames.red_rectangle3)}>+RedRectangle3</button>
+        <button onClick={() => addRenderElement(RenderElementNames.color_rectangle3)}>+ColorRectangle3</button>
+      </div>
       <div>
         {mapRenderElements()}
       </div>
