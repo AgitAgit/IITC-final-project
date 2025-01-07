@@ -32,12 +32,6 @@ enum slots {
 //goal4 DONE
 //edit the content of some element(for example, TextBox3)
 
-//task
-//clear the color switching from draggableframe3 and add it to colorRectangle3
-
-//task
-//add types to the context object
-
 //goal
 //save named pages, display a list of them and retrieve them to the screen
 
@@ -46,6 +40,15 @@ enum slots {
 
 //goal
 //add some more advanced editing tools, look at squarespace
+
+//task
+//clear the color switching from draggableframe3 and add it to colorRectangle3
+
+//task
+//add types to the context object
+
+
+
 
 export const BasicEditorContext = createContext({});
 

@@ -22,9 +22,6 @@ export type DraggableFrame3Props = {
     baseFunctions: BaseFunctions
 }
 
-//temporary test for colorRectangle3 and changing styles.
-const ColorRectangle3Styles = [{ width: '8rem', height: '4rem', backgroundColor: 'red' }, { width: '8rem', height: '4rem', backgroundColor: 'green' }, { width: '8rem', height: '4rem', backgroundColor: 'blue' }];
-
 function DraggableFrame3({ renderElement, baseFunctions }: DraggableFrame3Props) {
     const [position, setPosition] = useState<Position>(renderElement.data.position);
     const divRef = useRef();
@@ -32,7 +29,7 @@ function DraggableFrame3({ renderElement, baseFunctions }: DraggableFrame3Props)
     useEffect(() => {
         setPosition(renderElement.data.position)
     }, [renderElement.data.position])
-    
+
     const handleMouseDown = (e) => {
         const windowYPosition = window.scrollY;
         const rect = divRef.current.getBoundingClientRect();
@@ -58,20 +55,10 @@ function DraggableFrame3({ renderElement, baseFunctions }: DraggableFrame3Props)
         baseFunctions.deleteObject(renderElement.data.id);
     }
 
-    //temporary test
-    function handleChangeStyle() {
-        const choice = Math.floor(Math.random() * 3);
-        const style = ColorRectangle3Styles[choice];
-        if (renderElement.data.renderElementName === RenderElementNames.color_rectangle3) {
-            console.log("@ss", "\n\render id", renderElement.data.id, "\nstyle", style);
-            baseFunctions.setStyle(renderElement.data.id, style);
-        }
-    }
     return (
         <div
             ref={divRef}
             onMouseDown={handleMouseDown}
-            onClick={handleChangeStyle}
             style={{
                 position: 'absolute',
                 left: position.x,
