@@ -1,17 +1,20 @@
-import React, { ReactNode, useRef, useState } from 'react';
-import { ElementDiv } from '../basicEditor2/BasicEditor2';
+import React, { ReactNode, useRef, useState, useEffect } from 'react';
+import { DataDiv } from './BasicEditor2';
 
 // window.addEventListener('mouseup', () => {console.log('mouse up event occurred!')});
 //should try and remove this on unmounting, perhaps using the useEffect return function.
 export type DraggableFrameProps = {
-    elementDiv: ElementDiv
+    fillerElement: HTMLElement | ReactNode,
+    div: DataDiv,
     handleDeleteElement: (id:number) => void
 }
-function DraggableFrame2({ elementDiv, handleDeleteElement }:DraggableFrameProps) {
-    const fillerElement = elementDiv.body;
-    const div = elementDiv.div;
-    const [position, setPosition] = useState({ x: elementDiv.div.position.x, y: elementDiv.div.position.y });
+function DraggableFrame1_2({ fillerElement, div, handleDeleteElement }:DraggableFrameProps) {
+    const [position, setPosition] = useState({ x: div.position.x, y: div.position.y });
     const divRef = useRef(null);
+    
+    useEffect(() => {
+        setPosition(div.position);
+    })
 
     const handleMouseDown = (e) => {
         const windowYPosition = window.scrollY;
@@ -65,4 +68,4 @@ function DraggableFrame2({ elementDiv, handleDeleteElement }:DraggableFrameProps
     )
 }
 
-export default DraggableFrame2
+export default DraggableFrame1_2
