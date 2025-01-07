@@ -5,7 +5,7 @@ import { type Position } from '../basicEditor/basicEditorTypes'
 import { DataObject3Content, DataObject3Style, DataObject3, RenderElement3, RenderElementNames } from './BasicEditor3Types';
 
 import DraggableFrame3 from './DraggableFrame3';
-import { RedRectangle3, ColorRectangle3 } from './BasicEditor3Components';
+import { RedRectangle3, ColorRectangle3, TextBox3 } from './BasicEditor3Components';
 
 enum slots {
   slot1 = "slot1",
@@ -24,14 +24,19 @@ enum slots {
 //goal2 DONE
 //save 2 pre-made pages and toggle between them
 
-//goal3
+//goal3 DONE
 //add a style property to dataObject3 and some way to dynamically change some aspect of the components css such as background color.
 //should I add some editor interface to draggableFrame? it could update the style with
 //the baseFunctions.setStyle it gets.
 
+//goal3.5 DONE
+//edit the content of some element(for example, TextBox3)
+
 //goal4
 //integrate with the back to save and retrieve some pages.
 
+//goal5
+//add types to the context object
 
 export const BasicEditorContext = createContext({});
 
@@ -73,6 +78,7 @@ function BasicEditor3() {
     let body;
     if (renderElementName === RenderElementNames.red_rectangle3) body = <RedRectangle3 />
     if (renderElementName === RenderElementNames.color_rectangle3) body = <ColorRectangle3 id={id} />
+    if(renderElementName === RenderElementNames.text_box3) body = <TextBox3 id={id} />
     const newRenderElement: RenderElement3 = { data: { id, renderElementName, position, content, style }, body }
     //hydrate end
     return newRenderElement;
@@ -118,6 +124,7 @@ function BasicEditor3() {
         <div>
           <button onClick={() => addRenderElement(RenderElementNames.red_rectangle3)}>+RedRectangle3</button>
           <button onClick={() => addRenderElement(RenderElementNames.color_rectangle3)}>+ColorRectangle3</button>
+          <button onClick={() => addRenderElement(RenderElementNames.text_box3)}>+TextBox3</button>
         </div>
         <div>
           {mapRenderElements()}

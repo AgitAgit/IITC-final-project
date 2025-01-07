@@ -32,7 +32,7 @@ export type BaseFunctions = {
 
 export enum RenderElementNames {
     red_rectangle3 = "red_rectangle3",
-    text_box = "text_box",
+    text_box3 = "text_box3",
     color_button = "color_button",
     color_rectangle3 = "color_rectangle3"
 }
