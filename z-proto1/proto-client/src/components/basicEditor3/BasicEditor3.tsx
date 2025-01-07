@@ -29,14 +29,23 @@ enum slots {
 //should I add some editor interface to draggableFrame? it could update the style with
 //the baseFunctions.setStyle it gets.
 
-//goal3.5 DONE
+//goal4 DONE
 //edit the content of some element(for example, TextBox3)
 
-//goal4
+//task
+//clear the color switching from draggableframe3 and add it to colorRectangle3
+
+//task
+//add types to the context object
+
+//goal
+//save named pages, display a list of them and retrieve them to the screen
+
+//goal
 //integrate with the back to save and retrieve some pages.
 
-//goal5
-//add types to the context object
+//goal
+//add some more advanced editing tools, look at squarespace
 
 export const BasicEditorContext = createContext({});
 
