@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { type Position } from '../basicEditor/basicEditorTypes'
 import { DataObject3Content, DataObject3Style, DataObject3, RenderElement3, RenderElementNames, BasicEditorContextType } from './BasicEditor3Types';
 
+import PageNav3 from './PageNav3';
 import DraggableFrame3 from './DraggableFrame3';
 import { RedRectangle3, ColorRectangle3, TextBox3 } from './BasicEditor3Components';
 
@@ -32,8 +33,13 @@ enum slots {
 //goal4 DONE
 //edit the content of some element(for example, TextBox3)
 
-//goal 
+//goal 5 
 //save named pages, display a list of them and retrieve them to the screen
+//task: 
+// create a component displaying a form that allows entering new page names, 
+// displays the list of existing pages, allows switching between pages and saving changes to the 
+// current page
+
 
 //goal
 //integrate with the back to save and retrieve some pages.
@@ -41,6 +47,8 @@ enum slots {
 //goal
 //add some more advanced editing tools, look at squarespace
 
+
+//general work
 //task DONE
 //clear the color switching from draggableframe3 and add it to colorRectangle3
 
@@ -53,6 +61,7 @@ export const BasicEditorContext = createContext<BasicEditorContextType>({});
 //should I try to pass each components data through useContext?
 function BasicEditor3() {
   // const testRenderElement: RenderElement3 = { data: { id: 'test', renderElementName: RenderElementNames.red_square, position: { x: 0, y: 0 }, content: {}, style: {} }, body: <div>test test test</div> };
+  // const [pages, setPages] = useState
   const [renderElements, setRenderElements] = useState<RenderElement3[]>([]);
   const isRenderElements = !(renderElements.length === 0);
 
@@ -123,6 +132,7 @@ function BasicEditor3() {
   return (
     <BasicEditorContext.Provider value={{ renderElements, baseFunctions }}>
       <div>BasicEditor3
+        <PageNav3 />
         <div>
           <button onClick={() => saveSnapshotToLS(slots.slot1)}>save snapshot to slot1</button>
           <button onClick={() => retrieveSnapshotFromLS(slots.slot1)}>retrieve snapshot from slot1</button>
