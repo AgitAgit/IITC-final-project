@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, ReactNode } from 'react'
+import React, { useState, useRef, useEffect, ReactNode, useContext, createContext } from 'react'
 import { v4 as uuidv4 } from 'uuid';
 
 import { type Position } from '../basicEditor/basicEditorTypes'
@@ -29,6 +29,8 @@ import { RedRectangle3, ColorRectangle3 } from './BasicEditor3Components';
 //integrate with the back to save and retrieve some pages.
 
 
+export const BasicEditorContext = createContext({});
+
 //should I try to pass each components data through useContext?
 function BasicEditor3() {
   const testRenderElement: RenderElement3 = { data: { id: 'test', renderElementName: RenderElementNames.red_square, position: { x: 0, y: 0 }, content: {}, style: {} }, body: <div>test test test</div> };
@@ -45,7 +47,7 @@ function BasicEditor3() {
       //I want to edit only the element with matching id
       setRenderElements(prev => prev.map(element => {
         //delete this "if" later
-        if(element.data.id === id) { console.log("new style:", newStyle) }
+        if (element.data.id === id) { console.log("new style:", newStyle) }
         return element.data.id === id ? { data: { ...element.data, style: newStyle }, body: element.body } : element
       }
       ))
@@ -57,7 +59,10 @@ function BasicEditor3() {
       const id = uuidv4();
       let body;
       if (renderElementName === RenderElementNames.red_rectangle3) body = <RedRectangle3 />
-      if(renderElementName === RenderElementNames.color_rectangle3) body = <ColorRectangle3 style={{width:'8rem', height:'4rem', backgroundColor:'purple'}}/>
+      if (renderElementName === RenderElementNames.color_rectangle3) {
+        style={ width: '8rem', height: '4rem', backgroundColor: 'purple' }
+        body = <ColorRectangle3 id={id}/>
+      }
       const newRenderElement: RenderElement3 = { data: { id, renderElementName, position, content, style }, body }
       if (isRenderElements) setRenderElements(prev => [...prev, newRenderElement]);
       else setRenderElements([newRenderElement]);
@@ -68,21 +73,23 @@ function BasicEditor3() {
 
   function mapRenderElements(): ReactNode[] {
     return isRenderElements ?
-      renderElements.map(element => 
+      renderElements.map(element =>
         <DraggableFrame3 key={element.data.id} renderElement={element} baseFunctions={baseFunctions} />
       )
       : []
   }
   return (
-    <div>BasicEditor3
-      <div>
-        <button onClick={() => addRenderElement(RenderElementNames.red_rectangle3)}>+RedRectangle3</button>
-        <button onClick={() => addRenderElement(RenderElementNames.color_rectangle3)}>+ColorRectangle3</button>
+    <BasicEditorContext.Provider value={ {renderElements, baseFunctions} }>
+      <div>BasicEditor3
+        <div>
+          <button onClick={() => addRenderElement(RenderElementNames.red_rectangle3)}>+RedRectangle3</button>
+          <button onClick={() => addRenderElement(RenderElementNames.color_rectangle3)}>+ColorRectangle3</button>
+        </div>
+        <div>
+          {mapRenderElements()}
+        </div>
       </div>
-      <div>
-        {mapRenderElements()}
-      </div>
-    </div>
+    </BasicEditorContext.Provider>
   )
 }
 
