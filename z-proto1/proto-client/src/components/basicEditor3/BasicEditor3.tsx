@@ -7,17 +7,21 @@ import { DataObject3Content, DataObject3Style, DataObject3, RenderElement3, Rend
 import DraggableFrame3 from './DraggableFrame3';
 import { RedRectangle3, ColorRectangle3 } from './BasicEditor3Components';
 
+enum slots {
+  slot1 = "slot1",
+  slot2 = "slot2"
+}
 
 //goal1 
-//1.1 Retain abilities of basic editor2:
-//  -menu with 3 components, draggable, editable, deletable, storable, retrievable.
+//1.1 Retain abilities of basic editor2:DONE
+//  DONE-menu with 3 components, draggable, editable, deletable, storable, retrievable.DONE
 //1.2 Simplify the code:
-// -make a dataObject without functions that is used to record the state of the component.
+// DONE-make a dataObject without functions that is used to record the state of the component.
 //   it should store position and content.
-// (for BE4?)-make a base class that holds the draggability functionality of the editorObject.
+//?
 // -each component should export a type that extends the dataObject3 to specify how dataObject3.content object should look
 
-//goal2
+//goal2 DONE
 //save 2 pre-made pages and toggle between them
 
 //goal3
@@ -41,10 +45,12 @@ function BasicEditor3() {
     deleteObject: function (id: string) {
       setRenderElements(prev => prev.filter(element => element.data.id !== id))
     },
-    setPosition: function (id: string, newPosition: Position) { 
-      setRenderElements(prev => prev.map(element => element.data.id === id ? { data: { ...element.data, position:newPosition }, body: element.body } : element))
+    setPosition: function (id: string, newPosition: Position) {
+      setRenderElements(prev => prev.map(element => element.data.id === id ? { data: { ...element.data, position: newPosition }, body: element.body } : element))
     },
-    setContent: function (id: string, newContent: DataObject3Content) { },
+    setContent: function (id: string, newContent: DataObject3Content) {
+      setRenderElements(prev => prev.map(element => element.data.id === id ? { data: { ...element.data, content: newContent }, body: element.body } : element))
+    },
     setStyle: function (id: string, newStyle: DataObject3Style) {
       //I want to edit only the element with matching id
       setRenderElements(prev => prev.map(element => element.data.id === id ? { data: { ...element.data, style: newStyle }, body: element.body } : element))
@@ -62,11 +68,11 @@ function BasicEditor3() {
     }
   }
 
-  function hydrateRenderElement(id:string, renderElementName: RenderElementNames, position: Position = { x: 50, y: 50 }, content: DataObject3Content = {}, style: DataObject3Style = {}){
+  function hydrateRenderElement(id: string, renderElementName: RenderElementNames, position: Position = { x: 50, y: 50 }, content: DataObject3Content = {}, style: DataObject3Style = {}) {
     //hydrate start
     let body;
     if (renderElementName === RenderElementNames.red_rectangle3) body = <RedRectangle3 />
-    if (renderElementName === RenderElementNames.color_rectangle3) body = <ColorRectangle3 id={id}/>
+    if (renderElementName === RenderElementNames.color_rectangle3) body = <ColorRectangle3 id={id} />
     const newRenderElement: RenderElement3 = { data: { id, renderElementName, position, content, style }, body }
     //hydrate end
     return newRenderElement;
@@ -80,16 +86,16 @@ function BasicEditor3() {
       : []
   }
 
-  function saveSnapshotToLS(){
+  function saveSnapshotToLS(slot:slots) {
     const snapshot = JSON.stringify(renderElements);
-    localStorage.setItem("latest_snapshot", snapshot);
+    localStorage.setItem(slot, snapshot);
   }
 
-  function retrieveSnapshotFromLS(){
+  function retrieveSnapshotFromLS(slot:slots) {
     try {
-      const snapshot:RenderElement3[] = JSON.parse(localStorage.getItem("latest_snapshot"));
+      const snapshot: RenderElement3[] = JSON.parse(localStorage.getItem(slot));
       const hydratedRenderElements = snapshot.map(element => {
-        const { id, renderElementName, position, content, style }:DataObject3 = element.data;
+        const { id, renderElementName, position, content, style }: DataObject3 = element.data;
         return hydrateRenderElement(id, renderElementName, position, content, style)
       })
       setRenderElements(hydratedRenderElements);
@@ -99,11 +105,15 @@ function BasicEditor3() {
   }
 
   return (
-    <BasicEditorContext.Provider value={ {renderElements, baseFunctions} }>
+    <BasicEditorContext.Provider value={{ renderElements, baseFunctions }}>
       <div>BasicEditor3
         <div>
-          <button onClick={saveSnapshotToLS}>save snapshot</button>
-          <button onClick={retrieveSnapshotFromLS}>retrieve snapshot</button>
+          <button onClick={() => saveSnapshotToLS(slots.slot1)}>save snapshot to slot1</button>
+          <button onClick={() => retrieveSnapshotFromLS(slots.slot1)}>retrieve snapshot from slot1</button>
+        </div>
+        <div>
+          <button onClick={() => saveSnapshotToLS(slots.slot2)}>save snapshot to slot2</button>
+          <button onClick={() => retrieveSnapshotFromLS(slots.slot2)}>retrieve snapshot from slot2</button>
         </div>
         <div>
           <button onClick={() => addRenderElement(RenderElementNames.red_rectangle3)}>+RedRectangle3</button>
