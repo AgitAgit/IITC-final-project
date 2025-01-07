@@ -33,8 +33,8 @@ export const BasicEditorContext = createContext({});
 
 //should I try to pass each components data through useContext?
 function BasicEditor3() {
-  const testRenderElement: RenderElement3 = { data: { id: 'test', renderElementName: RenderElementNames.red_square, position: { x: 0, y: 0 }, content: {}, style: {} }, body: <div>test test test</div> };
-  const [renderElements, setRenderElements] = useState<RenderElement3[]>([testRenderElement]);
+  // const testRenderElement: RenderElement3 = { data: { id: 'test', renderElementName: RenderElementNames.red_square, position: { x: 0, y: 0 }, content: {}, style: {} }, body: <div>test test test</div> };
+  const [renderElements, setRenderElements] = useState<RenderElement3[]>([]);
   const isRenderElements = !(renderElements.length === 0);
 
   const baseFunctions = {
@@ -45,12 +45,7 @@ function BasicEditor3() {
     setContent: function (id: string, newContent: DataObject3Content) { },
     setStyle: function (id: string, newStyle: DataObject3Style) {
       //I want to edit only the element with matching id
-      setRenderElements(prev => prev.map(element => {
-        //delete this "if" later
-        if (element.data.id === id) { console.log("new style:", newStyle) }
-        return element.data.id === id ? { data: { ...element.data, style: newStyle }, body: element.body } : element
-      }
-      ))
+      setRenderElements(prev => prev.map(element => element.data.id === id ? { data: { ...element.data, style: newStyle }, body: element.body } : element))
     }
   }
 

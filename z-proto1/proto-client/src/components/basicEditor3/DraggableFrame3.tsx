@@ -23,7 +23,7 @@ export type DraggableFrame3Props = {
 }
 
 //temporary test for colorRectangle3 and changing styles.
-const ColorRectangle3Styles = [ {width:'8rem', height:'4rem' ,backgroundColor:'red'},{width:'8rem', height:'4rem', backgroundColor:'green'},{width:'8rem', height:'4rem', backgroundColor:'blue'}];
+const ColorRectangle3Styles = [{ width: '8rem', height: '4rem', backgroundColor: 'red' }, { width: '8rem', height: '4rem', backgroundColor: 'green' }, { width: '8rem', height: '4rem', backgroundColor: 'blue' }];
 
 function DraggableFrame3({ renderElement, baseFunctions }: DraggableFrame3Props) {
     const [position, setPosition] = useState<Position>(renderElement.data.position);
@@ -38,7 +38,7 @@ function DraggableFrame3({ renderElement, baseFunctions }: DraggableFrame3Props)
         const handleMouseMove = (e) => {
             const newPosition = { x: e.clientX - offsetX, y: e.clientY - offsetY + windowYPosition }
             setPosition(newPosition);
-            baseFunctions.setPosition(renderElement.data.id,newPosition)
+            baseFunctions.setPosition(renderElement.data.id, newPosition)
         };
 
         const handleMouseUp = () => {
@@ -50,27 +50,35 @@ function DraggableFrame3({ renderElement, baseFunctions }: DraggableFrame3Props)
         window.addEventListener('mouseup', handleMouseUp);
     };
 
+    function handleDelete(){
+        baseFunctions.deleteObject(renderElement.data.id);
+    }
+
     //temporary test
-    function handleChangeStyle(){
+    function handleChangeStyle() {
         const choice = Math.floor(Math.random() * 3);
         const style = ColorRectangle3Styles[choice];
-        if(renderElement.data.renderElementName === RenderElementNames.color_rectangle3){
-            console.log("@ss", "\n\render id",renderElement.data.id,"\nstyle",style);
+        if (renderElement.data.renderElementName === RenderElementNames.color_rectangle3) {
+            console.log("@ss", "\n\render id", renderElement.data.id, "\nstyle", style);
             baseFunctions.setStyle(renderElement.data.id, style);
         }
     }
     return (
-            <div 
+        <div
             ref={divRef}
             onMouseDown={handleMouseDown}
             onClick={handleChangeStyle}
             style={{
-            position: 'absolute',
-            left: position.x,
-            top: position.y,
-            cursor: "grab",
-            border: '1px solid red'//remove this later...
-        }}>
+                position: 'absolute',
+                left: position.x,
+                top: position.y,
+                cursor: "grab",
+                border: '1px solid red'//remove this later...
+            }}>
+            <div>
+                <button>EDIT</button>
+                <button onClick={handleDelete}>DELETE</button>
+            </div>
             {renderElement.body}
             {/* <DynamicComponent element={renderElement.body} propsForElement={{}}/> */}
         </div>
