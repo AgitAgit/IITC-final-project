@@ -29,6 +29,10 @@ function DraggableFrame3({ renderElement, baseFunctions }: DraggableFrame3Props)
     const [position, setPosition] = useState<Position>(renderElement.data.position);
     const divRef = useRef();
 
+    useEffect(() => {
+        setPosition(renderElement.data.position)
+    }, [renderElement.data.position])
+    
     const handleMouseDown = (e) => {
         const windowYPosition = window.scrollY;
         const rect = divRef.current.getBoundingClientRect();

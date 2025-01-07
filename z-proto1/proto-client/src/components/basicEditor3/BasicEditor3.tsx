@@ -41,7 +41,9 @@ function BasicEditor3() {
     deleteObject: function (id: string) {
       setRenderElements(prev => prev.filter(element => element.data.id !== id))
     },
-    setPosition: function (id: string, newPosition: Position) { },
+    setPosition: function (id: string, newPosition: Position) { 
+      setRenderElements(prev => prev.map(element => element.data.id === id ? { data: { ...element.data, position:newPosition }, body: element.body } : element))
+    },
     setContent: function (id: string, newContent: DataObject3Content) { },
     setStyle: function (id: string, newStyle: DataObject3Style) {
       //I want to edit only the element with matching id
@@ -85,7 +87,12 @@ function BasicEditor3() {
 
   function retrieveSnapshotFromLS(){
     try {
-      const snapshot = JSON.parse()
+      const snapshot:RenderElement3[] = JSON.parse(localStorage.getItem("latest_snapshot"));
+      const hydratedRenderElements = snapshot.map(element => {
+        const { id, renderElementName, position, content, style }:DataObject3 = element.data;
+        return hydrateRenderElement(id, renderElementName, position, content, style)
+      })
+      setRenderElements(hydratedRenderElements);
     } catch (error) {
       console.log(error);
     }
@@ -94,6 +101,10 @@ function BasicEditor3() {
   return (
     <BasicEditorContext.Provider value={ {renderElements, baseFunctions} }>
       <div>BasicEditor3
+        <div>
+          <button onClick={saveSnapshotToLS}>save snapshot</button>
+          <button onClick={retrieveSnapshotFromLS}>retrieve snapshot</button>
+        </div>
         <div>
           <button onClick={() => addRenderElement(RenderElementNames.red_rectangle3)}>+RedRectangle3</button>
           <button onClick={() => addRenderElement(RenderElementNames.color_rectangle3)}>+ColorRectangle3</button>
