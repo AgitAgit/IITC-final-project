@@ -1,3 +1,8 @@
+NOTES
+For future versions where Porat and Eden will contribute, strong typing will be important
+so they know how to use the frame I am building.
+
+
 basic editor1
 
 basic editor2
@@ -17,3 +22,4 @@ basic editor3
 pass the renderElements data through useContext? I still need to pass the id to the component...
 
 basic editor4
+

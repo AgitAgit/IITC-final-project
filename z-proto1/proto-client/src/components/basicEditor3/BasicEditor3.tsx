@@ -52,18 +52,22 @@ function BasicEditor3() {
   function addRenderElement(renderElementName: RenderElementNames, position: Position = { x: 50, y: 50 }, content: DataObject3Content = {}, style: DataObject3Style = {}) {
     try {
       const id = uuidv4();
-      let body;
-      if (renderElementName === RenderElementNames.red_rectangle3) body = <RedRectangle3 />
-      if (renderElementName === RenderElementNames.color_rectangle3) {
-        style={ width: '8rem', height: '4rem', backgroundColor: 'purple' }
-        body = <ColorRectangle3 id={id}/>
-      }
-      const newRenderElement: RenderElement3 = { data: { id, renderElementName, position, content, style }, body }
+      const newRenderElement = hydrateRenderElement(id, renderElementName, position, content, style);
       if (isRenderElements) setRenderElements(prev => [...prev, newRenderElement]);
       else setRenderElements([newRenderElement]);
     } catch (error) {
       console.log(error);
     }
+  }
+
+  function hydrateRenderElement(id:string, renderElementName: RenderElementNames, position: Position = { x: 50, y: 50 }, content: DataObject3Content = {}, style: DataObject3Style = {}){
+    //hydrate start
+    let body;
+    if (renderElementName === RenderElementNames.red_rectangle3) body = <RedRectangle3 />
+    if (renderElementName === RenderElementNames.color_rectangle3) body = <ColorRectangle3 id={id}/>
+    const newRenderElement: RenderElement3 = { data: { id, renderElementName, position, content, style }, body }
+    //hydrate end
+    return newRenderElement;
   }
 
   function mapRenderElements(): ReactNode[] {
@@ -73,6 +77,20 @@ function BasicEditor3() {
       )
       : []
   }
+
+  function saveSnapshotToLS(){
+    const snapshot = JSON.stringify(renderElements);
+    localStorage.setItem("latest_snapshot", snapshot);
+  }
+
+  function retrieveSnapshotFromLS(){
+    try {
+      const snapshot = JSON.parse()
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <BasicEditorContext.Provider value={ {renderElements, baseFunctions} }>
       <div>BasicEditor3
