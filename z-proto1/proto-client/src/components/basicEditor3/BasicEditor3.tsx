@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, ReactNode, useContext, createContex
 import { v4 as uuidv4 } from 'uuid';
 
 import { type Position } from '../basicEditor/basicEditorTypes'
-import { DataObject3Content, DataObject3Style, DataObject3, RenderElement3, RenderElementNames } from './BasicEditor3Types';
+import { DataObject3Content, DataObject3Style, DataObject3, RenderElement3, RenderElementNames, BasicEditorContextType } from './BasicEditor3Types';
 
 import DraggableFrame3 from './DraggableFrame3';
 import { RedRectangle3, ColorRectangle3, TextBox3 } from './BasicEditor3Components';
@@ -32,7 +32,7 @@ enum slots {
 //goal4 DONE
 //edit the content of some element(for example, TextBox3)
 
-//goal
+//goal 
 //save named pages, display a list of them and retrieve them to the screen
 
 //goal
@@ -41,16 +41,14 @@ enum slots {
 //goal
 //add some more advanced editing tools, look at squarespace
 
-//task
+//task DONE
 //clear the color switching from draggableframe3 and add it to colorRectangle3
 
-//task
+//task DONE
 //add types to the context object
 
 
-
-
-export const BasicEditorContext = createContext({});
+export const BasicEditorContext = createContext<BasicEditorContextType>({});
 
 //should I try to pass each components data through useContext?
 function BasicEditor3() {

@@ -36,3 +36,8 @@ export enum RenderElementNames {
     color_button = "color_button",
     color_rectangle3 = "color_rectangle3"
 }
+
+export type BasicEditorContextType = {
+    renderElements: RenderElement3[];
+    baseFunctions: BaseFunctions;
+}
