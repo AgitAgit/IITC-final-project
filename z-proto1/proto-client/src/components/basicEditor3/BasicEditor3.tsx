@@ -37,6 +37,10 @@ import { RedRectangle3, ColorRectangle3, TextBox3 } from './BasicEditor3Componen
 
 //goal 6
 //pages should persist, and available pages should be remembered.
+//Task
+//Create functions to save and retrieve pages with LS
+//Task
+//Convert PageNav3 so it works with the new configuration.
 
 
 //goal
@@ -61,6 +65,8 @@ function BasicEditor3() {
   // const testRenderElement: RenderElement3 = { data: { id: 'test', renderElementName: RenderElementNames.red_square, position: { x: 0, y: 0 }, content: {}, style: {} }, body: <div>test test test</div> };
   const [pages, setPages] = useState<BasicEditor3Page[]>([])
   const [renderElements, setRenderElements] = useState<RenderElement3[]>([]);
+  const [currentPage, setCurrentPage] = useState<string>("");
+  const isPages = !(pages.length === 0);
   const isRenderElements = !(renderElements.length === 0);
 
   const baseFunctions = {
@@ -95,7 +101,7 @@ function BasicEditor3() {
     let body;
     if (renderElementName === RenderElementNames.red_rectangle3) body = <RedRectangle3 />
     if (renderElementName === RenderElementNames.color_rectangle3) body = <ColorRectangle3 id={id} />
-    if(renderElementName === RenderElementNames.text_box3) body = <TextBox3 id={id} />
+    if (renderElementName === RenderElementNames.text_box3) body = <TextBox3 id={id} />
     const newRenderElement: RenderElement3 = { data: { id, renderElementName, position, content, style }, body }
     //hydrate end
     return newRenderElement;
@@ -108,13 +114,13 @@ function BasicEditor3() {
       )
       : []
   }
-
-  function saveSnapshotToLS(pageName:string) {
+  
+  function saveSnapshotToLS(pageName: string) {
     const snapshot = JSON.stringify(renderElements);
     localStorage.setItem(pageName, snapshot);
   }
 
-  function retrieveSnapshotFromLS(pageName:string) {
+  function retrieveSnapshotFromLS(pageName: string) {
     try {
       const snapshot: RenderElement3[] = JSON.parse(localStorage.getItem(pageName));
       const hydratedRenderElements = snapshot.map(element => {
@@ -128,10 +134,49 @@ function BasicEditor3() {
     }
   }
 
+  function saveSnapshotToPages(pageName: string) {
+    const newPage = {name:pageName, renderElements}
+    if(isPages){
+      const pageIndex = pages.findIndex(page => page.name === pageName);
+      if(pageIndex === -1){
+        setPages(prev => [...prev, newPage])
+      }
+      else{
+        // const newPages = [...pages];
+        // newPages[pageIndex].renderElements = renderElements;
+        // setPages(newPages);
+        setPages(prev => [...prev.filter(page => page.name !== newPage.name), newPage]);
+      }
+    } 
+    else {
+      setPages([newPage])
+    }
+  }
+  function savePagesToLS(){
+    const pagesSnapshot = JSON.stringify(pages);
+    localStorage.setItem("pages", pagesSnapshot);
+  }
+  //last here. this is mostly a non edited copy of the retrieveSnapshot function
+  // function retrievePagesFromLS(){
+  //   try {
+  //     const storedPages = JSON.parse(localStorage.getItem("pages"));
+  //     const snapshot: RenderElement3[] = JSON.parse(localStorage.getItem(pageName));
+  //     const hydratedRenderElements = snapshot.map(element => {
+  //       const { id, renderElementName, position, content, style }: DataObject3 = element.data;
+  //       return hydrateRenderElement(id, renderElementName, position, content, style)
+  //     })
+  //     setRenderElements(hydratedRenderElements);
+  //   } catch (error) {
+  //     setRenderElements([]);
+  //     console.log(error);
+  //   }
+  // }
+  function displayPage(pageName:string){}
+
   return (
     <BasicEditorContext.Provider value={{ renderElements, baseFunctions }}>
       <div>BasicEditor3
-        <PageNav3 saveSnapshotToLS={saveSnapshotToLS} retrieveSnapshotFromLS={retrieveSnapshotFromLS}/>
+        <PageNav3 saveSnapshotToLS={saveSnapshotToLS} retrieveSnapshotFromLS={retrieveSnapshotFromLS} />
         {/* <div>
           <button onClick={() => saveSnapshotToLS(slots.slot1)}>save snapshot to slot1</button>
           <button onClick={() => retrieveSnapshotFromLS(slots.slot1)}>retrieve snapshot from slot1</button>
