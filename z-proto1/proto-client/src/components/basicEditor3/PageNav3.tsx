@@ -1,31 +1,37 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, Dispatch, SetStateAction } from 'react'
+import { BasicEditor3Page, RenderElement3 } from './BasicEditor3Types'
 
 export type PageNav3Props = {
-    saveSnapshotToLS:(pageName:string)=>void
-    retrieveSnapshotFromLS:(pageName:string)=>void
+    pages: BasicEditor3Page[]
+    currentPage:string
+    setCurrentPage:Dispatch<SetStateAction<string>>
+    saveSnapshotToPages:(pageName:string, pageElements?:RenderElement3[]) => void
+    savePagesToLS:() => void
 }
 
-function PageNav3({saveSnapshotToLS, retrieveSnapshotFromLS}:PageNav3Props) {
+function PageNav3({pages, currentPage, setCurrentPage, saveSnapshotToPages, savePagesToLS}:PageNav3Props) {
     // const selectPageRef = useRef();
-    const [pageNames, setPageNames] = useState<string[]>(["Home","About","Contact Us"]);
-    const [currentPage, setCurrentPage] = useState<string>("Home");
+    const [pageNames, setPageNames] = useState<string[]>(pages.map(page => page.name));
     const inputRef = useRef<HTMLInputElement>();
 
-    useEffect(() => {
-        console.log("current page:", currentPage);
-        retrieveSnapshotFromLS(currentPage);
-    }, [currentPage]);
-
-    function handleSaveSnapshot(){
-        saveSnapshotToLS(currentPage);
+    function handleAddPage(){
+        if(!inputRef.current) return;
+        const newPageName = inputRef.current.value;
+        if(!newPageName) return;
+        setPageNames(prev => [...prev, newPageName]);
+        saveSnapshotToPages(newPageName, []);
+        savePagesToLS();
     }
 
-    function handleAddPage(){
-        if(!inputRef) return;
-        const name = inputRef.current.value;
-        if(name === '') return;
-        setPageNames(prev => [...prev, name]);
-        inputRef.current.value = '';
+    function handleNavigateToPage(pageName:string){
+        saveSnapshotToPages(currentPage);//save the former page's state
+        savePagesToLS();//save to ls the last state of the pages.
+        setCurrentPage(pageName);
+    }
+
+    function handleSaveClick(){
+        saveSnapshotToPages(currentPage);
+        savePagesToLS();
     }
 
     return (
@@ -44,7 +50,7 @@ function PageNav3({saveSnapshotToLS, retrieveSnapshotFromLS}:PageNav3Props) {
                 <input ref={inputRef}></input>
             </div>
             <div>
-                <button onClick={handleSaveSnapshot}>Save snapshot</button>
+                {/* <button onClick={handleSaveSnapshot}>Save snapshot</button> */}
                 {/* <button>Retrieve snapshot</button> */}
             </div>
         </div>

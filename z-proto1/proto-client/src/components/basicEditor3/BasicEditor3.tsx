@@ -65,9 +65,19 @@ function BasicEditor3() {
   // const testRenderElement: RenderElement3 = { data: { id: 'test', renderElementName: RenderElementNames.red_square, position: { x: 0, y: 0 }, content: {}, style: {} }, body: <div>test test test</div> };
   const [pages, setPages] = useState<BasicEditor3Page[]>([])
   const [renderElements, setRenderElements] = useState<RenderElement3[]>([]);
-  const [currentPage, setCurrentPage] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState<string>("Home");
   const isPages = !(pages.length === 0);
   const isRenderElements = !(renderElements.length === 0);
+  
+  // saveSnapshotToPages("Home", []);//creates the default page;
+  
+  useEffect(() => {//retrieve saved pages on component mount.
+    retrievePagesFromLS();
+  },[])
+
+  useEffect(() => {//displays the current page
+    displayPage(currentPage);//should create a new empty page if it can't find an existing one by that name
+  },[currentPage])
 
   const baseFunctions = {
     deleteObject: function (id: string) {
@@ -96,6 +106,7 @@ function BasicEditor3() {
     }
   }
 
+  //recreates The RenderElement's component part from it's data part.
   function hydrateRenderElement(id: string, renderElementName: RenderElementNames, position: Position = { x: 50, y: 50 }, content: DataObject3Content = {}, style: DataObject3Style = {}) {
     //hydrate start
     let body;
@@ -107,7 +118,7 @@ function BasicEditor3() {
     return newRenderElement;
   }
 
-  function hydratePage(page:BasicEditor3Page){
+  function hydratePage(page:BasicEditor3Page){//recreates page components from page data
     page.renderElements = page.renderElements.map(element => {
       const { id, renderElementName, position, content, style }: DataObject3 = element.data;
       return hydrateRenderElement(id, renderElementName, position, content, style)
@@ -142,8 +153,9 @@ function BasicEditor3() {
     }
   }
 
-  function saveSnapshotToPages(pageName: string) {
+  function saveSnapshotToPages(pageName: string, pageElements?:RenderElement3[]) {
     const newPage = {name:pageName, renderElements}
+    if(pageElements) newPage.renderElements = pageElements;
     if(isPages){
       const pageIndex = pages.findIndex(page => page.name === pageName);
       if(pageIndex === -1){
@@ -160,6 +172,7 @@ function BasicEditor3() {
       setPages([newPage])
     }
   }
+
   function savePagesToLS(){
     const pagesSnapshot = JSON.stringify(pages);
     localStorage.setItem("pages", pagesSnapshot);
@@ -181,12 +194,15 @@ function BasicEditor3() {
     if(displayPageElements){
       setRenderElements(displayPageElements);
     }
+    else {//if there is no page of this name, generate a new empty one by that name.
+      saveSnapshotToPages(pageName, [])
+    }
   }
 
   return (
     <BasicEditorContext.Provider value={{ renderElements, baseFunctions }}>
       <div>BasicEditor3
-        <PageNav3 saveSnapshotToLS={saveSnapshotToLS} retrieveSnapshotFromLS={retrieveSnapshotFromLS} />
+        <PageNav3 pages={pages} currentPage={currentPage} setCurrentPage={setCurrentPage} saveSnapshotToPages={saveSnapshotToPages} savePagesToLS={savePagesToLS}/>
         {/* <div>
           <button onClick={() => saveSnapshotToLS(slots.slot1)}>save snapshot to slot1</button>
           <button onClick={() => retrieveSnapshotFromLS(slots.slot1)}>retrieve snapshot from slot1</button>
