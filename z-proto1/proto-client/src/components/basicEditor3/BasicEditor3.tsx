@@ -2,16 +2,11 @@ import React, { useState, useRef, useEffect, ReactNode, useContext, createContex
 import { v4 as uuidv4 } from 'uuid';
 
 import { type Position } from '../basicEditor/basicEditorTypes'
-import { DataObject3Content, DataObject3Style, DataObject3, RenderElement3, RenderElementNames, BasicEditorContextType } from './BasicEditor3Types';
+import { DataObject3Content, DataObject3Style, DataObject3, RenderElement3, RenderElementNames, BasicEditorContextType, BasicEditor3Page } from './BasicEditor3Types';
 
 import PageNav3 from './PageNav3';
 import DraggableFrame3 from './DraggableFrame3';
 import { RedRectangle3, ColorRectangle3, TextBox3 } from './BasicEditor3Components';
-
-enum slots {
-  slot1 = "slot1",
-  slot2 = "slot2"
-}
 
 //goal1 
 //1.1 Retain abilities of basic editor2:DONE
@@ -33,12 +28,15 @@ enum slots {
 //goal4 DONE
 //edit the content of some element(for example, TextBox3)
 
-//goal 5 
+//goal 5 DONE
 //save named pages, display a list of them and retrieve them to the screen
-//task: 
+//task: DONE
 // create a component displaying a form that allows entering new page names, 
 // displays the list of existing pages, allows switching between pages and saving changes to the 
 // current page
+
+//goal 6
+//pages should persist, and available pages should be remembered.
 
 
 //goal
@@ -61,7 +59,7 @@ export const BasicEditorContext = createContext<BasicEditorContextType>({});
 //should I try to pass each components data through useContext?
 function BasicEditor3() {
   // const testRenderElement: RenderElement3 = { data: { id: 'test', renderElementName: RenderElementNames.red_square, position: { x: 0, y: 0 }, content: {}, style: {} }, body: <div>test test test</div> };
-  // const [pages, setPages] = useState
+  const [pages, setPages] = useState<BasicEditor3Page[]>([])
   const [renderElements, setRenderElements] = useState<RenderElement3[]>([]);
   const isRenderElements = !(renderElements.length === 0);
 
@@ -111,20 +109,21 @@ function BasicEditor3() {
       : []
   }
 
-  function saveSnapshotToLS(slot:slots) {
+  function saveSnapshotToLS(pageName:string) {
     const snapshot = JSON.stringify(renderElements);
-    localStorage.setItem(slot, snapshot);
+    localStorage.setItem(pageName, snapshot);
   }
 
-  function retrieveSnapshotFromLS(slot:slots) {
+  function retrieveSnapshotFromLS(pageName:string) {
     try {
-      const snapshot: RenderElement3[] = JSON.parse(localStorage.getItem(slot));
+      const snapshot: RenderElement3[] = JSON.parse(localStorage.getItem(pageName));
       const hydratedRenderElements = snapshot.map(element => {
         const { id, renderElementName, position, content, style }: DataObject3 = element.data;
         return hydrateRenderElement(id, renderElementName, position, content, style)
       })
       setRenderElements(hydratedRenderElements);
     } catch (error) {
+      setRenderElements([]);
       console.log(error);
     }
   }
@@ -132,15 +131,15 @@ function BasicEditor3() {
   return (
     <BasicEditorContext.Provider value={{ renderElements, baseFunctions }}>
       <div>BasicEditor3
-        <PageNav3 />
-        <div>
+        <PageNav3 saveSnapshotToLS={saveSnapshotToLS} retrieveSnapshotFromLS={retrieveSnapshotFromLS}/>
+        {/* <div>
           <button onClick={() => saveSnapshotToLS(slots.slot1)}>save snapshot to slot1</button>
           <button onClick={() => retrieveSnapshotFromLS(slots.slot1)}>retrieve snapshot from slot1</button>
         </div>
         <div>
           <button onClick={() => saveSnapshotToLS(slots.slot2)}>save snapshot to slot2</button>
           <button onClick={() => retrieveSnapshotFromLS(slots.slot2)}>retrieve snapshot from slot2</button>
-        </div>
+        </div> */}
         <div>
           <button onClick={() => addRenderElement(RenderElementNames.red_rectangle3)}>+RedRectangle3</button>
           <button onClick={() => addRenderElement(RenderElementNames.color_rectangle3)}>+ColorRectangle3</button>

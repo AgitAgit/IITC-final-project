@@ -22,6 +22,10 @@ export type RenderElement3 = {
     body: ReactNode
 }
 
+export type BasicEditor3Page = {
+    name: string
+    renderElements: RenderElement3[]
+}
 
 export type BaseFunctions = {
     deleteObject: (id: string) => void;
