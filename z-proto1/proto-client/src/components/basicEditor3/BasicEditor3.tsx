@@ -52,9 +52,12 @@ import { RedRectangle3, ColorRectangle3, TextBox3 } from './BasicEditor3Componen
 
 //goal
 //add some more advanced editing tools, look at squarespace
+//For now, I will focus on adding the block editing menu and functionalities.
 
 //goal
 //integrate with the back to save and retrieve some pages.
+
+
 
 //general work
 //task DONE

@@ -22,4 +22,38 @@ basic editor3
 pass the renderElements data through useContext? I still need to pass the id to the component...
 
 basic editor4
+General version requiremens:
+Barebones Data structure:
+BasicWebsite{
+    (central data unit)
+    Header{(special section)
+        Block
+    }
+    Page{
+        Section{
+            Block
+        }
+    }
+    Footer{
+        Block
+    }
+}
+
+BasicWebsite{
+    (central data unit)
+    Header{
+        Header-blocks(half editable) navigation, login, etc
+    }
+    Page{
+        Section{
+            (section editor)
+            Block{
+                (block editor)
+            }
+        }
+    }
+    Footer{
+        Footer-blocks(half editable) navigation, social, etc
+    }
+}
 
