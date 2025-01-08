@@ -35,23 +35,26 @@ import { RedRectangle3, ColorRectangle3, TextBox3 } from './BasicEditor3Componen
 // displays the list of existing pages, allows switching between pages and saving changes to the 
 // current page
 
-//goal 6
+//goal 6 DONE
 //pages should persist, and available pages should be remembered.
-//Task done?
+//Task DONE
 //Create functions to save and retrieve pages with LS
-//Task
+//Task DONE
 //Convert PageNav3 so it works with the new configuration.
 //when I refresh, the app is not updated properly. The data from local storage is
 //retrieved with useEffect but isn't rendered.
 //when I save the code and so vite reruns the app it does refresh properly and retrieve
 //everything it's supposed to. What is going on? LAST HERE
 
-//goal
-//integrate with the back to save and retrieve some pages.
+//Pages are retrieved successfully and printed by retrievePagesFromLS
+//useEffect2 prints that the pages are empty?
+//could displayPage be causing some problems?
 
 //goal
 //add some more advanced editing tools, look at squarespace
 
+//goal
+//integrate with the back to save and retrieve some pages.
 
 //general work
 //task DONE
@@ -71,18 +74,20 @@ function BasicEditor3() {
   const [currentPage, setCurrentPage] = useState<string>("Home");
   const isPages = !(pages.length === 0);
   const isRenderElements = !(renderElements.length === 0);
-  
+
   // saveSnapshotToPages("Home", []);//creates the default page;
   
-  useEffect(() => {//retrieve saved pages on component mount.
-    retrievePagesFromLS();
-  },[])
-
+  
   useEffect(() => {//displays the current page
     displayPage(currentPage);//should create a new empty page if it can't find an existing one by that name
     console.log("basicEditor3.useEffect says:","\ncurrent page:", currentPage, "\n", pages);
   },[currentPage, pages])
-
+  
+  useEffect(() => {//retrieve saved pages on component mount.
+    retrievePagesFromLS();
+    return console.log("component unmounted");
+  },[])
+  
   const baseFunctions = {
     deleteObject: function (id: string) {
       setRenderElements(prev => prev.filter(element => element.data.id !== id))
@@ -138,24 +143,24 @@ function BasicEditor3() {
       : []
   }
   
-  function saveSnapshotToLS(pageName: string) {
-    const snapshot = JSON.stringify(renderElements);
-    localStorage.setItem(pageName, snapshot);
-  }
+  // function saveSnapshotToLS(pageName: string) {
+  //   const snapshot = JSON.stringify(renderElements);
+  //   localStorage.setItem(pageName, snapshot);
+  // }
 
-  function retrieveSnapshotFromLS(pageName: string) {
-    try {
-      const snapshot: RenderElement3[] = JSON.parse(localStorage.getItem(pageName));
-      const hydratedRenderElements = snapshot.map(element => {
-        const { id, renderElementName, position, content, style }: DataObject3 = element.data;
-        return hydrateRenderElement(id, renderElementName, position, content, style)
-      })
-      setRenderElements(hydratedRenderElements);
-    } catch (error) {
-      setRenderElements([]);
-      console.log(error);
-    }
-  }
+  // function retrieveSnapshotFromLS(pageName: string) {
+  //   try {
+  //     const snapshot: RenderElement3[] = JSON.parse(localStorage.getItem(pageName));
+  //     const hydratedRenderElements = snapshot.map(element => {
+  //       const { id, renderElementName, position, content, style }: DataObject3 = element.data;
+  //       return hydrateRenderElement(id, renderElementName, position, content, style)
+  //     })
+  //     setRenderElements(hydratedRenderElements);
+  //   } catch (error) {
+  //     setRenderElements([]);
+  //     console.log(error);
+  //   }
+  // }
 
   function saveSnapshotToPages(pageName: string, pageElements?:RenderElement3[]) {
     const newPage = {name:pageName, renderElements}
@@ -207,6 +212,7 @@ function BasicEditor3() {
   return (
     <BasicEditorContext.Provider value={{ renderElements, baseFunctions }}>
       <div>BasicEditor3
+        {/* <button onClick={() => {retrievePagesFromLS()}}>Retrieve pages</button> */}
         <PageNav3 pages={pages} currentPage={currentPage} setCurrentPage={setCurrentPage} saveSnapshotToPages={saveSnapshotToPages} savePagesToLS={savePagesToLS}/>
         {/* <div>
           <button onClick={() => saveSnapshotToLS(slots.slot1)}>save snapshot to slot1</button>
