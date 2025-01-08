@@ -41,8 +41,10 @@ import { RedRectangle3, ColorRectangle3, TextBox3 } from './BasicEditor3Componen
 //Create functions to save and retrieve pages with LS
 //Task
 //Convert PageNav3 so it works with the new configuration.
-//something somewhere clears the local storage.
-
+//when I refresh, the app is not updated properly. The data from local storage is
+//retrieved with useEffect but isn't rendered.
+//when I save the code and so vite reruns the app it does refresh properly and retrieve
+//everything it's supposed to. What is going on? LAST HERE
 
 //goal
 //integrate with the back to save and retrieve some pages.
@@ -179,7 +181,6 @@ function BasicEditor3() {
     const pagesSnapshot = JSON.stringify(pages);
     localStorage.setItem("pages", pagesSnapshot);
   }
-  //last here. this is mostly a non edited copy of the retrieveSnapshot function
   function retrievePagesFromLS(){
     try {
       const retrievedPages:BasicEditor3Page[] = JSON.parse(localStorage.getItem("pages"));
