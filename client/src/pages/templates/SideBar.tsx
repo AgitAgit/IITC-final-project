@@ -44,7 +44,9 @@ export function AppSidebar() {
     <Sidebar className="absolute p-4">
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarGroupLabel className="font-bold text-black text-lg mb-5">
+            Types
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (

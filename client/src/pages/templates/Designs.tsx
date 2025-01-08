@@ -13,16 +13,10 @@ function DesignCon() {
         {/* Main Content Section */}
         <div className="flex-grow px-6">
           <div className="flex justify-between items-center mb-6">
-            <h1 className="text-2xl font-bold">Popular Designs Templates</h1>
-            {/* Sidebar Trigger */}
             <SidebarTrigger />
+            <h1 className="text-2xl font-bold">Popular Designs Templates</h1>
           </div>
-
-          {/* Additional Content Goes Here */}
-          <p>
-            Browse our extensive collection of design templates that cater to
-            various needs. Customize them easily and make them your own!
-          </p>
+          <div></div>
         </div>
       </div>
     </SidebarProvider>
