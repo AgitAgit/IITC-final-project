@@ -37,7 +37,7 @@ import { RedRectangle3, ColorRectangle3, TextBox3 } from './BasicEditor3Componen
 
 //goal 6
 //pages should persist, and available pages should be remembered.
-//Task
+//Task done?
 //Create functions to save and retrieve pages with LS
 //Task
 //Convert PageNav3 so it works with the new configuration.
@@ -107,6 +107,14 @@ function BasicEditor3() {
     return newRenderElement;
   }
 
+  function hydratePage(page:BasicEditor3Page){
+    page.renderElements = page.renderElements.map(element => {
+      const { id, renderElementName, position, content, style }: DataObject3 = element.data;
+      return hydrateRenderElement(id, renderElementName, position, content, style)
+    })
+    return page;
+  }
+
   function mapRenderElements(): ReactNode[] {
     return isRenderElements ?
       renderElements.map(element =>
@@ -157,21 +165,23 @@ function BasicEditor3() {
     localStorage.setItem("pages", pagesSnapshot);
   }
   //last here. this is mostly a non edited copy of the retrieveSnapshot function
-  // function retrievePagesFromLS(){
-  //   try {
-  //     const storedPages = JSON.parse(localStorage.getItem("pages"));
-  //     const snapshot: RenderElement3[] = JSON.parse(localStorage.getItem(pageName));
-  //     const hydratedRenderElements = snapshot.map(element => {
-  //       const { id, renderElementName, position, content, style }: DataObject3 = element.data;
-  //       return hydrateRenderElement(id, renderElementName, position, content, style)
-  //     })
-  //     setRenderElements(hydratedRenderElements);
-  //   } catch (error) {
-  //     setRenderElements([]);
-  //     console.log(error);
-  //   }
-  // }
-  function displayPage(pageName:string){}
+  function retrievePagesFromLS(){
+    try {
+      const retrievedPages:BasicEditor3Page[] = JSON.parse(localStorage.getItem("pages"));
+      const hydratedPages = retrievedPages.map(page => hydratePage(page));
+      setPages(hydratedPages);
+    } catch (error) {
+      setRenderElements([]);
+      console.log(error);
+    }
+  }
+
+  function displayPage(pageName:string){
+    const displayPageElements = pages.find(page => page.name === pageName).renderElements
+    if(displayPageElements){
+      setRenderElements(displayPageElements);
+    }
+  }
 
   return (
     <BasicEditorContext.Provider value={{ renderElements, baseFunctions }}>
