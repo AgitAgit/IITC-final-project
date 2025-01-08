@@ -1,3 +1,25 @@
-Create a component menu with 2 different pre-made components and add it to the editor
+NOTES
+For future versions where Porat and Eden will contribute, strong typing will be important
+so they know how to use the frame I am building.
 
-Stop and make a written plan for basicEditor2 and related components;
+
+basic editor1
+
+basic editor2
+//goal1: 
+DONE// generate a menu with 3 buttons, each one generate a different component;DONE
+
+//goal2: 
+DONE// generate a page layout object that records all the objects and their positions and data; DONE
+POSTPONED// save 2 pre-made pages and toggle between them;POSTPONED
+
+only those goals. Improvements to typing and order should happen in further versions.
+Don't abstract too early.
+
+I need to edit editableText and ButtonRandom so the receive props with content.
+
+basic editor3
+pass the renderElements data through useContext? I still need to pass the id to the component...
+
+basic editor4
+
