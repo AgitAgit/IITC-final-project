@@ -6,7 +6,7 @@ import { ChevronLeftIcon, ArrowLeftIcon } from "@heroicons/react/24/solid";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
-import { loginService } from "../Services/userService";
+import { loginService } from "../services/userService";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -33,7 +33,7 @@ const Login = () => {
     mutationFn: loginService,
     onSuccess: (data) => {
       console.log("Login successful:", data);
-      navigate("/");
+      window.location.href = "/";
     },
     onError: (error) => {
       console.error("Login failed:", error);

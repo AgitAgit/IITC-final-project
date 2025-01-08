@@ -5,11 +5,13 @@ export interface IUser extends Document {
   id?: string;
   firstName: string;
   lastName: string;
+  displayName: string;
   email: string;
   password: string;
   googleId: string;
   profileImage: string;
   role: string;
+  bio?: string;
   sites: mongoose.Schema.Types.ObjectId[];
   createdAt: Date;
 }
