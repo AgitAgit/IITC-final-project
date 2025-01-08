@@ -10,17 +10,17 @@ export type PageNav3Props = {
 }
 
 function PageNav3({pages, currentPage, setCurrentPage, saveSnapshotToPages, savePagesToLS}:PageNav3Props) {
-    // const selectPageRef = useRef();
-    const [pageNames, setPageNames] = useState<string[]>(pages.map(page => page.name));
+    // const [pageNames, setPageNames] = useState<string[]>(pages.map(page => page.name));
+    const pageNames = pages.map(page => page.name);
     const inputRef = useRef<HTMLInputElement>();
 
     function handleAddPage(){
         if(!inputRef.current) return;
         const newPageName = inputRef.current.value;
         if(!newPageName) return;
-        setPageNames(prev => [...prev, newPageName]);
         saveSnapshotToPages(newPageName, []);
         savePagesToLS();
+        inputRef.current.value = '';
     }
 
     function handleNavigateToPage(pageName:string){
@@ -41,7 +41,7 @@ function PageNav3({pages, currentPage, setCurrentPage, saveSnapshotToPages, save
             <label>Select a Page:</label>
             <select 
             // ref={selectPageRef}
-            onChange={(e) => setCurrentPage(e.target.value)}
+            onChange={(e) => handleNavigateToPage(e.target.value)}
             >
                 {pageNames.map(name => <option key={name}>{name}</option>)}
             </select>
@@ -50,7 +50,7 @@ function PageNav3({pages, currentPage, setCurrentPage, saveSnapshotToPages, save
                 <input ref={inputRef}></input>
             </div>
             <div>
-                {/* <button onClick={handleSaveSnapshot}>Save snapshot</button> */}
+                <button onClick={handleSaveClick}>Save</button>
                 {/* <button>Retrieve snapshot</button> */}
             </div>
         </div>

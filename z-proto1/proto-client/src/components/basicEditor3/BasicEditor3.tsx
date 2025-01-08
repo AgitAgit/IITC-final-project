@@ -41,6 +41,7 @@ import { RedRectangle3, ColorRectangle3, TextBox3 } from './BasicEditor3Componen
 //Create functions to save and retrieve pages with LS
 //Task
 //Convert PageNav3 so it works with the new configuration.
+//something somewhere clears the local storage.
 
 
 //goal
@@ -77,7 +78,8 @@ function BasicEditor3() {
 
   useEffect(() => {//displays the current page
     displayPage(currentPage);//should create a new empty page if it can't find an existing one by that name
-  },[currentPage])
+    console.log("basicEditor3.useEffect says:","\ncurrent page:", currentPage, "\n", pages);
+  },[currentPage, pages])
 
   const baseFunctions = {
     deleteObject: function (id: string) {
@@ -182,15 +184,17 @@ function BasicEditor3() {
     try {
       const retrievedPages:BasicEditor3Page[] = JSON.parse(localStorage.getItem("pages"));
       const hydratedPages = retrievedPages.map(page => hydratePage(page));
+      console.log("basicEditor3.retrievePagesFromLS says:", hydratedPages)
       setPages(hydratedPages);
     } catch (error) {
+      console.log("basicEditor3.retrievePagesFromLS caught an error an set renderElements to []")
       setRenderElements([]);
       console.log(error);
     }
   }
 
   function displayPage(pageName:string){
-    const displayPageElements = pages.find(page => page.name === pageName).renderElements
+    const displayPageElements = pages.find(page => page.name === pageName)?.renderElements
     if(displayPageElements){
       setRenderElements(displayPageElements);
     }
