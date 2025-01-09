@@ -60,11 +60,10 @@ export function TextBox3({ id }:{id:string}) {
 export function RedTextRectangle3({ id }:{id:string}) {
     const { renderElements, baseFunctions } = useContext(BasicEditorContext)
     const element = renderElements.filter(element => element.data.id === id)[0]
-    return <div style={{
-        width: '8rem',
-        height: '4rem',
-        backgroundColor: 'red'
-    }}
+    const defaultStyle = {width: '8rem',height: '4rem',backgroundColor: 'red'};
+    const style = element.data.style;
+    const finalStyle = isEmpty(style) ? defaultStyle : style;
+    return <div style={finalStyle}
     >RedRectangle3
     <br></br>
     {element.data.content.textContent}

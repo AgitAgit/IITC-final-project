@@ -22,6 +22,12 @@ basic editor3
 pass the renderElements data through useContext? I still need to pass the id to the component...
 
 basic editor4
+General aim:
+0. Update the data structure of BasicEditor3 to fit the new data structure written below.
+1. Cover as 7 of the basic editor blocks functionality an unique editors if they exist.
+2. Imitiate the style of the squarespace editor.
+3. Save a few full websites and integrage with the back for saving and retrieving them.
+
 General version requiremens:
     Barebones Data structure:
     BasicWebsite{

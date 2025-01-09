@@ -12,6 +12,7 @@ function BlockEditor3({ blockId, blockRect }: BlockEditor3Props) {
     const [editFormVisibility, setEditFormVisibility] = useState(false);
     const [contentMode, setContentMode] = useState(true);
     const textContentInputRef = useRef();
+    const backgroundColors = ["white", "black", "gray", "red", "green", "blue", "yellow"];
 
     const editButtonsStyle = {
         position: 'absolute',
@@ -34,9 +35,19 @@ function BlockEditor3({ blockId, blockRect }: BlockEditor3Props) {
         baseFunctions.deleteObject(blockId);
     }
 
-    function handleEditTextContent(newText:string){
-        baseFunctions.setContent(blockId, {...element.data.content, textContent:newText});
+    function handleEditTextContent(newText: string) {
+        baseFunctions.setContent(blockId, { ...element.data.content, textContent: newText });
         // baseFunctions.saveChanges();
+    }
+
+    function updateBackgroundColor(newColor: string) {
+        baseFunctions.setStyle(blockId, { ...element.data.style, backgroundColor: newColor });
+    }
+
+    function updateStyle(field:string, newValue: string | number){
+        const newStyle = {...element.data.style}
+        newStyle[field] = newValue;
+        baseFunctions.setStyle(blockId, newStyle)
     }
 
     return (
@@ -61,9 +72,9 @@ function BlockEditor3({ blockId, blockRect }: BlockEditor3Props) {
                                 <div>
                                     <label>Text Content:</label>
                                     <br></br>
-                                    <input 
-                                    defaultValue={element.data.content.textContent}
-                                    ref={textContentInputRef}
+                                    <input
+                                        defaultValue={element.data.content.textContent}
+                                        ref={textContentInputRef}
                                     ></input>
                                     <button onClick={() => handleEditTextContent(textContentInputRef.current.value)}>Edit</button>
                                 </div>
@@ -73,6 +84,18 @@ function BlockEditor3({ blockId, blockRect }: BlockEditor3Props) {
                     {
                         !contentMode && <div>
                             Design edit div
+                            <br></br>
+                            <label>background color:</label>
+                            <br></br>
+                            <select defaultValue={element.data.style.backgroundColor} onChange={(e) => updateBackgroundColor(e.target.value)}>
+                                {backgroundColors.map(color => <option key={color} value={color}>{color}</option>)}
+                            </select>
+                            <br></br>
+                            <label>Text color:</label>
+                            <br></br>
+                            <select defaultValue={element.data.style.color} onChange={(e) => updateStyle("color", e.target.value)}>
+                                {backgroundColors.map(color => <option key={color} value={color}>{color}</option>)}
+                            </select>
                         </div>
                     }
                 </div>
