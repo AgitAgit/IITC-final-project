@@ -54,6 +54,10 @@ import { isEmpty } from './utils';
 //goal
 //add some more advanced editing tools, look at squarespace
 //For now, I will focus on adding the block editing menu and functionalities.
+//task DONE
+//Add ability to edit text content in relevant blocks
+//task
+//Add ability to change font size in relevant blocks
 
 //goal
 //integrate with the back to save and retrieve some pages.
