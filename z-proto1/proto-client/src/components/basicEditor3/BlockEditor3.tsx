@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useRef } from 'react'
 import { BasicEditorContext } from './basicEditor3'
 
 export type BlockEditor3Props = {
@@ -7,8 +7,11 @@ export type BlockEditor3Props = {
 }
 
 function BlockEditor3({ blockId, blockRect }: BlockEditor3Props) {
-    const { baseFunctions } = useContext(BasicEditorContext);
+    const { renderElements, baseFunctions } = useContext(BasicEditorContext)
+    const element = renderElements.filter(element => element.data.id === blockId)[0]
     const [editFormVisibility, setEditFormVisibility] = useState(false);
+    const [contentMode, setContentMode] = useState(true);
+    const textContentInputRef = useRef();
 
     const editButtonsStyle = {
         position: 'absolute',
@@ -31,6 +34,11 @@ function BlockEditor3({ blockId, blockRect }: BlockEditor3Props) {
         baseFunctions.deleteObject(blockId);
     }
 
+    function handleEditTextContent(newText:string){
+        baseFunctions.setContent(blockId, {...element.data.content, textContent:newText});
+        // baseFunctions.saveChanges();
+    }
+
     return (
         <div>
             <div
@@ -42,8 +50,31 @@ function BlockEditor3({ blockId, blockRect }: BlockEditor3Props) {
                 editFormVisibility &&
                 <div
                     style={editFormStyle}>
-                    <button>Content</button>
-                    <button>Design</button>
+                    <button onClick={() => setContentMode(true)}>Content</button>
+                    <button onClick={() => setContentMode(false)}>Design</button>
+                    {
+                        contentMode &&
+                        <div>
+                            Content edit div
+                            {
+                                element.data.content.textContent &&
+                                <div>
+                                    <label>Text Content:</label>
+                                    <br></br>
+                                    <input 
+                                    defaultValue={element.data.content.textContent}
+                                    ref={textContentInputRef}
+                                    ></input>
+                                    <button onClick={() => handleEditTextContent(textContentInputRef.current.value)}>Edit</button>
+                                </div>
+                            }
+                        </div>
+                    }
+                    {
+                        !contentMode && <div>
+                            Design edit div
+                        </div>
+                    }
                 </div>
             }
         </div>

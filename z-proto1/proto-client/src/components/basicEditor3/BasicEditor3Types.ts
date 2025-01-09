@@ -32,10 +32,12 @@ export type BaseFunctions = {
     setPosition: (id: string, newPosition: Position) => void;
     setContent: (id: string, newContent: DataObject3Content) => void;
     setStyle: (id: string, newStyle: DataObject3Style) => void;
+    saveChanges: () => void;
 }
 
 export enum RenderElementNames {
     red_rectangle3 = "red_rectangle3",
+    red_text_rectangle3 = "red_text_rectangle3",
     text_box3 = "text_box3",
     color_button = "color_button",
     color_rectangle3 = "color_rectangle3"

@@ -1,14 +1,7 @@
 import { useContext, useRef } from "react"
 import { BasicEditorContext } from "./basicEditor3"
 import { DataObject3Content, DataObject3Style } from "./BasicEditor3Types"
-
-function isEmpty(obj) {
-    for (var key in obj) {
-        if (obj.hasOwnProperty(key))
-            return false;
-    }
-    return true;
-}
+import { isEmpty } from "./utils";
 
 export function RedRectangle3() {
     return <div style={{
@@ -20,7 +13,7 @@ export function RedRectangle3() {
 }
 
 const colorRectangle3Styles = [{ width: '8rem', height: '4rem', backgroundColor: 'purple' },{ width: '8rem', height: '4rem', backgroundColor: 'red' }, { width: '8rem', height: '4rem', backgroundColor: 'green' }, { width: '8rem', height: '4rem', backgroundColor: 'blue' }];
-export function ColorRectangle3({ id }) {
+export function ColorRectangle3({ id }:{id:string}) {
     const { renderElements, baseFunctions } = useContext(BasicEditorContext)
     const element = renderElements.filter(element => element.data.id === id)[0]
 
@@ -40,7 +33,7 @@ export function ColorRectangle3({ id }) {
     </div>
 }
 
-export function TextBox3({ id }) {
+export function TextBox3({ id }:{id:string}) {
     const { renderElements, baseFunctions } = useContext(BasicEditorContext)
     const element = renderElements.filter(element => element.data.id === id)[0]
     // const textAreaRef = useRef();
@@ -61,5 +54,19 @@ export function TextBox3({ id }) {
             onChange={onTextChange}>
 
         </textarea>
+    </div>
+}
+
+export function RedTextRectangle3({ id }:{id:string}) {
+    const { renderElements, baseFunctions } = useContext(BasicEditorContext)
+    const element = renderElements.filter(element => element.data.id === id)[0]
+    return <div style={{
+        width: '8rem',
+        height: '4rem',
+        backgroundColor: 'red'
+    }}
+    >RedRectangle3
+    <br></br>
+    {element.data.content.textContent}
     </div>
 }

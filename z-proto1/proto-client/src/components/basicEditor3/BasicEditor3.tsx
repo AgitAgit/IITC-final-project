@@ -6,8 +6,8 @@ import { DataObject3Content, DataObject3Style, DataObject3, RenderElement3, Rend
 
 import PageNav3 from './PageNav3';
 import DraggableFrame3 from './DraggableFrame3';
-import { RedRectangle3, ColorRectangle3, TextBox3 } from './BasicEditor3Components';
-
+import { RedRectangle3, ColorRectangle3, TextBox3, RedTextRectangle3 } from './BasicEditor3Components';
+import { isEmpty } from './utils';
 //goal1 
 //1.1 Retain abilities of basic editor2:DONE
 //  DONE-menu with 3 components, draggable, editable, deletable, storable, retrievable.DONE
@@ -99,7 +99,8 @@ function BasicEditor3() {
     setStyle: function (id: string, newStyle: DataObject3Style) {
       //I want to edit only the element with matching id
       setRenderElements(prev => prev.map(element => element.data.id === id ? { data: { ...element.data, style: newStyle }, body: element.body } : element))
-    }
+    },
+    saveChanges: savePagesToLS
   }
 
   function addRenderElement(renderElementName: RenderElementNames, position: Position = { x: 50, y: 50 }, content: DataObject3Content = {}, style: DataObject3Style = {}) {
@@ -120,6 +121,10 @@ function BasicEditor3() {
     if (renderElementName === RenderElementNames.red_rectangle3) body = <RedRectangle3 />
     if (renderElementName === RenderElementNames.color_rectangle3) body = <ColorRectangle3 id={id} />
     if (renderElementName === RenderElementNames.text_box3) body = <TextBox3 id={id} />
+    if (renderElementName === RenderElementNames.red_text_rectangle3) {
+      body = <RedTextRectangle3 id={id}/>
+      if(isEmpty(content)) content={ textContent:'Lorem Ipsum'}
+    }
     const newRenderElement: RenderElement3 = { data: { id, renderElementName, position, content, style }, body }
     //hydrate end
     return newRenderElement;
@@ -202,6 +207,7 @@ function BasicEditor3() {
         <PageNav3 pages={pages} currentPage={currentPage} setCurrentPage={setCurrentPage} saveSnapshotToPages={saveSnapshotToPages} savePagesToLS={savePagesToLS}/>
         <div>
           <button onClick={() => addRenderElement(RenderElementNames.red_rectangle3)}>+RedRectangle3</button>
+          <button onClick={() => addRenderElement(RenderElementNames.red_text_rectangle3)}>+RedTextRectangle3</button>
           <button onClick={() => addRenderElement(RenderElementNames.color_rectangle3)}>+ColorRectangle3</button>
           <button onClick={() => addRenderElement(RenderElementNames.text_box3)}>+TextBox3</button>
         </div>
