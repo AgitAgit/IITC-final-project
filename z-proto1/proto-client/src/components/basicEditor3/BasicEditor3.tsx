@@ -8,6 +8,8 @@ import PageNav3 from './PageNav3';
 import DraggableFrame3 from './DraggableFrame3';
 import { RedRectangle3, ColorRectangle3, TextBox3, RedTextRectangle3 } from './BasicEditor3Components';
 import { isEmpty } from './utils';
+import styles from './BasicEditor3Styles';
+
 //goal1 
 //1.1 Retain abilities of basic editor2:DONE
 //  DONE-menu with 3 components, draggable, editable, deletable, storable, retrievable.DONE
@@ -124,7 +126,10 @@ function BasicEditor3() {
   function hydrateRenderElement(id: string, renderElementName: RenderElementNames, position: Position = { x: 50, y: 50 }, content: DataObject3Content = {}, style: DataObject3Style = {}) {
     //hydrate start
     let body;
-    if (renderElementName === RenderElementNames.red_rectangle3) body = <RedRectangle3 />
+    if (renderElementName === RenderElementNames.red_rectangle3) {
+      if(isEmpty(style)) style=styles.default_red_rectangle_style;
+      body = <RedRectangle3 id={id}/>
+    }
     if (renderElementName === RenderElementNames.color_rectangle3) body = <ColorRectangle3 id={id} />
     if (renderElementName === RenderElementNames.text_box3) body = <TextBox3 id={id} />
     if (renderElementName === RenderElementNames.red_text_rectangle3) {

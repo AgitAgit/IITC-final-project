@@ -3,12 +3,13 @@ import { BasicEditorContext } from "./basicEditor3"
 import { DataObject3Content, DataObject3Style } from "./BasicEditor3Types"
 import { isEmpty } from "./utils";
 
-export function RedRectangle3() {
-    return <div style={{
-        width: '8rem',
-        height: '4rem',
-        backgroundColor: 'red'
-    }}
+export function RedRectangle3({id}:{id:string}) {
+    const { renderElements, baseFunctions } = useContext(BasicEditorContext)
+    const element = renderElements.filter(element => element.data.id === id)[0]
+    const defaultStyle = {width: '8rem',height: '4rem',backgroundColor: 'red'};
+    const style = element.data.style;
+    const finalStyle = isEmpty(style) ? defaultStyle : style;
+    return <div style={finalStyle}
     >RedRectangle3</div>
 }
 
