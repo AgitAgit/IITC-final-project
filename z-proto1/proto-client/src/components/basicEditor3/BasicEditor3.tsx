@@ -200,14 +200,6 @@ function BasicEditor3() {
       <div>BasicEditor3
         <button onClick={() => {retrievePagesFromLS()}}>Retrieve pages</button>
         <PageNav3 pages={pages} currentPage={currentPage} setCurrentPage={setCurrentPage} saveSnapshotToPages={saveSnapshotToPages} savePagesToLS={savePagesToLS}/>
-        {/* <div>
-          <button onClick={() => saveSnapshotToLS(slots.slot1)}>save snapshot to slot1</button>
-          <button onClick={() => retrieveSnapshotFromLS(slots.slot1)}>retrieve snapshot from slot1</button>
-        </div>
-        <div>
-          <button onClick={() => saveSnapshotToLS(slots.slot2)}>save snapshot to slot2</button>
-          <button onClick={() => retrieveSnapshotFromLS(slots.slot2)}>retrieve snapshot from slot2</button>
-        </div> */}
         <div>
           <button onClick={() => addRenderElement(RenderElementNames.red_rectangle3)}>+RedRectangle3</button>
           <button onClick={() => addRenderElement(RenderElementNames.color_rectangle3)}>+ColorRectangle3</button>

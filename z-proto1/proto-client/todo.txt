@@ -23,37 +23,39 @@ pass the renderElements data through useContext? I still need to pass the id to 
 
 basic editor4
 General version requiremens:
-Barebones Data structure:
-BasicWebsite{
-    (central data unit)
-    Header{(special section)
-        Block
-    }
-    Page{
-        Section{
+    Barebones Data structure:
+    BasicWebsite{
+        (central data unit)
+        Header{(special section)
+            Block
+        }
+        Page{
+            Section{
+                Block
+            }
+        }
+        Footer{
             Block
         }
     }
-    Footer{
-        Block
-    }
-}
 
-BasicWebsite{
-    (central data unit)
-    Header{
-        Header-blocks(half editable) navigation, login, etc
-    }
-    Page{
-        Section{
-            (section editor)
-            Block{
-                (block editor)
+    BasicWebsite{
+        (central data unit)
+        Header{
+            Header-blocks(half editable) navigation, login, etc
+        }
+        Page{
+            Section{
+                (section editor)
+                Block{
+                    (block editor)
+                }
             }
         }
+        Footer{
+            Footer-blocks(half editable) navigation, social, etc
+        }
     }
-    Footer{
-        Footer-blocks(half editable) navigation, social, etc
-    }
-}
 
+Block Editor:
+The text block editor and general block editors are different.
