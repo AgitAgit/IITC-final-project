@@ -70,27 +70,21 @@ import { RedRectangle3, ColorRectangle3, TextBox3 } from './BasicEditor3Componen
 
 export const BasicEditorContext = createContext<BasicEditorContextType>({});
 
-//should I try to pass each components data through useContext?
 function BasicEditor3() {
-  // const testRenderElement: RenderElement3 = { data: { id: 'test', renderElementName: RenderElementNames.red_square, position: { x: 0, y: 0 }, content: {}, style: {} }, body: <div>test test test</div> };
   const [pages, setPages] = useState<BasicEditor3Page[]>([])
   const [renderElements, setRenderElements] = useState<RenderElement3[]>([]);
   const [currentPage, setCurrentPage] = useState<string>("Home");
   const isPages = !(pages.length === 0);
   const isRenderElements = !(renderElements.length === 0);
-
-  // saveSnapshotToPages("Home", []);//creates the default page;
-  
-  
-  useEffect(() => {//displays the current page
-    displayPage(currentPage);//should create a new empty page if it can't find an existing one by that name
-    console.log("basicEditor3.useEffect says:","\ncurrent page:", currentPage, "\n", pages);
-  },[currentPage, pages])
+  const isPagesFetched = useRef(false);
   
   useEffect(() => {//retrieve saved pages on component mount.
     retrievePagesFromLS();
-    return console.log("component unmounted");
   },[])
+
+  useEffect(() => {//displays the current page
+    displayPage(currentPage);
+  },[currentPage, pages])
   
   const baseFunctions = {
     deleteObject: function (id: string) {
@@ -146,28 +140,10 @@ function BasicEditor3() {
       )
       : []
   }
-  
-  // function saveSnapshotToLS(pageName: string) {
-  //   const snapshot = JSON.stringify(renderElements);
-  //   localStorage.setItem(pageName, snapshot);
-  // }
-
-  // function retrieveSnapshotFromLS(pageName: string) {
-  //   try {
-  //     const snapshot: RenderElement3[] = JSON.parse(localStorage.getItem(pageName));
-  //     const hydratedRenderElements = snapshot.map(element => {
-  //       const { id, renderElementName, position, content, style }: DataObject3 = element.data;
-  //       return hydrateRenderElement(id, renderElementName, position, content, style)
-  //     })
-  //     setRenderElements(hydratedRenderElements);
-  //   } catch (error) {
-  //     setRenderElements([]);
-  //     console.log(error);
-  //   }
-  // }
 
   function saveSnapshotToPages(pageName: string, pageElements?:RenderElement3[]) {
     const newPage = {name:pageName, renderElements}
+    console.log('render elements from saveSnapshotToPages:', renderElements)
     if(pageElements) newPage.renderElements = pageElements;
     if(isPages){
       const pageIndex = pages.findIndex(page => page.name === pageName);
@@ -175,10 +151,16 @@ function BasicEditor3() {
         setPages(prev => [...prev, newPage])
       }
       else{
-        // const newPages = [...pages];
-        // newPages[pageIndex].renderElements = renderElements;
+        const newPages = [...pages];
+        newPages[pageIndex].renderElements = renderElements;
         // setPages(newPages);
-        setPages(prev => [...prev.filter(page => page.name !== newPage.name), newPage]);
+        //why is this working properly without the setPages? Probably related to shallow copy behaviour.
+
+        // setPages(prev => [...prev.filter(page => page.name !== newPage.name), newPage]);
+        //when I use this line to save, it saves the former state, and requires two click to save properly.
+        //thats probably because the local save and ls save are run one after another in PageNav3
+        //and setPages does not have effect yet when save to ls is run, but in the former lines,
+        //due to shallow copy behaviour the pages are edited directly and not assigned by setPages
       }
     } 
     else {
@@ -187,6 +169,8 @@ function BasicEditor3() {
   }
 
   function savePagesToLS(){
+    console.log("savePagesToLS says:\nrender elements:", renderElements);
+    console.log("pages:",pages);
     const pagesSnapshot = JSON.stringify(pages);
     localStorage.setItem("pages", pagesSnapshot);
   }
@@ -194,8 +178,9 @@ function BasicEditor3() {
     try {
       const retrievedPages:BasicEditor3Page[] = JSON.parse(localStorage.getItem("pages"));
       const hydratedPages = retrievedPages.map(page => hydratePage(page));
-      console.log("basicEditor3.retrievePagesFromLS says:", hydratedPages)
+      // console.log("basicEditor3.retrievePagesFromLS says:", hydratedPages)
       setPages(hydratedPages);
+      isPagesFetched.current = true;
     } catch (error) {
       console.log("basicEditor3.retrievePagesFromLS caught an error an set renderElements to []")
       setRenderElements([]);
@@ -208,15 +193,12 @@ function BasicEditor3() {
     if(displayPageElements){
       setRenderElements(displayPageElements);
     }
-    else {//if there is no page of this name, generate a new empty one by that name.
-      saveSnapshotToPages(pageName, [])
-    }
   }
 
   return (
     <BasicEditorContext.Provider value={{ renderElements, baseFunctions }}>
       <div>BasicEditor3
-        {/* <button onClick={() => {retrievePagesFromLS()}}>Retrieve pages</button> */}
+        <button onClick={() => {retrievePagesFromLS()}}>Retrieve pages</button>
         <PageNav3 pages={pages} currentPage={currentPage} setCurrentPage={setCurrentPage} saveSnapshotToPages={saveSnapshotToPages} savePagesToLS={savePagesToLS}/>
         {/* <div>
           <button onClick={() => saveSnapshotToLS(slots.slot1)}>save snapshot to slot1</button>

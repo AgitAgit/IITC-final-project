@@ -17,7 +17,7 @@ function PageNav3({pages, currentPage, setCurrentPage, saveSnapshotToPages, save
     function handleAddPage(){
         if(!inputRef.current) return;
         const newPageName = inputRef.current.value;
-        if(!newPageName) return;
+        if(!newPageName || newPageName === '') return;
         saveSnapshotToPages(newPageName, []);
         savePagesToLS();
         inputRef.current.value = '';
