@@ -45,7 +45,7 @@ const SignUp = () => {
   const { mutate, isLoading }: any = useMutation({
     mutationFn: (data: SignUpData) => signUpService(data),
     onSuccess: () => {
-      navigate("/");
+      window.location.href = "/";
     },
     onError: (err: any) => {
       if (err?.message === "Email is already registered.") {
