@@ -1,9 +1,9 @@
-import React, { type ReactNode, useState, useEffect, useRef } from 'react'
+import React, { type ReactNode, useState, useEffect, useRef, useContext } from 'react'
 
 import { type DataObject3, DataObject3Content, DataObject3Style, RenderElement3, BaseFunctions, RenderElementNames } from './BasicEditor3Types'
 import { Position } from '../basicEditor/basicEditorTypes'
-import { ColorRectangle3 } from './BasicEditor3Components'
-import { BlockEditor3 } from './BlockEditor3';
+import BlockEditor3 from './BlockEditor3';
+import { BasicEditorContext } from './basicEditor3';
 
 // interface Props {
 //   element: React.ComponentType<any>; // Type for the dynamic component
@@ -20,12 +20,12 @@ import { BlockEditor3 } from './BlockEditor3';
 
 export type DraggableFrame3Props = {
     renderElement: RenderElement3
-    baseFunctions: BaseFunctions
 }
 
-function DraggableFrame3({ renderElement, baseFunctions }: DraggableFrame3Props) {
+function DraggableFrame3({ renderElement }: DraggableFrame3Props) {
     const [position, setPosition] = useState<Position>(renderElement.data.position);
     const [displayEditButtons, setDisplayEditButtons] = useState(false);
+    const { baseFunctions } = useContext(BasicEditorContext)
     const divRef = useRef();
 
     useEffect(() => {
@@ -57,12 +57,16 @@ function DraggableFrame3({ renderElement, baseFunctions }: DraggableFrame3Props)
         baseFunctions.deleteObject(renderElement.data.id);
     }
 
-    function toggleDisplayEditButtons(){
+    function toggleDisplayEditButtons() {
         setDisplayEditButtons(prev => !prev);
     }
 
     return (
         <>
+            {
+                displayEditButtons && divRef.current &&
+                <BlockEditor3 blockId={renderElement.data.id} blockRect={divRef.current.getBoundingClientRect()} />
+            }
             <div
                 ref={divRef}
                 onMouseDown={handleMouseDown}

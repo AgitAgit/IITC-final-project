@@ -1,44 +1,51 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
+import { BasicEditorContext } from './basicEditor3'
 
-function BlockEditor3() {
-    const [editButtonsDisplay, setEditButtonsDisplay] = useState('none')
+export type BlockEditor3Props = {
+    blockId: string
+    blockRect: DOMRect
+}
+
+function BlockEditor3({ blockId, blockRect }: BlockEditor3Props) {
+    const { baseFunctions } = useContext(BasicEditorContext);
+    const [editFormVisibility, setEditFormVisibility] = useState(false);
 
     const editButtonsStyle = {
-        display: editButtonsDisplay,
         position: 'absolute',
-        left: position.x,
-        top: position.y - 25
+        left: blockRect.left,
+        top: blockRect.top - 25
     }
 
-    function toggleDisplayEditButtons() {
-        console.log(editButtonsDisplay)
-        if (editButtonsDisplay === 'none') {
-            setEditButtonsDisplay('block');
-        }
-        else {
-            setEditButtonsDisplay('none');
-        }
+    const editFormStyle = {
+        position: 'absolute',
+        left: 5 + blockRect.right,
+        top: blockRect.y,
+        zIndex: 10
     }
 
+    function handleEditClick() {
+        setEditFormVisibility(prev => !prev);
+    }
+
+    function handleDeleteClick() {
+        baseFunctions.deleteObject(blockId);
+    }
 
     return (
         <div>
             <div
                 style={editButtonsStyle}>
                 <button onClick={handleEditClick}>EDIT</button>
-                <button onClick={handleDelete}>DELETE</button>
+                <button onClick={handleDeleteClick}>DELETE</button>
             </div>
-            <div
-                style={{
-                    position: 'absolute',
-                    left: 5 + divRef.current.getBoundingClientRect().right,
-                    top: position.y,
-                    zIndex: 10
-                    // backgroundColor:'white'
-                }}>
-                <button>Content</button>
-                <button>Design</button>
-            </div>
+            {
+                editFormVisibility &&
+                <div
+                    style={editFormStyle}>
+                    <button>Content</button>
+                    <button>Design</button>
+                </div>
+            }
         </div>
     )
 }
