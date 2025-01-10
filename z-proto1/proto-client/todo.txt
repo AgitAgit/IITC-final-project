@@ -21,6 +21,30 @@ I need to edit editableText and ButtonRandom so the receive props with content.
 basic editor3
 pass the renderElements data through useContext? I still need to pass the id to the component...
 
+basic editor 3pro
+General aim:
+0. Update the data structure so it looks  like figure 1.
+1. Cover 5 basic blocks in addition to the navigation/social blocks
+2. Imitate the style of the squareSpace editor
+3. Integrage with the back to save and retrieve a user's websites.
+
+figure 1.
+Website {
+    Page {
+        Header{
+            image/logo block
+            navigation blocks
+        }
+        Body{
+            blocks(5 different options)
+        }
+        Footer{
+            navigation blocks
+            social blocks
+        }
+    }
+}
+
 basic editor4
 General aim:
 0. Update the data structure of BasicEditor3 to fit the new data structure written below.
