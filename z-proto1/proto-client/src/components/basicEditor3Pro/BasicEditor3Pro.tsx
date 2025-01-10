@@ -9,6 +9,7 @@ import DraggableFrame3 from './DraggableFrame3Pro';
 import { RedRectangle3, ColorRectangle3, TextBox3, RedTextRectangle3 } from './BasicEditor3ProComponents';
 import { isEmpty } from './utils';
 import styles from './BasicEditor3ProStyles';
+import Header3 from './Header3';
 
 //goal 0. 
 // Update the data structure of BasicEditor3 to fit the new data structure:
@@ -29,12 +30,11 @@ import styles from './BasicEditor3ProStyles';
 // }
 
 //task
-//create a header element that is editable and serves to navigate the website
+//create a header element that is editable, saveable, retrieveable and serves to navigate the website
 
-//task -----------
+//task 
 //create a saving and retrieving website from LS functions.
 //create 2 different websites and toggle between them.
-
 
 
 // goal 1. 
@@ -53,7 +53,7 @@ import styles from './BasicEditor3ProStyles';
 
 export const BasicEditorContext = createContext<BasicEditorContextType>({});
 
-function BasicEditor3() {
+function BasicEditor3Pro() {
   const [editMode, setEditMode] = useState(false);
   const [websites, setWebsites] = useState<BasicEditor3Website[]>([]);
 
@@ -205,6 +205,7 @@ function BasicEditor3() {
           <button onClick={() => addRenderElement(RenderElementNames.color_rectangle3)}>+ColorRectangle3</button>
           <button onClick={() => addRenderElement(RenderElementNames.text_box3)}>+TextBox3</button>
         </div>
+        <Header3 pages={pages} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
         <div>
           {mapRenderElements()}
         </div>
@@ -213,4 +214,4 @@ function BasicEditor3() {
   )
 }
 
-export default BasicEditor3
+export default BasicEditor3Pro
