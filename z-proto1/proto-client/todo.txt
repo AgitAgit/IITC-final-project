@@ -28,6 +28,8 @@ General aim:
 2. Imitate the style of the squareSpace editor
 3. Integrage with the back to save and retrieve a user's websites.
 
+//what about login functionality to the user built website?
+
 figure 1.
 Website {
     Page {

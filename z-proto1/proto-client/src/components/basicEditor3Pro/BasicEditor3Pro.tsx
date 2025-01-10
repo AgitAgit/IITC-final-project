@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, ReactNode, useContext, createContex
 import { v4 as uuidv4 } from 'uuid';
 
 import { type Position } from '../basicEditor/basicEditorTypes'
-import { DataObject3Content, DataObject3Style, DataObject3, RenderElement3, RenderElementNames, BasicEditorContextType, BasicEditor3Page } from './BasicEditor3ProTypes';
+import { DataObject3Content, DataObject3Style, DataObject3, RenderElement3, RenderElementNames, BasicEditorContextType, BasicEditor3Page, BasicEditor3Website } from './BasicEditor3ProTypes';
 
 import PageNav3 from './PageNav3Pro';
 import DraggableFrame3 from './DraggableFrame3Pro';
@@ -13,47 +13,65 @@ import styles from './BasicEditor3ProStyles';
 //goal 0. 
 // Update the data structure of BasicEditor3 to fit the new data structure:
 // Website {
-//   Page {
+//    
 //       Header{
 //           image/logo block
 //           navigation blocks
 //       }
-//       Body{
+//       Page(s){
 //           blocks(5 different options)
 //       }
 //       Footer{
 //           navigation blocks
 //           social blocks
 //       }
-//   }
+//   
 // }
+
+//task
+//create a header element that is editable and serves to navigate the website
+
+//task -----------
+//create a saving and retrieving website from LS functions.
+//create 2 different websites and toggle between them.
+
+
 
 // goal 1. 
 // Cover as 7 of the basic editor blocks functionality an unique editors if they exist.
+
+
 // goal 2. 
 // Imitiate the style of the squarespace editor.
+
+
 // goal 3. 
 // Save a few full websites and integrage with the back for saving and retrieving them.
+//task
+//create editor mode. the components should not be editable/moveable when not in editor mode
 
 
 export const BasicEditorContext = createContext<BasicEditorContextType>({});
 
 function BasicEditor3() {
+  const [editMode, setEditMode] = useState(false);
+  const [websites, setWebsites] = useState<BasicEditor3Website[]>([]);
+
   const [pages, setPages] = useState<BasicEditor3Page[]>([])
   const [renderElements, setRenderElements] = useState<RenderElement3[]>([]);
   const [currentPage, setCurrentPage] = useState<string>("Home");
   const isPages = !(pages.length === 0);
   const isRenderElements = !(renderElements.length === 0);
   const isPagesFetched = useRef(false);
-  
+
   useEffect(() => {//retrieve saved pages on component mount.
     retrievePagesFromLS();
-  },[])
+  }, [])
 
   useEffect(() => {//displays the current page
     displayPage(currentPage);
-  },[currentPage, pages])
-  
+  }, [currentPage, pages])
+
   const baseFunctions = {
     deleteObject: function (id: string) {
       setRenderElements(prev => prev.filter(element => element.data.id !== id))
@@ -87,21 +105,21 @@ function BasicEditor3() {
     //hydrate start
     let body;
     if (renderElementName === RenderElementNames.red_rectangle3) {
-      if(isEmpty(style)) style=styles.default_red_rectangle_style;
-      body = <RedRectangle3 id={id}/>
+      if (isEmpty(style)) style = styles.default_red_rectangle_style;
+      body = <RedRectangle3 id={id} />
     }
     if (renderElementName === RenderElementNames.color_rectangle3) body = <ColorRectangle3 id={id} />
     if (renderElementName === RenderElementNames.text_box3) body = <TextBox3 id={id} />
     if (renderElementName === RenderElementNames.red_text_rectangle3) {
-      body = <RedTextRectangle3 id={id}/>
-      if(isEmpty(content)) content={ textContent:'Lorem Ipsum'}
+      body = <RedTextRectangle3 id={id} />
+      if (isEmpty(content)) content = { textContent: 'Lorem Ipsum' }
     }
     const newRenderElement: RenderElement3 = { data: { id, renderElementName, position, content, style }, body }
     //hydrate end
     return newRenderElement;
   }
 
-  function hydratePage(page:BasicEditor3Page){//recreates page components from page data
+  function hydratePage(page: BasicEditor3Page) {//recreates page components from page data
     page.renderElements = page.renderElements.map(element => {
       const { id, renderElementName, position, content, style }: DataObject3 = element.data;
       return hydrateRenderElement(id, renderElementName, position, content, style)
@@ -117,42 +135,35 @@ function BasicEditor3() {
       : []
   }
 
-  function saveSnapshotToPages(pageName: string, pageElements?:RenderElement3[]) {
-    const newPage = {name:pageName, renderElements}
+  function saveSnapshotToPages(pageName: string, pageElements?: RenderElement3[]) {
+    const newPage = { name: pageName, renderElements }
     console.log('render elements from saveSnapshotToPages:', renderElements)
-    if(pageElements) newPage.renderElements = pageElements;
-    if(isPages){
+    if (pageElements) newPage.renderElements = pageElements;
+    if (isPages) {
       const pageIndex = pages.findIndex(page => page.name === pageName);
-      if(pageIndex === -1){
+      if (pageIndex === -1) {
         setPages(prev => [...prev, newPage])
       }
-      else{
+      else {
         const newPages = [...pages];
         newPages[pageIndex].renderElements = renderElements;
         // setPages(newPages);
-        //why is this working properly without the setPages? Probably related to shallow copy behaviour.
-
-        // setPages(prev => [...prev.filter(page => page.name !== newPage.name), newPage]);
-        //when I use this line to save, it saves the former state, and requires two click to save properly.
-        //thats probably because the local save and ls save are run one after another in PageNav3
-        //and setPages does not have effect yet when save to ls is run, but in the former lines,
-        //due to shallow copy behaviour the pages are edited directly and not assigned by setPages
       }
-    } 
+    }
     else {
       setPages([newPage])
     }
   }
 
-  function savePagesToLS(){
+  function savePagesToLS() {
     console.log("savePagesToLS says:\nrender elements:", renderElements);
-    console.log("pages:",pages);
+    console.log("pages:", pages);
     const pagesSnapshot = JSON.stringify(pages);
     localStorage.setItem("pages", pagesSnapshot);
   }
-  function retrievePagesFromLS(){
+  function retrievePagesFromLS() {
     try {
-      const retrievedPages:BasicEditor3Page[] = JSON.parse(localStorage.getItem("pages"));
+      const retrievedPages: BasicEditor3Page[] = JSON.parse(localStorage.getItem("pages"));
       const hydratedPages = retrievedPages.map(page => hydratePage(page));
       // console.log("basicEditor3.retrievePagesFromLS says:", hydratedPages)
       setPages(hydratedPages);
@@ -164,18 +175,30 @@ function BasicEditor3() {
     }
   }
 
-  function displayPage(pageName:string){
+  function displayPage(pageName: string) {
     const displayPageElements = pages.find(page => page.name === pageName)?.renderElements
-    if(displayPageElements){
+    if (displayPageElements) {
       setRenderElements(displayPageElements);
     }
+  }
+
+  function saveWebsites() {
+
+  }
+
+  function retrieveWebsites() {
+
+  }
+
+  function displayWebsite(name:string) {
+
   }
 
   return (
     <BasicEditorContext.Provider value={{ renderElements, baseFunctions }}>
       <div>BasicEditor3
-        <button onClick={() => {retrievePagesFromLS()}}>Retrieve pages</button>
-        <PageNav3 pages={pages} currentPage={currentPage} setCurrentPage={setCurrentPage} saveSnapshotToPages={saveSnapshotToPages} savePagesToLS={savePagesToLS}/>
+        <button onClick={() => { retrievePagesFromLS() }}>Retrieve pages</button>
+        <PageNav3 pages={pages} currentPage={currentPage} setCurrentPage={setCurrentPage} saveSnapshotToPages={saveSnapshotToPages} savePagesToLS={savePagesToLS} />
         <div>
           <button onClick={() => addRenderElement(RenderElementNames.red_rectangle3)}>+RedRectangle3</button>
           <button onClick={() => addRenderElement(RenderElementNames.red_text_rectangle3)}>+RedTextRectangle3</button>

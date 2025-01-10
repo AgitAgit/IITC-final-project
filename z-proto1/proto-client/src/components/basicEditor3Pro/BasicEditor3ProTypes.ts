@@ -2,7 +2,8 @@ import { ReactNode, ComponentType } from "react";
 import { Position } from "../basicEditor/basicEditorTypes";
 
 export type BasicEditor3User = {
-    
+    mongoId:string
+    username:string
 }
 
 export type DataObject3Content = {
@@ -32,15 +33,16 @@ export type BasicEditor3Page = {
 }
 
 export type BasicEditor3Header = {
-    renderElements:RenderElement3[]
+    // renderElements:RenderElement3[]
 }
 
 export type BasicEditor3Footer = {
-    renderElements:RenderElement3[]
+    // renderElements:RenderElement3[]
 }
 
 export type BasicEditor3Website = {
     owner:BasicEditor3User
+    name:string
     header:BasicEditor3Header
     pages:BasicEditor3Page[]
     footer:BasicEditor3Footer
