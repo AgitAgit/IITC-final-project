@@ -54,7 +54,9 @@ import Header3 from './Header3';
 export const BasicEditorContext = createContext<BasicEditorContextType>({});
 
 function BasicEditor3Pro() {
-  const [editMode, setEditMode] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(true);
+  const [headerEditMode, setHeaderEditMode] = useState(false);
+
   const [websites, setWebsites] = useState<BasicEditor3Website[]>([]);
 
   const [pages, setPages] = useState<BasicEditor3Page[]>([])
@@ -190,14 +192,16 @@ function BasicEditor3Pro() {
 
   }
 
-  function displayWebsite(name:string) {
+  function displayWebsite(name: string) {
 
   }
 
   return (
-    <BasicEditorContext.Provider value={{ renderElements, baseFunctions }}>
+    <BasicEditorContext.Provider value={{ renderElements, baseFunctions, isEditMode }}>
       <div>BasicEditor3
-        <button onClick={() => { retrievePagesFromLS() }}>Retrieve pages</button>
+        {/* <button onClick={() => { retrievePagesFromLS() }}>Retrieve pages</button> */}
+        <button onClick={() => { setIsEditMode(prev => !prev) }}>toggle edit mode</button>
+        {isEditMode && <label style={{ border: '1px solid red' }}>edit mode on</label>}
         <PageNav3 pages={pages} currentPage={currentPage} setCurrentPage={setCurrentPage} saveSnapshotToPages={saveSnapshotToPages} savePagesToLS={savePagesToLS} />
         <div>
           <button onClick={() => addRenderElement(RenderElementNames.red_rectangle3)}>+RedRectangle3</button>
@@ -205,7 +209,7 @@ function BasicEditor3Pro() {
           <button onClick={() => addRenderElement(RenderElementNames.color_rectangle3)}>+ColorRectangle3</button>
           <button onClick={() => addRenderElement(RenderElementNames.text_box3)}>+TextBox3</button>
         </div>
-        <Header3 pages={pages} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
+        <Header3 pages={pages} currentPage={currentPage} setCurrentPage={setCurrentPage} headerEditMode={headerEditMode} setHeaderEditMode={setHeaderEditMode}/>
         <div>
           {mapRenderElements()}
         </div>
