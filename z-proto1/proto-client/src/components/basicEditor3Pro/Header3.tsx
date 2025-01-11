@@ -15,6 +15,10 @@ export type Header3Props = {
 
 export type Header3Data = {
     logo: { text: string, imgSrc: string }
+    pages:string[]
+    hasExtraButton:boolean
+    hasSocialLinks:boolean
+    hasAccount:boolean
     style: {
         headerStyle: { [key: string]: any }
         logoContainerStyle: { [key: string]: any }
@@ -28,13 +32,18 @@ export type Header3Data = {
 //when clicking outside of the header and it's editing buttons.
 
 //task
-//
+//create the Add Elements menu with the options to add social links, button, and account. DONE.
+//for now they will add placeholder elements without functionality. 
+// for now the checkbox design will remain defaultive
 
 //don't overdo the design now. focus on functionality.
 function Header3({ pages, currentPage, setCurrentPage, headerEditMode, setHeaderEditMode, data }: Header3Props) {
     //will depend on current screen width?
     const { isEditMode } = useContext(BasicEditorContext);
     const [editButtonVisible, setEditButtonVisible] = useState(false);
+    const [ headerEditButtonsVisible, setHeaderEditButtonsVisible] = useState(false);
+    const [ addElementsMenuVisible, setAddElementsMenuVisible] = useState(false);
+    const [ editDesignMenuVisible, setEditDesignMenuVisible] = useState(false);
 
     const [isHamburger, setIsHamburger] = useState(false);
     const chosenPagesRef = useRef(pages.map(page => page.name));
@@ -98,6 +107,24 @@ function Header3({ pages, currentPage, setCurrentPage, headerEditMode, setHeader
         justifyContent: 'space-between'
     }
 
+    const menusContainerStyle = {
+        width:'100%',
+        display:'flex'
+    }
+
+    const addElementsMenuStyle = {
+        backgroundColor: 'white',
+        color:'black',
+        display:'flex',
+        flexDirection:'column'
+    }
+
+    const editDesignMenuStyle = {
+        marginLeft:'auto',
+        backgroundColor: 'white',
+        color:'black'
+    }
+
     function handleNavigateToPage(pageName: string) {
         setCurrentPage(pageName);
     }
@@ -118,14 +145,30 @@ function Header3({ pages, currentPage, setCurrentPage, headerEditMode, setHeader
     function cancelHeaderEditMode() {
         setHeaderEditMode(false);
         window.removeEventListener('click', cancelHeaderEditMode);
+        setAddElementsMenuVisible(false);
+        setEditDesignMenuVisible(false);
+    }
+
+    function handleEditSiteHeaderClick(){
+        setHeaderEditMode(true);
+        setHeaderEditButtonsVisible(true);
     }
 
     function handleAddHeaderElementsClick(e) {
         e.stopPropagation();
+        setHeaderEditButtonsVisible(false);
+        setAddElementsMenuVisible(true);
     }
 
     function handleEditHeaderDesignClick(e) {
         e.stopPropagation();
+        setHeaderEditButtonsVisible(false);
+        setEditDesignMenuVisible(true);
+    }
+
+    function handleToggleElement(e, elementName){
+        e.stopPropagation();
+        const checked = e.target.checked;
     }
 
     return (
@@ -133,7 +176,7 @@ function Header3({ pages, currentPage, setCurrentPage, headerEditMode, setHeader
             <div onMouseEnter={handleHeaderMouseEnter} onMouseLeave={handleHeaderMouseLeave} style={headerStyle}>
                 {editButtonVisible && !headerEditMode &&
                     <div style={overlayStyle}>
-                        <button style={overlayButtonStyle} onClick={() => { setHeaderEditMode(true) }}>EDIT SITE HEADER</button>
+                        <button style={overlayButtonStyle} onClick={handleEditSiteHeaderClick}>EDIT SITE HEADER</button>
                     </div>
                 }
                 <div style={logoContainerStyle}>
@@ -153,12 +196,35 @@ function Header3({ pages, currentPage, setCurrentPage, headerEditMode, setHeader
                     }
                 </div>
             </div>
-            {headerEditMode &&
+            {headerEditMode && headerEditButtonsVisible &&
                 <div style={headerEditButtonsContainerStyle}>
                     <button onClick={(e) => handleAddHeaderElementsClick(e)}>ADD ELEMENTS</button>
                     <button onClick={(e) => handleEditHeaderDesignClick(e)}>EDIT DESIGN</button>
                 </div>
             }
+            <div style={menusContainerStyle}>
+                {addElementsMenuVisible && headerEditMode && 
+                <div style={addElementsMenuStyle}>
+                    <label>
+                        Button
+                        <input type='checkbox' onChange={(e) => handleToggleElement(e, 'button')}></input>
+                    </label>
+                    <label>
+                        Social Links
+                        <input type='checkbox' onChange={(e) => handleToggleElement(e, 'social_links')}></input>
+                    </label>
+                    <label>
+                        Account
+                        <input type='checkbox' onChange={(e) => handleToggleElement(e, 'account')}></input>
+                    </label>
+                    </div>
+                }
+                {editDesignMenuVisible && headerEditMode &&
+                    <div style={editDesignMenuStyle}>
+                        this is the edit design menu
+                    </div>
+                }
+            </div>
         </>
     )
 }
