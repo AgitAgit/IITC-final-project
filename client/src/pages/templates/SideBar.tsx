@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Sidebar,
   SidebarContent,
@@ -61,6 +62,16 @@ const items = [
 ];
 
 export function AppSidebar({ markedTypes, setMarkedTypes }: AppSidebarProps) {
+  const navigate = useNavigate();
+  const [favorites, setFavorites] = useState<Favorite[]>([]);
+
+  useEffect(() => {
+    const storedFavorites = JSON.parse(
+      localStorage.getItem("favorites") || "[]"
+    );
+    setFavorites(storedFavorites);
+  }, []);
+
   // Function to toggle the mark state of types
   const toggleTypeMark = (title: string): void => {
     setMarkedTypes((prev) => ({
@@ -70,13 +81,15 @@ export function AppSidebar({ markedTypes, setMarkedTypes }: AppSidebarProps) {
   };
 
   return (
-    <Sidebar className="absolute p-4 w-64 bg-gray-100 h-full">
+    <Sidebar className="absolute p-4 py-8 w-64 bg-transparent h-full">
       <SidebarContent>
         {items.map((group) => (
           <SidebarGroup key={group.category}>
+            {group.category === "Topic" && <hr className="my-12" />}
             <SidebarGroupLabel className="font-bold text-black text-lg mb-5">
               {group.category}
             </SidebarGroupLabel>
+
             <SidebarGroupContent>
               <SidebarMenu>
                 {group.filters.map((filter) => (
@@ -114,6 +127,25 @@ export function AppSidebar({ markedTypes, setMarkedTypes }: AppSidebarProps) {
             </SidebarGroupContent>
           </SidebarGroup>
         ))}
+        <hr className="my-8" />
+        <div
+          onClick={() => navigate("/my-favorites")}
+          className="flex items-center justify-evenly px-2 mb-6 cursor-pointer hover:bg-gray-100"
+        >
+          <h3 className="text-lg font-bold text-black">
+            My Favorites ({favorites.length})
+          </h3>
+          <span
+            className={`relative transition-colors duration-300 text-3xl text-transparent
+            }`}
+            style={{
+              WebkitTextStroke: "2px black",
+              zIndex: 20, // Ensure the heart icon is on top
+            }}
+          >
+            ♥
+          </span>
+        </div>
       </SidebarContent>
     </Sidebar>
   );

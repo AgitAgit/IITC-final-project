@@ -6,7 +6,7 @@ import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import TemplatesPage from "./pages/Templates";
 import Profile from "./pages/Profile";
-
+import Favorites from "./pages/Favorites";
 import "./App.css";
 
 function App() {
@@ -39,6 +39,10 @@ function App() {
     {
       path: "/signup",
       element: <SignUp />,
+    },
+    {
+      path: "/my-favorites",
+      element: <Favorites />,
     },
   ]);
 
