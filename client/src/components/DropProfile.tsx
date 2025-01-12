@@ -71,11 +71,12 @@ function ProfileDropdown({ isMenuOpen }: ProfileDropdownProps) {
                 src={userData.user.profileImage}
               />
             ) : (
-              <span className="text-white font-bold text-2xl ">
+              <span className="w-10 h-10 rounded-full bg-black text-white font-bold text-2xl flex items-center justify-center pb-1">
                 {userData?.user?.firstName?.charAt(0).toUpperCase()}
               </span>
             )}
           </span>
+
           <span
             className={`ml-2 w-3 h-3 border-solid border-t-2 border-r-2 border-transparent border-white transform ${
               isOpen ? "rotate-135" : "rotate-45"
