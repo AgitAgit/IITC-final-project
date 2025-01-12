@@ -33,8 +33,7 @@ export type Wrapper3ProProps = {
 function Wrapper3Pro({ currentUser = defaultUser }: Wrapper3ProProps) {
 
     const [websites, setWebsites] = useState<BasicEditor3Website[]>([defaultWebsite]);
-    const [currentWebsite, setCurrentWebsite] = useState<string>(websites[0].name);
-    const websiteToPass = websites.find(website => website.name = currentWebsite);
+    const [currentWebsite, setCurrentWebsite] = useState<BasicEditor3Website>(websites[0]);
 
     function saveChangesToCurrentWebsite(newWebsite: BasicEditor3Website) {
         if (websites.length > 0) {
@@ -84,8 +83,8 @@ function Wrapper3Pro({ currentUser = defaultUser }: Wrapper3ProProps) {
 
     return (
         <>
-        
-        <BasicEditor3Pro websites={websites} website={websiteToPass} setCurrentWebsite={setCurrentWebsite} />
+
+        <BasicEditor3Pro websites={websites} currentWebsite={currentWebsite} setCurrentWebsite={setCurrentWebsite} />
         </>
     )
 }

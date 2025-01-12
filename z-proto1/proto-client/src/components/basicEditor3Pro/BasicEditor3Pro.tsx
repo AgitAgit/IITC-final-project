@@ -58,20 +58,20 @@ import Header3, { Header3Data } from './Header3';
 
 
 export type BasicEditor3ProProps = {
-  websites: BasicEditor3Website[]
-  website: BasicEditor3Website
-  setCurrentWebsite:Dispatch<SetStateAction<string>>
+  // websites: BasicEditor3Website[]
+  currentWebsite: BasicEditor3Website
+  // setCurrentWebsite:Dispatch<SetStateAction<string>>
 }
 
 export const BasicEditorContext = createContext<BasicEditorContextType>({});
 
-function BasicEditor3Pro({ websites, website, setCurrentWebsite }: BasicEditor3ProProps) {
+function BasicEditor3Pro({ currentWebsite }: BasicEditor3ProProps) {
   const [isEditMode, setIsEditMode] = useState(true);
   const [headerEditMode, setHeaderEditMode] = useState(false);
 
   // const [websites, setWebsites] = useState<BasicEditor3Website[]>([]);
 
-  const [headerData, setHeaderData] = useState(website.headerData);
+  const [headerData, setHeaderData] = useState(currentWebsite.headerData);
   const [pages, setPages] = useState<BasicEditor3Page[]>([])
   const [currentPage, setCurrentPage] = useState<string>("Home");
   const [renderElements, setRenderElements] = useState<RenderElement3[]>([]);
@@ -194,7 +194,7 @@ function BasicEditor3Pro({ websites, website, setCurrentWebsite }: BasicEditor3P
   }
 
   function displayWebsite(name: string) {
-
+    
   }
 
   return (
