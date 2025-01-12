@@ -36,8 +36,11 @@ export type Header3Data = {
 //create the Add Elements menu with the options to add social links, button, and account.
 //for now they will add placeholder elements without functionality. 
 
+//task DONE.
+//save and retrieve preferences for the header to LS and recreate it on app start.(minimally);
+
 //task
-//save and retrieve preferences for the header to LS and recreate it on app start.
+//Add some design editing capabilities to the design menu.
 
 //don't overdo the design now. focus on functionality.
 function Header3({ pages, currentPage, setCurrentPage, headerEditMode, setHeaderEditMode, data, setData }: Header3Props) {

@@ -29,11 +29,14 @@ import Header3, { Header3Data } from './Header3';
 //   
 // }
 
-//task
-//create a header element that is editable, saveable, retrievable and serves to navigate the website
+//task DONE.
+//create a basic header element that is editable, saveable, retrievable and serves to navigate the website
 
 //task 
-//create a saving and retrieving website from LS functions.
+//create a saving and retrieving website from LS functions. 
+// (the editor should only deal with one website at a time. choosing the current website and switching
+//websites is an outside function...)
+
 //create 2 different websites and toggle between them.
 
 
@@ -51,6 +54,10 @@ import Header3, { Header3Data } from './Header3';
 //create editor mode. the components should not be editable/moveable when not in editor mode
 
 
+export type BasicEditor3ProProps = {
+  website:BasicEditor3Website
+}
+
 export const BasicEditorContext = createContext<BasicEditorContextType>({});
 
 const defaultHeaderData:Header3Data = {
@@ -62,16 +69,26 @@ const defaultHeaderData:Header3Data = {
   style:{ headerStyle:{}, logoContainerStyle:{}, navContainerStyle:{}, navItemStyle:{}}
 }
 
-function BasicEditor3Pro() {
+const defaultWebsite:BasicEditor3Website = {
+  owner:{ mongoId:'1234abcd', username:'user1'},
+  name:'defaultWebsite1',
+  headerData:defaultHeaderData,
+  pages:[{name:"Home2", renderElements:[]}],
+  footerData:{}
+}
+
+function BasicEditor3Pro({ website = defaultWebsite  }:BasicEditor3ProProps) {
   const [isEditMode, setIsEditMode] = useState(true);
   const [headerEditMode, setHeaderEditMode] = useState(false);
 
-  const [websites, setWebsites] = useState<BasicEditor3Website[]>([]);
+  // const [websites, setWebsites] = useState<BasicEditor3Website[]>([]);
 
-  const [headerData, setHeaderData] = useState(defaultHeaderData);
+  const [currentWebsite, setCurrentWebsite] = useState<BasicEditor3Website>(website)
+  const [headerData, setHeaderData] = useState(website.headerData);
   const [pages, setPages] = useState<BasicEditor3Page[]>([])
-  const [renderElements, setRenderElements] = useState<RenderElement3[]>([]);
   const [currentPage, setCurrentPage] = useState<string>("Home");
+  const [renderElements, setRenderElements] = useState<RenderElement3[]>([]);
+
   const isPages = !(pages.length === 0);
   const isRenderElements = !(renderElements.length === 0);
   const isPagesFetched = useRef(false);
@@ -194,6 +211,19 @@ function BasicEditor3Pro() {
     }
   }
 
+  function saveHeaderToLS(){
+    localStorage.setItem("headerData", JSON.stringify(headerData));
+  }
+
+  function retrieveHeaderFromLS(){
+    try {
+      const headerDataString = localStorage.getItem("headerData");
+      if(headerDataString) setHeaderData(JSON.parse(headerDataString));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   function saveWebsites() {
 
   }
@@ -211,6 +241,9 @@ function BasicEditor3Pro() {
       <div>BasicEditor3
         {/* <button onClick={() => { retrievePagesFromLS() }}>Retrieve pages</button> */}
         <button onClick={() => { setIsEditMode(prev => !prev) }}>toggle edit mode</button>
+        <button onClick={saveHeaderToLS}>save header data</button>
+        <button onClick={retrieveHeaderFromLS}>retrieve header data</button>
+
         {isEditMode && <label style={{ border: '1px solid red' }}>edit mode on</label>}
         <PageNav3 pages={pages} currentPage={currentPage} setCurrentPage={setCurrentPage} saveSnapshotToPages={saveSnapshotToPages} savePagesToLS={savePagesToLS} />
         <div>
