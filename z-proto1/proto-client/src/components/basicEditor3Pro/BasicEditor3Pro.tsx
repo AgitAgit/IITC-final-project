@@ -7,7 +7,7 @@ import { DataObject3Content, DataObject3Style, DataObject3, RenderElement3, Rend
 import PageNav3 from './PageNav3Pro';
 import DraggableFrame3 from './DraggableFrame3Pro';
 import { RedRectangle3, ColorRectangle3, TextBox3, RedTextRectangle3 } from './BasicEditor3ProComponents';
-import { isEmpty } from './utils';
+import { isEmpty, hydrateRenderElement, hydratePage } from './utils';
 import styles from './BasicEditor3ProStyles';
 import Header3, { Header3Data } from './Header3';
 
@@ -36,7 +36,10 @@ import Header3, { Header3Data } from './Header3';
 //create a saving and retrieving website from LS functions. 
 // (the editor should only deal with one website at a time. choosing the current website and switching
 //websites is an outside function...)
+//subtask: DONE.
+//move the hydration functions to the utils file
 
+//task
 //create 2 different websites and toggle between them.
 
 
@@ -113,32 +116,6 @@ function BasicEditor3Pro({ websites, website, setCurrentWebsite }: BasicEditor3P
     }
   }
 
-  //recreates The RenderElement's component part from it's data part.
-  function hydrateRenderElement(id: string, renderElementName: RenderElementNames, position: Position = { x: 50, y: 50 }, content: DataObject3Content = {}, style: DataObject3Style = {}) {
-    //hydrate start
-    let body;
-    if (renderElementName === RenderElementNames.red_rectangle3) {
-      if (isEmpty(style)) style = styles.default_red_rectangle_style;
-      body = <RedRectangle3 id={id} />
-    }
-    if (renderElementName === RenderElementNames.color_rectangle3) body = <ColorRectangle3 id={id} />
-    if (renderElementName === RenderElementNames.text_box3) body = <TextBox3 id={id} />
-    if (renderElementName === RenderElementNames.red_text_rectangle3) {
-      body = <RedTextRectangle3 id={id} />
-      if (isEmpty(content)) content = { textContent: 'Lorem Ipsum' }
-    }
-    const newRenderElement: RenderElement3 = { data: { id, renderElementName, position, content, style }, body }
-    //hydrate end
-    return newRenderElement;
-  }
-
-  function hydratePage(page: BasicEditor3Page) {//recreates page components from page data
-    page.renderElements = page.renderElements.map(element => {
-      const { id, renderElementName, position, content, style }: DataObject3 = element.data;
-      return hydrateRenderElement(id, renderElementName, position, content, style)
-    })
-    return page;
-  }
 
   function mapRenderElements(): ReactNode[] {
     return isRenderElements ?
