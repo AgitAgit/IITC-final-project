@@ -139,7 +139,7 @@ export function AppSidebar({ markedTypes, setMarkedTypes }: AppSidebarProps) {
                           <div
                             className={`w-5 h-5 mr-3 border-2 rounded-sm flex items-center justify-center ${
                               markedTypes[filter.title]
-                                ? "border-black bg-black text-white"
+                                ? "border-black"
                                 : "border-gray-400"
                             }`}
                           >
