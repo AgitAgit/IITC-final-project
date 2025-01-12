@@ -13,6 +13,7 @@ function BlockEditor3({ blockId, blockRect }: BlockEditor3Props) {
     const [contentMode, setContentMode] = useState(true);
     const textContentInputRef = useRef();
     const backgroundColors = ["white", "black", "gray", "red", "green", "blue", "yellow"];
+    const fixedHeights = ["1rem", "2rem", "3rem", "4rem"];
 
     const editButtonsStyle = {
         position: 'absolute',
@@ -95,6 +96,9 @@ function BlockEditor3({ blockId, blockRect }: BlockEditor3Props) {
                             <br></br>
                             <select defaultValue={element.data.style.color} onChange={(e) => updateStyle("color", e.target.value)}>
                                 {backgroundColors.map(color => <option key={color} value={color}>{color}</option>)}
+                            </select>
+                            <select onChange={(e) => updateStyle("height", e.target.value)}>
+                                {fixedHeights.map(height => <option>{height}</option>)}
                             </select>
                         </div>
                     }
