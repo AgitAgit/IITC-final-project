@@ -32,9 +32,12 @@ export type Header3Data = {
 //Make a header editing mode. It will turn on when clicking the edit header button, and turn off
 //when clicking outside of the header and it's editing buttons.
 
-//task
+//task DONE
 //create the Add Elements menu with the options to add social links, button, and account.
 //for now they will add placeholder elements without functionality. 
+
+//task
+//save and retrieve preferences for the header to LS and recreate it on app start.
 
 //don't overdo the design now. focus on functionality.
 function Header3({ pages, currentPage, setCurrentPage, headerEditMode, setHeaderEditMode, data, setData }: Header3Props) {
@@ -48,10 +51,6 @@ function Header3({ pages, currentPage, setCurrentPage, headerEditMode, setHeader
     const [isHamburger, setIsHamburger] = useState(false);
     // const chosenPagesRef = useRef(pages.map(page => page.name));
     // const [chosenPages, setChosenPages] = useState(pages.map(page => page.name));
-
-    //why are chosen pages not rendered on refresh but are rendered on save?
-    //will the original way I did it work okay? Or is it a problem with fetching from
-    //local storage or something else entirely?
 
     const pageNames = pages.map(page => page.name);
     const inputRef = useRef<HTMLInputElement>();

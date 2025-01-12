@@ -30,7 +30,7 @@ import Header3, { Header3Data } from './Header3';
 // }
 
 //task
-//create a header element that is editable, saveable, retrieveable and serves to navigate the website
+//create a header element that is editable, saveable, retrievable and serves to navigate the website
 
 //task 
 //create a saving and retrieving website from LS functions.
