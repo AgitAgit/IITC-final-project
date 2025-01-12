@@ -1,4 +1,4 @@
-import { ReactNode, ComponentType } from "react";
+import { ReactNode, ComponentType, Dispatch, SetStateAction } from "react";
 import { Position } from "../basicEditor/basicEditorTypes";
 import { Header3Data } from "./Header3";
 import { Footer3Data } from "./Footer3";

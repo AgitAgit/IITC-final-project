@@ -40,7 +40,7 @@ export type Header3Data = {
 //save and retrieve preferences for the header to LS and recreate it on app start.(minimally);
 
 //task
-//Add some design editing capabilities to the design menu.
+//Add some design editing capabilities to the design menu
 
 //don't overdo the design now. focus on functionality.
 function Header3({ pages, currentPage, setCurrentPage, headerEditMode, setHeaderEditMode, data, setData }: Header3Props) {

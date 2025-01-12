@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, ReactNode, useContext, createContext } from 'react'
+import React, { useState, useRef, useEffect, ReactNode, useContext, createContext, Dispatch, SetStateAction } from 'react'
 import { v4 as uuidv4 } from 'uuid';
 
 import { type Position } from '../basicEditor/basicEditorTypes'
@@ -55,35 +55,19 @@ import Header3, { Header3Data } from './Header3';
 
 
 export type BasicEditor3ProProps = {
-  website:BasicEditor3Website
+  websites: BasicEditor3Website[]
+  website: BasicEditor3Website
+  setCurrentWebsite:Dispatch<SetStateAction<string>>
 }
 
 export const BasicEditorContext = createContext<BasicEditorContextType>({});
 
-const defaultHeaderData:Header3Data = {
-  logo:{ text:"LOGO1", imgSrc:null},
-  pages:[],
-  hasExtraButton:false,
-  hasSocialLinks:false,
-  hasAccount:true,
-  style:{ headerStyle:{}, logoContainerStyle:{}, navContainerStyle:{}, navItemStyle:{}}
-}
-
-const defaultWebsite:BasicEditor3Website = {
-  owner:{ mongoId:'1234abcd', username:'user1'},
-  name:'defaultWebsite1',
-  headerData:defaultHeaderData,
-  pages:[{name:"Home2", renderElements:[]}],
-  footerData:{}
-}
-
-function BasicEditor3Pro({ website = defaultWebsite  }:BasicEditor3ProProps) {
+function BasicEditor3Pro({ websites, website, setCurrentWebsite }: BasicEditor3ProProps) {
   const [isEditMode, setIsEditMode] = useState(true);
   const [headerEditMode, setHeaderEditMode] = useState(false);
 
   // const [websites, setWebsites] = useState<BasicEditor3Website[]>([]);
 
-  const [currentWebsite, setCurrentWebsite] = useState<BasicEditor3Website>(website)
   const [headerData, setHeaderData] = useState(website.headerData);
   const [pages, setPages] = useState<BasicEditor3Page[]>([])
   const [currentPage, setCurrentPage] = useState<string>("Home");
@@ -211,14 +195,14 @@ function BasicEditor3Pro({ website = defaultWebsite  }:BasicEditor3ProProps) {
     }
   }
 
-  function saveHeaderToLS(){
+  function saveHeaderToLS() {
     localStorage.setItem("headerData", JSON.stringify(headerData));
   }
 
-  function retrieveHeaderFromLS(){
+  function retrieveHeaderFromLS() {
     try {
       const headerDataString = localStorage.getItem("headerData");
-      if(headerDataString) setHeaderData(JSON.parse(headerDataString));
+      if (headerDataString) setHeaderData(JSON.parse(headerDataString));
     } catch (error) {
       console.log(error);
     }
@@ -252,7 +236,7 @@ function BasicEditor3Pro({ website = defaultWebsite  }:BasicEditor3ProProps) {
           <button onClick={() => addRenderElement(RenderElementNames.color_rectangle3)}>+ColorRectangle3</button>
           <button onClick={() => addRenderElement(RenderElementNames.text_box3)}>+TextBox3</button>
         </div>
-        <Header3 pages={pages} currentPage={currentPage} setCurrentPage={setCurrentPage} headerEditMode={headerEditMode} setHeaderEditMode={setHeaderEditMode} data={headerData} setData={setHeaderData}/>
+        <Header3 pages={pages} currentPage={currentPage} setCurrentPage={setCurrentPage} headerEditMode={headerEditMode} setHeaderEditMode={setHeaderEditMode} data={headerData} setData={setHeaderData} />
         <div>
           {mapRenderElements()}
         </div>
