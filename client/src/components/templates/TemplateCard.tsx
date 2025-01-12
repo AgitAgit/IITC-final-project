@@ -48,7 +48,7 @@ const Card: React.FC<CardProps> = ({ title, type, imageUrl }) => {
         <h3 className="text-xl font-bold mt-5">{title}</h3>
         <button
           onClick={toggleHeart}
-          className="absolute right-4 border px-6 py-4 overflow-hidden group"
+          className="absolute right-0 border px-6 py-4 overflow-hidden group"
         >
           <span
             className="absolute inset-0 bg-gray-100 -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-in-out"
