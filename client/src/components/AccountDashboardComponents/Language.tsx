@@ -18,7 +18,7 @@ const LanguageSelector = () => {
   ];
 
   return (
-    <Card className="w-full max-w-md">
+    <Card className="w-full max-w-md p-4">
       <CardHeader>
         <CardTitle className="text-2xl font-bold">Language</CardTitle>
         <p className="text-gray-500">

@@ -57,7 +57,7 @@ const EmailPreferences = () => {
   ];
 
   return (
-    <Card className="w-full max-w-md">
+    <Card className="w-full max-w-md p-4">
       <CardHeader>
         <CardTitle className="text-2xl font-bold">Notifications</CardTitle>
         <div className="text-sm text-gray-500">EMAIL PREFERENCES</div>
