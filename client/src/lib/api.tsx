@@ -17,3 +17,11 @@ export const usersCliant = axios.create({
     Authorization: `Bearer ${getAuthTokenFromCookie()}`,
   },
 });
+
+export const siteCliant = axios.create({
+  baseURL: "http://localhost:3000/api/sites",
+  headers: {
+    Accept: "application/json",
+    Authorization: `Bearer ${getAuthTokenFromCookie()}`,
+  },
+});

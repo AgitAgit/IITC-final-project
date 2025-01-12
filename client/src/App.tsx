@@ -5,9 +5,10 @@ import Error from "./pages/Error";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import TemplatesPage from "./pages/Templates";
-import Profile from "./pages/Profile";
 import Favorites from "./pages/Favorites";
+import AccountDashboard from "./pages/AccountDashboard";
 import "./App.css";
+
 
 function App() {
   const router = createBrowserRouter([
@@ -30,11 +31,11 @@ function App() {
           path: "*",
           element: <Error />,
         },
-        {
-          path: "/profile",
-          element: <Profile />,
-        },
       ],
+    },
+    {
+      path: "/accountdashboard",
+      element: <AccountDashboard />,
     },
     {
       path: "/login",

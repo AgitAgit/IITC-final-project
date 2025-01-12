@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useUserProfile } from "../hooks/useUser";
-import { deleteToken } from "../lib/api";
+import { useUserProfile } from "../../hooks/useUser";
+import { deleteToken } from "../../lib/api";
+import ProfileDialog from "../../components/AccountDashboardComponents/ProfileDialog";
 
-function ProfileDropdown() {
+function DropDownUser() {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const navigate = useNavigate();
   const { data: userData } = useUserProfile();
+  const btnName = "Profile";
 
   useEffect(() => {
     setIsLoggedIn(!!userData);
@@ -26,27 +27,13 @@ function ProfileDropdown() {
     window.location.href = "/login";
   };
 
-  const handleClickProfile = () => {
-    setIsOpen(false);
-    navigate("/accountdashboard");
-  };
-
-  const handleClickLogIn = () => {
-    navigate("/login");
+  const navigateToHelp = () => {
+    window.location.href = "https://support.squarespace.com/hc/en-us";
   };
 
   return (
-    <div className="relative inline-block">
-      {!isLoggedIn ? (
-        <button
-          onClick={() => {
-            handleClickLogIn();
-          }}
-          className="font-semibold flex text-white items-center justify-center w-14 h-14 rounded-full cursor-pointer overflow-hidden"
-        >
-          LOG IN
-        </button>
-      ) : (
+    <div className="relative inline-block z-50">
+      {
         <div
           onClick={toggleDropdown}
           className="flex items-center justify-center w-14 h-14 rounded-full cursor-pointer overflow-hidden"
@@ -70,28 +57,45 @@ function ProfileDropdown() {
             }`}
           />
         </div>
-      )}{" "}
-      {/* Profile div with arrow */}
-      {/* Dropdown menu */}
+      }{" "}
       {isOpen && (
-        <div className="absolute -right-16 mt-2 w-48 bg-black rounded-lg shadow-lg">
-          <ul className="py-2 text-white">
+        <div className="absolute -right-16 mt-2 w-64 bg-white rounded-lg shadow-lg flex flex-col">
+          {/* <div>
+            <h1></h1>
+            <span></span>
+          </div> */}
+          <ul className="py-2 text-black">
+            <li className="px-4 py-2 font-semibold text-lg">
+              {userData?.user?.firstName + " " + userData?.user?.lastName}{" "}
+            </li>
+            <li className="px-4 pb-2 text-sm opacity-60">
+              {userData?.user?.email}{" "}
+            </li>
+            <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">
+              <ProfileDialog btnName={"Profile"} />
+            </li>
+            <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">
+              <ProfileDialog btnName={"Account and security"} />
+            </li>
+            <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">
+              <ProfileDialog btnName={"Notifications"} />
+            </li>
+            <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">
+              <ProfileDialog btnName={"Language"} />
+            </li>
             <li
+              className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
               onClick={() => {
-                handleClickProfile();
+                navigateToHelp();
               }}
-              className="px-4 py-2 hover:bg-gray-700 cursor-pointer"
             >
-              Profile
-            </li>
-            <li className="px-4 py-2 hover:bg-gray-700 cursor-pointer">
-              Settings
+              Help
             </li>
             <li
-              className="px-4 py-2 hover:bg-gray-700 cursor-pointer"
+              className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
               onClick={handleLogOut}
             >
-              {isLoggedIn ? "Log Out" : "Log In"}
+              Log out
             </li>
           </ul>
         </div>
@@ -100,4 +104,4 @@ function ProfileDropdown() {
   );
 }
 
-export default ProfileDropdown;
+export default DropDownUser;

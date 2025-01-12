@@ -1,19 +1,21 @@
 import { useEffect, useState } from "react";
-import { Button } from "../components/ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "../components/ui/dialog";
-import EditProfile from "../components/EditUser/EditProfile";
-import { deleteToken } from "../lib/api";
+import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
+import EditProfile from "../AccountDashboardComponents/EditProfile";
+import { deleteToken } from "../../lib/api";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeftIcon, ChevronLeftIcon } from "lucide-react";
-import SideBar from "../components/EditUser/EditProfieSideBar";
-import AccountAndSecurity from "../components/AccountAndSecurity";
-import Notifications from "../components/Notifications";
-import Language from "../components/Language";
-import Help from "../components/Help";
+import SideBar from "../AccountDashboardComponents/EditProfieSideBar";
+import AccountAndSecurity from "../AccountDashboardComponents/AccountAndSecurity";
+import Notifications from "../AccountDashboardComponents/Notifications";
+import Language from "../AccountDashboardComponents/Language";
 
-function Profile() {
+type ProfileDialogProps = {
+  btnName: string;
+};
+
+const ProfileDialog: React.FC<ProfileDialogProps> = ({ btnName }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedMenuItem, setSelectedMenuItem] = useState("Profile");
+  const [selectedMenuItem, setSelectedMenuItem] = useState(btnName);
   const [componentTorender, setComponentToRender] =
     useState<JSX.Element | null>(
       <EditProfile isOpen={isOpen} setIsOpen={setIsOpen} />
@@ -21,6 +23,10 @@ function Profile() {
   const [isMobileView, setIsMobileView] = useState(false);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setComponentToRender(renderComponent(selectedMenuItem)); // Update the component to render based on selectedMenuItem
+  }, [selectedMenuItem]); // Re-render when selectedMenuItem changes
 
   const renderComponent = (menuItem: string) => {
     switch (menuItem) {
@@ -33,7 +39,7 @@ function Profile() {
       case "Language":
         return <Language />;
       case "Help":
-        return <Help />;
+        window.location.href = "https://support.squarespace.com/hc/en-us";
       case "Log out":
         handleLogOut();
       default:
@@ -75,7 +81,18 @@ function Profile() {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">Edit Profile</Button>
+        <button className="relative text-start group overflow-hidden w-full">
+          <span
+            className={`${
+              btnName === "Account Settings" ? "font-semibold" : "w-full"
+            }  text-sm group-hover:text-black transition-colors duration-300`}
+          >
+            {btnName}
+          </span>
+          {btnName === "Account Settings" && (
+            <span className="absolute left-0 bottom-3 h-[2px] w-0 bg-black transition-all duration-700 group-hover:w-full"></span>
+          )}
+        </button>
       </DialogTrigger>
 
       <DialogContent
@@ -135,6 +152,6 @@ function Profile() {
       </DialogContent>
     </Dialog>
   );
-}
+};
 
-export default Profile;
+export default ProfileDialog;
