@@ -10,9 +10,10 @@ const AccountDashboard = () => {
   const [activeButton, setActiveButton] = useState("Dashboard");
   const btnName = "Account Settings";
   const navigate = useNavigate();
-  const token = getAuthTokenFromCookie();
 
   useEffect(() => {
+    const token = getAuthTokenFromCookie();
+
     if (!token) {
       navigate("/login");
     }
