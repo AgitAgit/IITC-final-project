@@ -3,7 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { useUserProfile } from "../hooks/useUser";
 import { deleteToken } from "../lib/api";
 
-function ProfileDropdown() {
+interface ProfileDropdownProps {
+  isMenuOpen: boolean;
+}
+
+function ProfileDropdown({ isMenuOpen }: ProfileDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
@@ -34,6 +38,12 @@ function ProfileDropdown() {
   const handleClickLogIn = () => {
     navigate("/login");
   };
+  const headerTextColor =
+    location.pathname === "/"
+      ? "text-white"
+      : location.pathname === "/templates"
+      ? "text-black"
+      : "text-white";
 
   return (
     <div className="relative inline-block">
@@ -42,7 +52,9 @@ function ProfileDropdown() {
           onClick={() => {
             handleClickLogIn();
           }}
-          className="font-semibold flex text-white items-center justify-center w-14 h-14 rounded-full cursor-pointer overflow-hidden"
+          className={`font-semibold flex ${
+            !isMenuOpen ? "headerTextColor" : "text-white"
+          } items-center justify-center w-14 h-14 rounded-full cursor-pointer overflow-hidden`}
         >
           LOG IN
         </button>
