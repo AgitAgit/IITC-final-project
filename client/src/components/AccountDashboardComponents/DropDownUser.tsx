@@ -41,16 +41,17 @@ function DropDownUser() {
           <span className="text-white text-xl ml-4">
             {userData?.user?.profileImage ? (
               <img
-                className="min-w-10 rounded-full aspect-square object-cover"
+                className="min-w-10 w-10 h-10 rounded-full aspect-square object-cover"
                 alt="photo profile"
                 src={userData.user.profileImage}
               />
             ) : (
-              <span className="text-white font-bold text-2xl ">
+              <span className="flex items-center justify-center min-w-10 w-10 h-10 rounded-full bg-black text-white">
                 {userData?.user?.firstName?.charAt(0).toUpperCase()}
               </span>
             )}
           </span>
+
           <span
             className={`ml-2 w-3 h-3 border-solid border-t-2 border-r-2 border-transparent border-white transform ${
               isOpen ? "rotate-135" : "rotate-45"
