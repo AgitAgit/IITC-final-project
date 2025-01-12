@@ -3,105 +3,13 @@ import { SidebarProvider } from "../../components/ui/sidebar";
 import { AppSidebar } from "./SideBar";
 import { SidebarTrigger } from "../../components/ui/sidebar";
 import Card from "./TemplateCard";
+import CardsData from "./CardData";
 
-// Example card data (replace with real data)
-const DummyData = [
-  {
-    title: "Modern Online Store",
-    type: "Online Store",
-    imageUrl: "https://via.placeholder.com/300x200?text=Online+Store",
-  },
-  {
-    title: "Creative Portfolio",
-    type: "Portfolio",
-    imageUrl: "https://via.placeholder.com/300x200?text=Portfolio",
-  },
-  {
-    title: "Membership Platform",
-    type: "Memberships",
-    imageUrl: "https://via.placeholder.com/300x200?text=Memberships",
-  },
-  {
-    title: "Personal Blog",
-    type: "Blog",
-    imageUrl: "https://via.placeholder.com/300x200?text=Personal+Blog",
-  },
-  {
-    title: "Scheduling Assistant",
-    type: "Scheduling",
-    imageUrl: "https://via.placeholder.com/300x200?text=Scheduling",
-  },
-  {
-    title: "One Page Portfolio",
-    type: "One Page",
-    imageUrl: "https://via.placeholder.com/300x200?text=One+Page",
-  },
-  {
-    title: "Online Courses",
-    type: "Courses",
-    imageUrl: "https://via.placeholder.com/300x200?text=Courses",
-  },
-  {
-    title: "Professional Services",
-    type: "Services",
-    imageUrl: "https://via.placeholder.com/300x200?text=Services",
-  },
-  {
-    title: "Donation Platform",
-    type: "Donations",
-    imageUrl: "https://via.placeholder.com/300x200?text=Donations",
-  },
-  {
-    title: "E-Commerce Site",
-    type: "Online Store",
-    imageUrl: "https://via.placeholder.com/300x200?text=Online+Store",
-  },
-  {
-    title: "Freelancer Portfolio",
-    type: "Portfolio",
-    imageUrl: "https://via.placeholder.com/300x200?text=Portfolio",
-  },
-  {
-    title: "Community Membership",
-    type: "Memberships",
-    imageUrl: "https://via.placeholder.com/300x200?text=Memberships",
-  },
-  {
-    title: "Travel Blog",
-    type: "Blog",
-    imageUrl: "https://via.placeholder.com/300x200?text=Travel+Blog",
-  },
-  {
-    title: "Appointment Scheduler",
-    type: "Scheduling",
-    imageUrl: "https://via.placeholder.com/300x200?text=Scheduling",
-  },
-  {
-    title: "Minimalist One Page",
-    type: "One Page",
-    imageUrl: "https://via.placeholder.com/300x200?text=One+Page",
-  },
-  {
-    title: "Learning Platform",
-    type: "Courses",
-    imageUrl: "https://via.placeholder.com/300x200?text=Courses",
-  },
-  {
-    title: "Consulting Services",
-    type: "Services",
-    imageUrl: "https://via.placeholder.com/300x200?text=Services",
-  },
-  {
-    title: "Charity Donation Site",
-    type: "Donations",
-    imageUrl: "https://via.placeholder.com/300x200?text=Donations",
-  },
-];
 function DesignCon() {
   const [markedTypes, setMarkedTypes] = useState<Record<string, boolean>>({});
 
   // Filter cards based on the marked "Types" from the sidebar
-  const filteredCards = DummyData.filter((card) =>
+  const filteredCards = CardsData.filter((card) =>
     Object.keys(markedTypes).some(
       (type) => markedTypes[type] && card.type === type
     )
@@ -110,7 +18,7 @@ function DesignCon() {
   // Show all cards if no type is selected
   const cardsToRender = Object.values(markedTypes).some(Boolean)
     ? filteredCards
-    : DummyData;
+    : CardsData;
 
   return (
     <SidebarProvider>

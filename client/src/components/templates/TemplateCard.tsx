@@ -42,7 +42,7 @@ const Card: React.FC<CardProps> = ({ title, type, imageUrl }) => {
       <img
         src={imageUrl}
         alt={title}
-        className="w-full min-w-96 h-52 object-cover rounded-md mb-4 shadow"
+        className="w-full min-w-96 h-56 object-cover rounded-md mb-4 shadow"
       />
       <div className="relative min-w-96 flex">
         <h3 className="text-xl font-bold mt-5">{title}</h3>
