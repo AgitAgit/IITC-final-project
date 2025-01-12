@@ -9,7 +9,7 @@ import DraggableFrame3 from './DraggableFrame3Pro';
 import { RedRectangle3, ColorRectangle3, TextBox3, RedTextRectangle3 } from './BasicEditor3ProComponents';
 import { isEmpty } from './utils';
 import styles from './BasicEditor3ProStyles';
-import Header3 from './Header3';
+import Header3, { Header3Data } from './Header3';
 
 //goal 0. 
 // Update the data structure of BasicEditor3 to fit the new data structure:
@@ -196,6 +196,15 @@ function BasicEditor3Pro() {
 
   }
 
+  const defaultHeaderData:Header3Data = {
+    logo:{ text:"LOGO1", imgSrc:null},
+    pages:[],
+    hasExtraButton:false,
+    hasSocialLinks:false,
+    hasAccount:true,
+    style:{ headerStyle:{}, logoContainerStyle:{}, navContainerStyle:{}, navItemStyle:{}}
+  }
+
   return (
     <BasicEditorContext.Provider value={{ renderElements, baseFunctions, isEditMode }}>
       <div>BasicEditor3
@@ -209,7 +218,7 @@ function BasicEditor3Pro() {
           <button onClick={() => addRenderElement(RenderElementNames.color_rectangle3)}>+ColorRectangle3</button>
           <button onClick={() => addRenderElement(RenderElementNames.text_box3)}>+TextBox3</button>
         </div>
-        <Header3 pages={pages} currentPage={currentPage} setCurrentPage={setCurrentPage} headerEditMode={headerEditMode} setHeaderEditMode={setHeaderEditMode}/>
+        <Header3 pages={pages} currentPage={currentPage} setCurrentPage={setCurrentPage} headerEditMode={headerEditMode} setHeaderEditMode={setHeaderEditMode} data={defaultHeaderData}/>
         <div>
           {mapRenderElements()}
         </div>

@@ -14,11 +14,11 @@ export type Header3Props = {
 }
 
 export type Header3Data = {
-    logo: { text: string, imgSrc: string }
-    pages:string[]
-    hasExtraButton:boolean
-    hasSocialLinks:boolean
-    hasAccount:boolean
+    logo: { text: string, imgSrc: string | null }
+    pages: string[]
+    hasExtraButton: boolean
+    hasSocialLinks: boolean
+    hasAccount: boolean
     style: {
         headerStyle: { [key: string]: any }
         logoContainerStyle: { [key: string]: any }
@@ -32,25 +32,28 @@ export type Header3Data = {
 //when clicking outside of the header and it's editing buttons.
 
 //task
-//create the Add Elements menu with the options to add social links, button, and account. DONE.
+//create the Add Elements menu with the options to add social links, button, and account.
 //for now they will add placeholder elements without functionality. 
-// for now the checkbox design will remain defaultive
 
 //don't overdo the design now. focus on functionality.
 function Header3({ pages, currentPage, setCurrentPage, headerEditMode, setHeaderEditMode, data }: Header3Props) {
     //will depend on current screen width?
     const { isEditMode } = useContext(BasicEditorContext);
     const [editButtonVisible, setEditButtonVisible] = useState(false);
-    const [ headerEditButtonsVisible, setHeaderEditButtonsVisible] = useState(false);
-    const [ addElementsMenuVisible, setAddElementsMenuVisible] = useState(false);
-    const [ editDesignMenuVisible, setEditDesignMenuVisible] = useState(false);
+    const [headerEditButtonsVisible, setHeaderEditButtonsVisible] = useState(false);
+    const [addElementsMenuVisible, setAddElementsMenuVisible] = useState(false);
+    const [editDesignMenuVisible, setEditDesignMenuVisible] = useState(false);
 
     const [isHamburger, setIsHamburger] = useState(false);
-    const chosenPagesRef = useRef(pages.map(page => page.name));
+    // const chosenPagesRef = useRef(pages.map(page => page.name));
+    // const [chosenPages, setChosenPages] = useState(pages.map(page => page.name));
+
+    //why are chosen pages not rendered on refresh but are rendered on save?
+    //will the original way I did it work okay? Or is it a problem with fetching from
+    //local storage or something else entirely?
 
     const pageNames = pages.map(page => page.name);
     const inputRef = useRef<HTMLInputElement>();
-
 
     const logo = {
         text: "LOGO",
@@ -108,21 +111,21 @@ function Header3({ pages, currentPage, setCurrentPage, headerEditMode, setHeader
     }
 
     const menusContainerStyle = {
-        width:'100%',
-        display:'flex'
+        width: '100%',
+        display: 'flex'
     }
 
     const addElementsMenuStyle = {
         backgroundColor: 'white',
-        color:'black',
-        display:'flex',
-        flexDirection:'column'
+        color: 'black',
+        display: 'flex',
+        flexDirection: 'column'
     }
 
     const editDesignMenuStyle = {
-        marginLeft:'auto',
+        marginLeft: 'auto',
         backgroundColor: 'white',
-        color:'black'
+        color: 'black'
     }
 
     function handleNavigateToPage(pageName: string) {
@@ -149,7 +152,7 @@ function Header3({ pages, currentPage, setCurrentPage, headerEditMode, setHeader
         setEditDesignMenuVisible(false);
     }
 
-    function handleEditSiteHeaderClick(){
+    function handleEditSiteHeaderClick() {
         setHeaderEditMode(true);
         setHeaderEditButtonsVisible(true);
     }
@@ -166,9 +169,11 @@ function Header3({ pages, currentPage, setCurrentPage, headerEditMode, setHeader
         setEditDesignMenuVisible(true);
     }
 
-    function handleToggleElement(e, elementName){
+    function handleToggleElement(e, elementName) {
         e.stopPropagation();
         const checked = e.target.checked;
+        if(elementName === 'account') data.hasAccount = !data.hasAccount;
+        console.log("data has account",data.hasAccount);
     }
 
     return (
@@ -188,12 +193,22 @@ function Header3({ pages, currentPage, setCurrentPage, headerEditMode, setHeader
                     {!isHamburger &&
                         <div style={navContainerStyle}>
                             {
-                                chosenPagesRef.current.map(name =>
-                                    <div key={name} style={navItemStyle} onClick={() => handleNavigateToPage(name)}>{name}</div>
-                                )
+                                (data.pages.length > 0 ?
+                                    data.pages.map(name =>
+                                        <div key={name} style={navItemStyle} onClick={() => handleNavigateToPage(name)}>{name}</div>
+                                    )
+                                    :
+                                    pages.map(page =>
+                                        <div key={page.name} style={navItemStyle} onClick={() => handleNavigateToPage(page.name)}>{page.name}</div>
+                                    ))
+                            }
+                            {
+                                data.hasAccount &&
+                                <div style={navItemStyle}>Login</div>
                             }
                         </div>
                     }
+
                 </div>
             </div>
             {headerEditMode && headerEditButtonsVisible &&
@@ -203,20 +218,20 @@ function Header3({ pages, currentPage, setCurrentPage, headerEditMode, setHeader
                 </div>
             }
             <div style={menusContainerStyle}>
-                {addElementsMenuVisible && headerEditMode && 
-                <div style={addElementsMenuStyle}>
-                    <label>
-                        Button
-                        <input type='checkbox' onChange={(e) => handleToggleElement(e, 'button')}></input>
-                    </label>
-                    <label>
-                        Social Links
-                        <input type='checkbox' onChange={(e) => handleToggleElement(e, 'social_links')}></input>
-                    </label>
-                    <label>
-                        Account
-                        <input type='checkbox' onChange={(e) => handleToggleElement(e, 'account')}></input>
-                    </label>
+                {addElementsMenuVisible && headerEditMode &&
+                    <div style={addElementsMenuStyle}>
+                        <label>
+                            Button
+                            <input type='checkbox' onChange={(e) => handleToggleElement(e, 'button')}></input>
+                        </label>
+                        <label>
+                            Social Links
+                            <input type='checkbox' onChange={(e) => handleToggleElement(e, 'social_links')}></input>
+                        </label>
+                        <label>
+                            Account
+                            <input type='checkbox' onChange={(e) => handleToggleElement(e, 'account')}></input>
+                        </label>
                     </div>
                 }
                 {editDesignMenuVisible && headerEditMode &&
