@@ -46,7 +46,7 @@ function DropDownUser() {
                 src={userData.user.profileImage}
               />
             ) : (
-              <span className="flex items-center justify-center min-w-10 w-10 h-10 rounded-full bg-black text-white">
+              <span className="flex items-center justify-center min-w-10 w-10 h-10 rounded-full bg-black text-white font-bold">
                 {userData?.user?.firstName?.charAt(0).toUpperCase()}
               </span>
             )}
