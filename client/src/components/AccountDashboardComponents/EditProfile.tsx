@@ -101,7 +101,7 @@ const EditProfile: React.FC<EditProfileProps> = ({ setIsOpen }) => {
           cloudName: "dcswpgg7a",
           uploadPreset: "pop102030",
           sources: ["local", "url", "camera"],
-          folder: "Social_Media_Posts",
+          folder: "SquareSpace_Profile_Photo",
           zIndex: 1500,
           container: "#cloudinary-container",
         },
