@@ -50,6 +50,7 @@ function DesignCon() {
                     title={card.title}
                     type={card.type}
                     imageUrl={card.imageUrl}
+                    id={card.id}
                   />
                 ))}
               </div>

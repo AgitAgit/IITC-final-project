@@ -1,5 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getUserByToken, updateUserProfile } from "../services/userService";
+import {
+  deleteProfile,
+  getUserByToken,
+  updateUserProfile,
+} from "../services/userService";
+import { deleteToken } from "../lib/api";
 
 export const useUserProfile = () => {
   return useQuery({
@@ -15,6 +20,19 @@ export const useUpdateUserMutation = () => {
   return useMutation({
     mutationFn: updateUserProfile,
     onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["userProfile"],
+      });
+    },
+  });
+};
+
+export const useDeleteUserMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: deleteProfile,
+    onSuccess: () => {
+      deleteToken();
       queryClient.invalidateQueries({
         queryKey: ["userProfile"],
       });

@@ -142,28 +142,52 @@ export const updateUser = async (
   try {
     const userId = req.params.id;
     const updateData: Partial<IUser> = req.body;
-    const { password } = req.body;
-    console.log(updateData);
+    const { password, favoriteTemplateId } = req.body;
 
     if (password) {
       const hashedPassword = await bcrypt.hash(password, 10);
       updateData.password = hashedPassword;
     }
 
-    const user = await User.findByIdAndUpdate(
-      userId,
-      { ...updateData },
-      { new: true, runValidators: true }
-    );
-    console.log(user);
+    const user = await User.findById(userId);
 
     if (!user) {
       res.status(404).json({ message: "User not found." });
       return;
     }
 
-    res.status(200).json({ message: "User updated successfully", user });
+    if (favoriteTemplateId) {
+      const favoriteTemplates = user.favoriteTemplates || [];
+      const index = favoriteTemplates.indexOf(favoriteTemplateId);
+
+      if (index > -1) {
+        favoriteTemplates.splice(index, 1);
+      } else {
+        favoriteTemplates.push(favoriteTemplateId);
+      }
+
+      updateData.favoriteTemplates = favoriteTemplates;
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { ...updateData },
+      { new: true, runValidators: true }
+    );
+
+    console.log(updatedUser);
+
+    if (!updatedUser) {
+      res.status(404).json({ message: "User not found." });
+      return;
+    }
+
+    res.status(200).json({
+      message: "User updated successfully",
+      user: updatedUser,
+    });
   } catch (err) {
+    console.error(err);
     res.status(500).json({ message: "Server error", error: err });
   }
 };

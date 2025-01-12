@@ -68,3 +68,17 @@ export const updateUserProfile = async ({
     throw error.response?.data || error.message;
   }
 };
+
+export const deleteProfile = async (id: string) => {
+  try {
+    console.log(id);
+
+    const response = await usersCliant.delete(`/deleteUser/${id}`);
+    console.log(response.data);
+
+    return response.data;
+  } catch (error: any) {
+    console.error("Error logging in:", error.response?.data || error.message);
+    throw error.response?.data || error.message;
+  }
+};

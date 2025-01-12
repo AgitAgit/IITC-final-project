@@ -116,7 +116,7 @@ const Dashboard = () => {
         </div>
       </div>
       <div>
-        <ListDashboard activeTab={activeTab} />
+        <ListDashboard activeTab={activeTab} searchValue={searchValue} />
       </div>
     </div>
   );

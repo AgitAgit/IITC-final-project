@@ -14,6 +14,7 @@ export interface IUser extends Document {
   bio?: string;
   sites: mongoose.Schema.Types.ObjectId[];
   createdAt: Date;
+  favoriteTemplates: string[];
 }
 
 export type IUserWithoutId = Omit<IUser, "id">;

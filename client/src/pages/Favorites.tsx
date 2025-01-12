@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useUpdateUserMutation, useUserProfile } from "../hooks/useUser";
+import CardsData from "../components/templates/CardData";
 
 interface Favorite {
+  id: string;
   title: string;
   type: string;
   imageUrl: string;
@@ -9,22 +12,51 @@ interface Favorite {
 
 function Favorites() {
   const [favorites, setFavorites] = useState<Favorite[]>([]);
+  const { data: userData, isLoading } = useUserProfile();
+  const { mutate: updateUser } = useUpdateUserMutation();
 
-  // Fetch favorites from local storage
   useEffect(() => {
-    const storedFavorites = JSON.parse(
-      localStorage.getItem("favorites") || "[]"
-    );
-    setFavorites(storedFavorites);
-  }, []);
+    if (isLoading || !userData?.user?.favoriteTemplates) return;
 
-  // Remove a favorite and update local storage
-  const removeFavorite = (title: string) => {
-    const updatedFavorites = favorites.filter(
-      (favorite) => favorite.title !== title
+    const filteredFavorites = CardsData.filter((template) =>
+      userData.user.favoriteTemplates.includes(template.id)
     );
-    setFavorites(updatedFavorites);
-    localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+
+    setFavorites(filteredFavorites);
+  }, [userData, isLoading]);
+
+  const toggleFavorite = (id: string) => {
+    if (!userData?.user?._id) {
+      console.error("User ID not found");
+      return;
+    }
+
+    const isFavorite = userData.user.favoriteTemplates.includes(id);
+    const updateData = {
+      favoriteTemplateId: id,
+      action: isFavorite ? "remove" : "add",
+    };
+
+    updateUser(
+      { updateData, id: userData.user._id },
+      {
+        onSuccess: () => {
+          setFavorites((prevFavorites) =>
+            isFavorite
+              ? prevFavorites.filter((fav) => fav.id !== id)
+              : [
+                  ...prevFavorites,
+                  CardsData.find((template) => template.id === id)!,
+                ]
+          );
+        },
+        onError: (error) =>
+          console.error(
+            `Failed to ${isFavorite ? "remove" : "add"} favorite:`,
+            error
+          ),
+      }
+    );
   };
 
   return (
@@ -62,7 +94,7 @@ function Favorites() {
               <div className="relative min-w-96 flex mb-10">
                 <h3 className="text-xl font-bold mt-5">{favorite.title}</h3>
                 <button
-                  onClick={() => removeFavorite(favorite.title)}
+                  onClick={() => toggleFavorite(favorite.id)}
                   className="absolute right-0 border px-6 py-4 overflow-hidden group"
                 >
                   <span

@@ -1,40 +1,47 @@
 import React, { useState, useEffect } from "react";
+import { useUpdateUserMutation, useUserProfile } from "../../hooks/useUser";
 
 interface CardProps {
   title: string;
   type: string;
   imageUrl: string;
+  id: string;
 }
 
-const Card: React.FC<CardProps> = ({ title, type, imageUrl }) => {
+const Card: React.FC<CardProps> = ({ title, imageUrl, id }) => {
   const [isHeartFilled, setIsHeartFilled] = useState(false);
+  const { data: userData, isLoading } = useUserProfile();
+  const { mutate: updateUser } = useUpdateUserMutation();
 
-  // Check if the card is already in favorites
   useEffect(() => {
-    const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
-    const isFavorite = favorites.some(
-      (favorite: CardProps) => favorite.title === title
-    );
+    if (isLoading || !userData?.user.favoriteTemplates) return;
+
+    const isFavorite = Array.isArray(userData.user.favoriteTemplates)
+      ? userData.user.favoriteTemplates.includes(id)
+      : false;
+
     setIsHeartFilled(isFavorite);
-  }, [title]);
+  }, [userData, isLoading, id]);
 
-  // Toggle heart state and update local storage
   const toggleHeart = () => {
-    const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
-
-    if (isHeartFilled) {
-      // Remove from favorites
-      const updatedFavorites = favorites.filter(
-        (favorite: CardProps) => favorite.title !== title
-      );
-      localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
-    } else {
-      // Add to favorites
-      favorites.push({ title, type, imageUrl });
-      localStorage.setItem("favorites", JSON.stringify(favorites));
+    if (!userData?.user._id) {
+      console.error("User ID not found");
+      return;
     }
 
-    setIsHeartFilled(!isHeartFilled);
+    const updateData = { favoriteTemplateId: id };
+
+    updateUser(
+      { updateData, id: userData.user._id },
+      {
+        onSuccess: () => setIsHeartFilled(!isHeartFilled),
+        onError: (error) =>
+          console.error(
+            `Failed to ${isHeartFilled ? "remove" : "add"} favorite:`,
+            error
+          ),
+      }
+    );
   };
 
   return (
