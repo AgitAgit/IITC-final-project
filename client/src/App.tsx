@@ -19,7 +19,11 @@ function App() {
           element: <Landing />,
         },
         {
-          path: "/templates",
+          path: "/templates/",
+          element: <TemplatesPage />,
+        },
+        {
+          path: "/templates/:filter",
           element: <TemplatesPage />,
         },
         {
