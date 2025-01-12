@@ -53,12 +53,22 @@ import Header3, { Header3Data } from './Header3';
 
 export const BasicEditorContext = createContext<BasicEditorContextType>({});
 
+const defaultHeaderData:Header3Data = {
+  logo:{ text:"LOGO1", imgSrc:null},
+  pages:[],
+  hasExtraButton:false,
+  hasSocialLinks:false,
+  hasAccount:true,
+  style:{ headerStyle:{}, logoContainerStyle:{}, navContainerStyle:{}, navItemStyle:{}}
+}
+
 function BasicEditor3Pro() {
   const [isEditMode, setIsEditMode] = useState(true);
   const [headerEditMode, setHeaderEditMode] = useState(false);
 
   const [websites, setWebsites] = useState<BasicEditor3Website[]>([]);
 
+  const [headerData, setHeaderData] = useState(defaultHeaderData);
   const [pages, setPages] = useState<BasicEditor3Page[]>([])
   const [renderElements, setRenderElements] = useState<RenderElement3[]>([]);
   const [currentPage, setCurrentPage] = useState<string>("Home");
@@ -196,15 +206,6 @@ function BasicEditor3Pro() {
 
   }
 
-  const defaultHeaderData:Header3Data = {
-    logo:{ text:"LOGO1", imgSrc:null},
-    pages:[],
-    hasExtraButton:false,
-    hasSocialLinks:false,
-    hasAccount:true,
-    style:{ headerStyle:{}, logoContainerStyle:{}, navContainerStyle:{}, navItemStyle:{}}
-  }
-
   return (
     <BasicEditorContext.Provider value={{ renderElements, baseFunctions, isEditMode }}>
       <div>BasicEditor3
@@ -218,7 +219,7 @@ function BasicEditor3Pro() {
           <button onClick={() => addRenderElement(RenderElementNames.color_rectangle3)}>+ColorRectangle3</button>
           <button onClick={() => addRenderElement(RenderElementNames.text_box3)}>+TextBox3</button>
         </div>
-        <Header3 pages={pages} currentPage={currentPage} setCurrentPage={setCurrentPage} headerEditMode={headerEditMode} setHeaderEditMode={setHeaderEditMode} data={defaultHeaderData}/>
+        <Header3 pages={pages} currentPage={currentPage} setCurrentPage={setCurrentPage} headerEditMode={headerEditMode} setHeaderEditMode={setHeaderEditMode} data={headerData} setData={setHeaderData}/>
         <div>
           {mapRenderElements()}
         </div>

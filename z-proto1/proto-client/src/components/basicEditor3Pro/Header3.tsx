@@ -11,6 +11,7 @@ export type Header3Props = {
     headerEditMode: boolean
     setHeaderEditMode: Dispatch<SetStateAction<boolean>>
     data: Header3Data
+    setData: Dispatch<SetStateAction<Header3Data>>
 }
 
 export type Header3Data = {
@@ -36,7 +37,7 @@ export type Header3Data = {
 //for now they will add placeholder elements without functionality. 
 
 //don't overdo the design now. focus on functionality.
-function Header3({ pages, currentPage, setCurrentPage, headerEditMode, setHeaderEditMode, data }: Header3Props) {
+function Header3({ pages, currentPage, setCurrentPage, headerEditMode, setHeaderEditMode, data, setData }: Header3Props) {
     //will depend on current screen width?
     const { isEditMode } = useContext(BasicEditorContext);
     const [editButtonVisible, setEditButtonVisible] = useState(false);
@@ -172,8 +173,18 @@ function Header3({ pages, currentPage, setCurrentPage, headerEditMode, setHeader
     function handleToggleElement(e, elementName) {
         e.stopPropagation();
         const checked = e.target.checked;
-        if(elementName === 'account') data.hasAccount = !data.hasAccount;
-        console.log("data has account",data.hasAccount);
+        if(elementName === 'button') {
+            data.hasExtraButton = checked;
+            setData(data);
+        }
+        if(elementName === 'social_links') {
+            data.hasSocialLinks = checked;
+            setData(data);
+        }
+        if(elementName === 'account') {
+            data.hasAccount = checked;
+            setData(data);
+        }
     }
 
     return (
@@ -203,6 +214,14 @@ function Header3({ pages, currentPage, setCurrentPage, headerEditMode, setHeader
                                     ))
                             }
                             {
+                                data.hasExtraButton &&
+                                <button style={navItemStyle}>Extra button</button>
+                            }
+                            {
+                                data.hasSocialLinks &&
+                                <div style={navItemStyle}>SOCIAL LINKS...</div>
+                            }
+                            {
                                 data.hasAccount &&
                                 <div style={navItemStyle}>Login</div>
                             }
@@ -222,15 +241,15 @@ function Header3({ pages, currentPage, setCurrentPage, headerEditMode, setHeader
                     <div style={addElementsMenuStyle}>
                         <label>
                             Button
-                            <input type='checkbox' onChange={(e) => handleToggleElement(e, 'button')}></input>
+                            <input type='checkbox' defaultChecked={data.hasExtraButton} onChange={(e) => handleToggleElement(e, 'button')}></input>
                         </label>
                         <label>
                             Social Links
-                            <input type='checkbox' onChange={(e) => handleToggleElement(e, 'social_links')}></input>
+                            <input type='checkbox' defaultChecked={data.hasSocialLinks} onChange={(e) => handleToggleElement(e, 'social_links')}></input>
                         </label>
                         <label>
                             Account
-                            <input type='checkbox' onChange={(e) => handleToggleElement(e, 'account')}></input>
+                            <input type='checkbox' defaultChecked={data.hasAccount} onChange={(e) => handleToggleElement(e, 'account')}></input>
                         </label>
                     </div>
                 }
