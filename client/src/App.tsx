@@ -9,7 +9,6 @@ import Favorites from "./pages/Favorites";
 import AccountDashboard from "./pages/AccountDashboard";
 import "./App.css";
 
-
 function App() {
   const router = createBrowserRouter([
     {

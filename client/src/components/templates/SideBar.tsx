@@ -78,27 +78,45 @@ export function AppSidebar({ markedTypes, setMarkedTypes }: AppSidebarProps) {
     setFavorites(storedFavorites);
   }, []);
 
-  // Function to update the marked types in state and sync with URL
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const activeFilters: Record<string, boolean> = {};
+
+    // Iterate over all filters and check against lowercase category keys
+    items.forEach((group) => {
+      const categoryKey = group.category.toLowerCase(); // Normalize the key
+      const currentFilters = searchParams.getAll(categoryKey);
+
+      group.filters.forEach((filter) => {
+        if (currentFilters.includes(filter.url)) {
+          activeFilters[filter.title] = true; // Mark as active
+        }
+      });
+    });
+
+    setMarkedTypes(activeFilters);
+  }, [location.search, setMarkedTypes]);
+
   const handleFilterToggle = (category: string, url: string, title: string) => {
     const searchParams = new URLSearchParams(location.search);
-    const currentFilters = searchParams.getAll(category);
+    const categoryKey = category.toLowerCase(); // Normalize the key
+    const currentFilters = searchParams.getAll(categoryKey);
 
     // Toggle the filter in the URL
     if (currentFilters.includes(url)) {
       // Remove filter from URL
-      searchParams.delete(category);
+      searchParams.delete(categoryKey);
       currentFilters
         .filter((filter) => filter !== url)
-        .forEach((filter) => searchParams.append(category, filter));
+        .forEach((filter) => searchParams.append(categoryKey, filter));
     } else {
       // Add filter to URL
-      searchParams.append(category, url);
+      searchParams.append(categoryKey, url);
     }
 
-    // Update the URL and state
     navigate(`/templates?${searchParams.toString()}`);
 
-    // Toggle the marked state in the sidebar
+    // Update the marked state
     setMarkedTypes((prev) => ({
       ...prev,
       [title]: !prev[title],
