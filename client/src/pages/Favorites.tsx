@@ -30,20 +30,21 @@ function Favorites() {
   return (
     <div className="flex flex-col items-center h-screen w-screen p-4">
       {/* Back button */}
-      <div className="w-full flex items-center mb-6">
+      <div className="w-full flex items-center mb-6 group">
         <Link
           to="/templates"
-          className="text-black text-lg flex items-center gap-2 group"
+          className="text-black text-lg flex items-center gap-2"
         >
-          <span className="material-icons transition-transform duration-500 hover:rotate-[360deg]">
+          <span className="material-icons transition-transform duration-500 group-hover:rotate-[360deg]">
             arrow_back
           </span>
           <p className="relative overflow-hidden">
-            <span className="text-sm font-bold">To Templates</span>
+            <span className="text-base font-bold">To Templates</span>
             <span className="absolute bottom-0 left-0 w-full h-[2px] bg-black scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></span>
           </p>
         </Link>
       </div>
+
       {/* Head with favorites counter */}
       <h2 className="text-black text-2xl mb-4 mt-32 self-start ml-40">
         My Favorites ({favorites.length})

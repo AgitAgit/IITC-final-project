@@ -9,7 +9,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "../../components/ui/sidebar";
+} from "../ui/sidebar";
 
 interface AppSidebarProps {
   markedTypes: Record<string, boolean>;
@@ -123,13 +123,12 @@ export function AppSidebar({ markedTypes, setMarkedTypes }: AppSidebarProps) {
     }));
   };
 
-  // Clear all filters and navigate to base templates URL
   const clearFilters = () => {
     navigate("/templates");
   };
 
   return (
-    <Sidebar className="absolute p-4 py-8 w-64 bg-transparent h-full">
+    <Sidebar className="absolute p-4 py-8 w-64 bg-transparent h-full max-h-[90vh]">
       <SidebarContent>
         {items.map((group) => (
           <SidebarGroup key={group.category}>

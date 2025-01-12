@@ -114,7 +114,6 @@ const Header: React.FC = () => {
 
   const handleMouseEnter = () => {
     setIsMenuOpen(true);
-    console.log("Mouse Enter Triggered");
   };
 
   const handleMouseLeave = () => {
@@ -446,7 +445,7 @@ const Header: React.FC = () => {
         </div>
         {/* Get Started button div */}
         <div className="flex">
-          <ProfileDropdown />
+          <ProfileDropdown isMenuOpen={isMenuOpen} />
           <button
             onClick={() => navigate("/templates")}
             className={`text-black px-6 py-1 h-12 mt-1 ml-6 bg-white text-sm font-semibold hover:bg-slate-100 ${headerStartButton} ${
