@@ -41,12 +41,12 @@ function DropDownUser() {
           <span className="text-white text-xl ml-4">
             {userData?.user?.profileImage ? (
               <img
-                className="min-w-10 w-10 h-10 rounded-full aspect-square object-cover"
+                className="min-w-10 rounded-full aspect-square object-cover"
                 alt="photo profile"
                 src={userData.user.profileImage}
               />
             ) : (
-              <span className="flex items-center justify-center min-w-10 w-10 h-10 rounded-full bg-black text-white font-bold">
+              <span className="w-10 h-10 rounded-full bg-black text-white font-bold text-2xl flex items-center justify-center pb-1">
                 {userData?.user?.firstName?.charAt(0).toUpperCase()}
               </span>
             )}
