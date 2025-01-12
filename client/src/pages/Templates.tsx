@@ -1,4 +1,4 @@
-import DesignCon from "./templates/Designs";
+import DesignCon from "../components/templates/Designs";
 import ScrollToTop from "../components/ScrollToTop";
 
 function TemplatesPage() {
