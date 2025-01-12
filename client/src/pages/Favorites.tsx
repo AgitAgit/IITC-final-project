@@ -39,7 +39,7 @@ function Favorites() {
             arrow_back
           </span>
           <p className="relative overflow-hidden">
-            <span className="text-sm font-bold">Back to Templates</span>
+            <span className="text-sm font-bold">To Templates</span>
             <span className="absolute bottom-0 left-0 w-full h-[2px] bg-black scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></span>
           </p>
         </Link>

@@ -7,10 +7,12 @@ import Selling from "./landing/Selling";
 import Guide from "./landing/Guide";
 import Helper from "./landing/Helper";
 import Promote from "./landing/Promote";
+import ScrollToTop from "../components/ScrollToTop";
 
 function Landing() {
   return (
     <div>
+      <ScrollToTop />
       <GetStarted />
       <Domain />
       <CreateWeb />

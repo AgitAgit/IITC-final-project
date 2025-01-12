@@ -1,8 +1,10 @@
 import DesignCon from "./templates/Designs";
+import ScrollToTop from "../components/ScrollToTop";
 
 function TemplatesPage() {
   return (
     <div className="flex flex-col">
+      <ScrollToTop />
       <div className="flex justify-between px-14 mt-20">
         <h1 className="text-6xl pr-40">Make any template yours with ease.</h1>
         <h2 className="text-lg">

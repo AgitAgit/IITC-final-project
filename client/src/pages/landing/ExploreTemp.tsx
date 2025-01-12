@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function ExploreTemp() {
   // State to track the current image
@@ -6,45 +7,69 @@ function ExploreTemp() {
     "https://media-www.sqspcdn.com/images/pages/homepage/aug-2023/templates/desktop/lexington-1-500w.jpg"
   );
 
+  const navigate = useNavigate();
+  const handleNavigate = (filterKey: string, filterValue: string) => {
+    const searchParams = new URLSearchParams();
+    searchParams.append(filterKey, filterValue);
+
+    navigate(`/templates?${searchParams.toString()}`);
+  };
+
   // List of buttons and their corresponding images
   const templates = [
     {
       text: "Online Store",
+      filterKey: "type",
+      filterValue: "online-store",
       image:
         "https://media-www.sqspcdn.com/images/pages/homepage/aug-2023/templates/desktop/lexington-1-500w.jpg",
     },
     {
       text: "Local Business",
+      filterKey: "topic",
+      filterValue: "local-business",
       image:
         "https://media-www.sqspcdn.com/images/pages/homepage/aug-2023/templates/desktop/klipsan-1-500w.jpg",
     },
     {
       text: "Portfolio",
+      filterKey: "type",
+      filterValue: "portfolio",
       image:
         "https://media-www.sqspcdn.com/images/pages/homepage/aug-2023/templates/desktop/reseda-1-500w.jpg",
     },
     {
       text: "Restaurant",
+      filterKey: "topic",
+      filterValue: "restaurants",
       image:
         "https://media-www.sqspcdn.com/images/pages/homepage/aug-2023/templates/desktop/belisa-1-500w.jpg",
     },
     {
       text: "Services",
+      filterKey: "type",
+      filterValue: "services",
       image:
         "https://media-www.sqspcdn.com/images/pages/homepage/aug-2023/templates/desktop/clove-1-500w.jpg",
     },
     {
       text: "Personal & CV",
+      filterKey: "topic",
+      filterValue: "personal-cv",
       image:
         "https://media-www.sqspcdn.com/images/pages/homepage/aug-2023/templates/desktop/ortiz-1-500w.jpg",
     },
     {
       text: "Courses",
+      filterKey: "type",
+      filterValue: "courses",
       image:
         "https://media-www.sqspcdn.com/images/pages/homepage/aug-2023/templates/desktop/forma-1-500w.jpg",
     },
     {
       text: "Memberships",
+      filterKey: "type",
+      filterValue: "memberships",
       image:
         "https://media-www.sqspcdn.com/images/pages/homepage/aug-2023/templates/desktop/meriden-500w.jpg",
     },
@@ -63,6 +88,9 @@ function ExploreTemp() {
               key={index}
               className="relative inline-block group cursor-pointer text-4xl font-medium mb-6"
               onMouseEnter={() => setCurrentImage(template.image)}
+              onClick={() =>
+                handleNavigate(template.filterKey, template.filterValue)
+              }
             >
               {/* Main Text */}
               <span className="group-hover:underline">{template.text}</span>
