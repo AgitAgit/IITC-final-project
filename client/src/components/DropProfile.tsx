@@ -54,7 +54,7 @@ function ProfileDropdown() {
           <span className="text-white text-xl ml-4">
             {userData?.user?.profileImage ? (
               <img
-                className="w-10 h-10 rounded-full object-cover"
+                className="min-w-10 rounded-full aspect-square object-cover"
                 alt="photo profile"
                 src={userData.user.profileImage}
               />
