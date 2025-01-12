@@ -35,19 +35,19 @@ function Favorites() {
           to="/templates"
           className="text-black text-lg flex items-center gap-2 group"
         >
-          <span className="material-icons">arrow_back</span>
+          <span className="material-icons transition-transform duration-500 hover:rotate-[360deg]">
+            arrow_back
+          </span>
           <p className="relative overflow-hidden">
             <span className="text-sm font-bold">Back to Templates</span>
             <span className="absolute bottom-0 left-0 w-full h-[2px] bg-black scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></span>
           </p>
         </Link>
       </div>
-
-      {/* Heading with favorites counter */}
+      {/* Head with favorites counter */}
       <h2 className="text-black text-2xl mb-4 mt-32 self-start ml-40">
         My Favorites ({favorites.length})
       </h2>
-
       {/* Favorites Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {favorites.length > 0 ? (
@@ -58,7 +58,7 @@ function Favorites() {
                 alt={favorite.title}
                 className="w-full min-w-[420px] h-72 object-cover rounded-md mb-4 shadow"
               />
-              <div className="relative min-w-96 flex">
+              <div className="relative min-w-96 flex mb-10">
                 <h3 className="text-xl font-bold mt-5">{favorite.title}</h3>
                 <button
                   onClick={() => removeFavorite(favorite.title)}
@@ -82,7 +82,7 @@ function Favorites() {
             </div>
           ))
         ) : (
-          <p className="text-black text-lg">No favorites yet!</p>
+          <p className="text-black text-2xl">No favorites yet!</p>
         )}
       </div>
     </div>
