@@ -38,12 +38,12 @@ function ProfileDropdown({ isMenuOpen }: ProfileDropdownProps) {
   const handleClickLogIn = () => {
     navigate("/login");
   };
-  const headerTextColor =
-    location.pathname === "/"
-      ? "text-white"
-      : location.pathname === "/templates"
-      ? "text-black"
-      : "text-white";
+  // const headerTextColor =
+  //   location.pathname === "/"
+  //     ? "text-white"
+  //     : location.pathname === "/templates"
+  //     ? "text-black"
+  //     : "text-white";
 
   return (
     <div className="relative inline-block">
@@ -76,7 +76,6 @@ function ProfileDropdown({ isMenuOpen }: ProfileDropdownProps) {
               </span>
             )}
           </span>
-
           <span
             className={`ml-2 w-3 h-3 border-solid border-t-2 border-r-2 border-transparent border-white transform ${
               isOpen ? "rotate-135" : "rotate-45"
