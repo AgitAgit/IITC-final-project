@@ -1,8 +1,14 @@
 import React, { useState, useRef, useEffect, ReactNode, useContext, createContext, Dispatch, SetStateAction } from 'react'
+import { v4 as uuidv4 } from 'uuid';
 
 import { type Position } from '../basicEditor/basicEditorTypes'
 import { DataObject3Content, DataObject3Style, DataObject3, RenderElement3, RenderElementNames, BasicEditorContextType, BasicEditor3Page, BasicEditor3Website } from './BasicEditor3ProTypes';
 
+import PageNav3 from './PageNav3Pro';
+import DraggableFrame3 from './DraggableFrame3Pro';
+import { RedRectangle3, ColorRectangle3, TextBox3, RedTextRectangle3 } from './BasicEditor3ProComponents';
+import { isEmpty, hydrateRenderElement, hydratePage, createRenderElement } from './utils';
+import styles from './BasicEditor3ProStyles';
 import Header3, { Header3Data } from './Header3';
 
 //goal 0. 
@@ -34,8 +40,10 @@ import Header3, { Header3Data } from './Header3';
 //move the hydration functions to the utils file
 
 //task
-//make the editor display components based on the current website passed to it.
-//make the changes made apply to the website instead of the pages.
+//make the editor display components based on the current website passed to it
+
+//task
+//create functions to add/remove componenets from a website's page
 
 //task
 //create 2 different websites and toggle between them.
@@ -65,7 +73,7 @@ export const BasicEditorContext = createContext<BasicEditorContextType>({});
 function BasicEditor3Pro({ currentWebsite, currentPage }: BasicEditor3ProProps) {
   const [isEditMode, setIsEditMode] = useState(true);
   const [headerEditMode, setHeaderEditMode] = useState(false);
-  
+  const pages = currentWebsite.pages;
   const renderElements = currentPage?.renderElements;
 
   const isRenderElements = !(renderElements.length === 0);
@@ -73,21 +81,25 @@ function BasicEditor3Pro({ currentWebsite, currentPage }: BasicEditor3ProProps) 
 
   const baseFunctions = {
     deleteObject: function (id: string) {
-      setRenderElements(prev => prev.filter(element => element.data.id !== id))
+      // setRenderElements(prev => prev.filter(element => element.data.id !== id))
     },
     setPosition: function (id: string, newPosition: Position) {
-      setRenderElements(prev => prev.map(element => element.data.id === id ? { data: { ...element.data, position: newPosition }, body: element.body } : element))
+      // setRenderElements(prev => prev.map(element => element.data.id === id ? { data: { ...element.data, position: newPosition }, body: element.body } : element))
     },
     setContent: function (id: string, newContent: DataObject3Content) {
-      setRenderElements(prev => prev.map(element => element.data.id === id ? { data: { ...element.data, content: newContent }, body: element.body } : element))
+      // setRenderElements(prev => prev.map(element => element.data.id === id ? { data: { ...element.data, content: newContent }, body: element.body } : element))
     },
     setStyle: function (id: string, newStyle: DataObject3Style) {
       //I want to edit only the element with matching id
-      setRenderElements(prev => prev.map(element => element.data.id === id ? { data: { ...element.data, style: newStyle }, body: element.body } : element))
+      // setRenderElements(prev => prev.map(element => element.data.id === id ? { data: { ...element.data, style: newStyle }, body: element.body } : element))
     },
     // saveChanges: savePagesToLS
   }
 
+  function addRenderElement(renderElementName:RenderElementNames){
+    const newElement = createRenderElement(renderElementName);
+    currentPage.renderElements.push(newElement);
+  }
 
   return (
     <BasicEditorContext.Provider value={{ renderElements, baseFunctions, isEditMode }}>
