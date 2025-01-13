@@ -32,9 +32,14 @@ export type Wrapper3ProProps = {
 }
 
 function Wrapper3Pro({ currentUser = defaultUser }: Wrapper3ProProps) {
+    const [isEditMode, setIsEditMode] = useState(true);
+    const [headerEditMode, setHeaderEditMode] = useState(false);
 
     const [websites, setWebsites] = useState<BasicEditor3Website[]>([defaultWebsite]);
     const [currentWebsite, setCurrentWebsite] = useState<BasicEditor3Website>(websites[0]);
+    const [headerData, setHeaderData] = useState(currentWebsite.headerData);
+    const pages = currentWebsite.pages;
+    const [currentPage, setCurrentPage] = useState<BasicEditor3Page>();
 
     function saveChangesToCurrentWebsite(newWebsite: BasicEditor3Website) {
         if (websites.length > 0) {

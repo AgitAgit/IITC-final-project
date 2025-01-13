@@ -22,7 +22,7 @@ export type DraggableFrame3Props = {
     renderElement: RenderElement3
 }
 
-function DraggableFrame3({ renderElement }: DraggableFrame3Props) {
+function DraggableFrame3Pro({ renderElement }: DraggableFrame3Props) {
     const [position, setPosition] = useState<Position>(renderElement.data.position);
     const [displayEditButtons, setDisplayEditButtons] = useState(false);
     const { baseFunctions } = useContext(BasicEditorContext)
@@ -85,4 +85,4 @@ function DraggableFrame3({ renderElement }: DraggableFrame3Props) {
     )
 }
 
-export default DraggableFrame3
+export default DraggableFrame3Pro

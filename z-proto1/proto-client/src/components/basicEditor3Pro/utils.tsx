@@ -1,7 +1,9 @@
+import { ReactNode } from 'react'
 import styles from './BasicEditor3ProStyles';
 import { Position } from '../basicEditor/basicEditorTypes';
 import { RenderElementNames, DataObject3, RenderElement3, BasicEditor3Page, BasicEditor3Website } from './BasicEditor3ProTypes'
 import { RedRectangle3, ColorRectangle3, TextBox3, RedTextRectangle3} from './BasicEditor3ProComponents';
+import DraggableFrame3Pro from './DraggableFrame3Pro';
 
 export function isEmpty(obj: { [key: string]: any }) {
     for (var key in obj) {
@@ -9,6 +11,14 @@ export function isEmpty(obj: { [key: string]: any }) {
     }
     return true;
 }
+
+export function mapRenderElements(renderElements:RenderElement3[]): ReactNode[] {
+    return renderElements.length > 0 ?
+      renderElements.map(element =>
+        <DraggableFrame3Pro key={element.data.id} renderElement={element} />
+      )
+      : []
+  }
 
 //recreates The RenderElement's component part from it's data part.
 export function hydrateRenderElement(id: string, renderElementName: RenderElementNames, position: Position = { x: 50, y: 50 }, content: DataObject3Content = {}, style: DataObject3Style = {}) {
@@ -46,3 +56,4 @@ export function hydrateWebsite(website: BasicEditor3Website){
 export function hydrateWebsites(websites: BasicEditor3Website[]){
     websites.forEach(website => hydrateWebsite(website));
 }
+
