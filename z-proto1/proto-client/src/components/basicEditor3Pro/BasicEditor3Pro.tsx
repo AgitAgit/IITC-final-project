@@ -1,14 +1,8 @@
 import React, { useState, useRef, useEffect, ReactNode, useContext, createContext, Dispatch, SetStateAction } from 'react'
-import { v4 as uuidv4 } from 'uuid';
 
 import { type Position } from '../basicEditor/basicEditorTypes'
 import { DataObject3Content, DataObject3Style, DataObject3, RenderElement3, RenderElementNames, BasicEditorContextType, BasicEditor3Page, BasicEditor3Website } from './BasicEditor3ProTypes';
 
-import PageNav3 from './PageNav3Pro';
-import DraggableFrame3Pro from './DraggableFrame3Pro';
-import { RedRectangle3, ColorRectangle3, TextBox3, RedTextRectangle3 } from './BasicEditor3ProComponents';
-import { isEmpty, hydrateRenderElement, hydratePage } from './utils';
-import styles from './BasicEditor3ProStyles';
 import Header3, { Header3Data } from './Header3';
 
 //goal 0. 
@@ -94,15 +88,6 @@ function BasicEditor3Pro({ currentWebsite, currentPage }: BasicEditor3ProProps) 
     // saveChanges: savePagesToLS
   }
 
-  function createRenderElement(renderElementName: RenderElementNames, position: Position = { x: 50, y: 50 }, content: DataObject3Content = {}, style: DataObject3Style = {}) {
-    try {
-      const id = uuidv4();
-      const newRenderElement = hydrateRenderElement(id, renderElementName, position, content, style);
-      return newRenderElement;
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
   return (
     <BasicEditorContext.Provider value={{ renderElements, baseFunctions, isEditMode }}>
