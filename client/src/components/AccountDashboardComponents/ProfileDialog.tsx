@@ -28,7 +28,7 @@ const ProfileDialog: React.FC<ProfileDialogProps> = ({ btnName }) => {
     setComponentToRender(renderComponent(selectedMenuItem));
   }, [selectedMenuItem]);
 
-  const renderComponent = (menuItem: string) => {
+  const renderComponent = (menuItem: string): any => {
     switch (menuItem) {
       case "Profile":
         return <EditProfile isOpen={isOpen} setIsOpen={setIsOpen} />;
