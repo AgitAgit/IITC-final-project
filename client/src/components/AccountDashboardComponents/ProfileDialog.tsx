@@ -39,7 +39,7 @@ const ProfileDialog: React.FC<ProfileDialogProps> = ({ btnName }) => {
       case "Language":
         return <Language />;
       case "Help":
-        navigateToHelp();
+        navigateToHelp(); //
         return null;
       case "Log out":
         handleLogOut();
