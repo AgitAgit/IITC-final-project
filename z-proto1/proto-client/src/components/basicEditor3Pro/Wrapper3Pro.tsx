@@ -79,6 +79,7 @@ function Wrapper3Pro({ currentUser = defaultUser }: Wrapper3ProProps) {
             const retrieved = JSON.parse(websitesSnapshot)
             hydrateWebsites(retrieved);
             setWebsites(retrieved);
+            console.log(websites);
         } catch (error) {
             console.error(error);
         }

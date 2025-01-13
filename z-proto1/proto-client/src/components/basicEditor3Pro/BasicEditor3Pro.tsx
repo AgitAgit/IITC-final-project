@@ -39,12 +39,16 @@ import Header3, { Header3Data } from './Header3';
 //subtask: DONE.
 //move the hydration functions to the utils file
 
-//task
+//task DONE.
 //make the editor display components based on the current website passed to it
 
-//task
+//task DONE.
 //create 2 different websites and toggle between them.
 
+//task
+//save changes to the header as well
+//for some reason the default website doesn't work with that. But additional websites
+//do work. What is the problem?
 
 // goal 1. 
 // Cover as 7 of the basic editor blocks functionality an unique editors if they exist.
@@ -75,7 +79,7 @@ function BasicEditor3Pro({ currentWebsite, saveCurrentWebsite }: BasicEditor3Pro
   
   const [headerData, setHeaderData] = useState(currentWebsite.headerData);
   const [pages, setPages] = useState<BasicEditor3Page[]>(currentWebsite.pages);
-  const [currentPage, setCurrentPage] = useState<string>(pages[0].name);
+  const [currentPage, setCurrentPage] = useState<string>(pages[0]?.name);
   const [renderElements, setRenderElements] = useState<RenderElement3[]>([]);
 
   const isPages = !(pages.length === 0);
@@ -85,7 +89,9 @@ function BasicEditor3Pro({ currentWebsite, saveCurrentWebsite }: BasicEditor3Pro
   
   useEffect(() => {
     setPages(currentWebsite.pages);
-    setCurrentPage(currentWebsite.pages[0].name)
+    if(currentWebsite.pages[0]){
+      setCurrentPage(currentWebsite.pages[0].name)
+    }
     setHeaderData(currentWebsite.headerData);
     // console.log("basic editor says header data:",headerData)
     // console.log("current website:",currentWebsite.name);
