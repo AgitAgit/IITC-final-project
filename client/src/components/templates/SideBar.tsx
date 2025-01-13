@@ -10,6 +10,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "../ui/sidebar";
+import { useUserProfile } from "../../hooks/useUser";
 
 interface AppSidebarProps {
   markedTypes: Record<string, boolean>;
@@ -64,6 +65,7 @@ export function AppSidebar({ markedTypes, setMarkedTypes }: AppSidebarProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const [favorites, setFavorites] = useState<Favorite[]>([]);
+  const { data: userData } = useUserProfile();
 
   interface Favorite {
     title: string;
@@ -72,11 +74,10 @@ export function AppSidebar({ markedTypes, setMarkedTypes }: AppSidebarProps) {
   }
 
   useEffect(() => {
-    const storedFavorites = JSON.parse(
-      localStorage.getItem("favorites") || "[]"
-    );
-    setFavorites(storedFavorites);
-  }, []);
+    if (userData) {
+      setFavorites(userData.user.favoriteTemplates);
+    }
+  }, [userData]);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);

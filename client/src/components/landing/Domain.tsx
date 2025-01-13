@@ -17,6 +17,7 @@ function Domain() {
               className={`py-4 px-12 w-[550px]  bg-white`}
               placeholder="search for a domain"
             ></input>
+            {/* search button */}
             <button
               className="absolute inset-y-0 left-5 flex items-center pr-3"
               type="submit"

@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import TemplatesPage from "./pages/Templates";
 import Favorites from "./pages/Favorites";
 import AccountDashboard from "./pages/AccountDashboard";
+import FakeEditor from "./pages/FakeEditor";
 import "./App.css";
 
 function App() {
@@ -47,6 +48,10 @@ function App() {
     {
       path: "/my-favorites",
       element: <Favorites />,
+    },
+    {
+      path: "/fakeEditor",
+      element: <FakeEditor />,
     },
   ]);
 
