@@ -32,12 +32,15 @@ import Header3, { Header3Data } from './Header3';
 //task DONE.
 //create a basic header element that is editable, saveable, retrievable and serves to navigate the website
 
-//task 
+//task  DONE.
 //create a saving and retrieving website from LS functions. 
 // (the editor should only deal with one website at a time. choosing the current website and switching
 //websites is an outside function...)
 //subtask: DONE.
 //move the hydration functions to the utils file
+
+//task
+//make the editor display components based on the current website passed to it
 
 //task
 //create 2 different websites and toggle between them.
@@ -66,6 +69,7 @@ export type BasicEditor3ProProps = {
 export const BasicEditorContext = createContext<BasicEditorContextType>({});
 
 function BasicEditor3Pro({ currentWebsite }: BasicEditor3ProProps) {
+  console.log("BasicEditor says:", currentWebsite.name);
   const [isEditMode, setIsEditMode] = useState(true);
   const [headerEditMode, setHeaderEditMode] = useState(false);
 
@@ -80,6 +84,8 @@ function BasicEditor3Pro({ currentWebsite }: BasicEditor3ProProps) {
   const isRenderElements = !(renderElements.length === 0);
   const isPagesFetched = useRef(false);
 
+  
+  
   useEffect(() => {//retrieve saved pages on component mount.
     retrievePagesFromLS();
   }, [])

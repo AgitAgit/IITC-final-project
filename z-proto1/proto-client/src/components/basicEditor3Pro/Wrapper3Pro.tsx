@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 
 import BasicEditor3Pro from './BasicEditor3Pro'
 import { BasicEditor3Page, BasicEditor3User, BasicEditor3Website } from './BasicEditor3ProTypes'
+import WebsiteNav3 from './WebsiteNav3'
 import { Header3Data } from './Header3'
 import { hydrateWebsites } from './utils'
 import { Footer3Data } from './Footer3'
@@ -67,14 +68,15 @@ function Wrapper3Pro({ currentUser = defaultUser }: Wrapper3ProProps) {
             console.log("pre hydration websites:", retrieved);
             hydrateWebsites(retrieved);
             console.log("post hydration websites:", retrieved);
+            setWebsites(retrieved);
         } catch (error) {
             console.error(error);
         }
     }
 
-    function addWebsite(owner: BasicEditor3User = currentUser, name: string, headerData: Header3Data = defaultHeaderData, pages: BasicEditor3Page[] = [], footerData: Footer3Data = {}) {
+    function addWebsite(name: string, owner: BasicEditor3User = currentUser, headerData: Header3Data = defaultHeaderData, pages: BasicEditor3Page[] = [], footerData: Footer3Data = {}) {
         const newWebsite: BasicEditor3Website = { owner, name, headerData, pages, footerData }
-        if(websites.find(website => website.name === newWebsite.name)) {
+        if (websites.find(website => website.name === newWebsite.name)) {
             console.log("This name is already taken");
             return;
         }
@@ -83,8 +85,10 @@ function Wrapper3Pro({ currentUser = defaultUser }: Wrapper3ProProps) {
 
     return (
         <>
-
-        <BasicEditor3Pro websites={websites} currentWebsite={currentWebsite} setCurrentWebsite={setCurrentWebsite} />
+            Wrapper3Pro
+            <button onClick={retrieveWebsitesFromLS}>retrieveWebsites</button>
+            <WebsiteNav3 websites={websites} currentWebsite={currentWebsite} setCurrentWebsite={setCurrentWebsite} saveChangesToCurrentWebsite={saveChangesToCurrentWebsite} saveWebsitesToLS={saveWebsitesToLS} retrieveWebsitesFromLS={retrieveWebsitesFromLS} addWebsite={addWebsite} />
+            <BasicEditor3Pro currentWebsite={currentWebsite} />
         </>
     )
 }

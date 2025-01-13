@@ -6,8 +6,7 @@ import { Footer3Data } from './Footer3'
 export type WebsiteNav3Props = {
     currentWebsite:BasicEditor3Website
     websites: BasicEditor3Website[]
-    currentWebsiteName:string
-    setCurrentWebsite:Dispatch<SetStateAction<string>>
+    setCurrentWebsite:Dispatch<SetStateAction<BasicEditor3Website>>
     saveChangesToCurrentWebsite:(newWebsite:BasicEditor3Website) => void;
     saveWebsitesToLS:() => void
     retrieveWebsitesFromLS:() => void
@@ -30,26 +29,31 @@ function WebsiteNav3({websites, currentWebsite, setCurrentWebsite, saveChangesTo
 
     function handleNavigateToWebsite(websiteName:string){
         handleSaveClick();
-        setCurrentWebsite(websiteName);
+        try {
+            setCurrentWebsite(websites.find(website => website.name === websiteName));
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     function handleSaveClick(){
-        saveChangesToCurrentWebsite()
+        saveChangesToCurrentWebsite(currentWebsite);
+        saveWebsitesToLS();
     }
 
     return (
         <div style={{border:'1px solid green'}}>
-            PageNav3
+            WebsiteNav3
             <br></br>
             <label>Select a Page:</label>
             <select 
             // ref={selectPageRef}
-            onChange={(e) => handleNavigateToPage(e.target.value)}
+            onChange={(e) => handleNavigateToWebsite(e.target.value)}
             >
-                {pageNames.map(name => <option key={name}>{name}</option>)}
+                {websiteNames.map(name => <option key={name}>{name}</option>)}
             </select>
             <div>
-                <button onClick={handleAddPage}>Add a new page</button>
+                <button onClick={handleAddWebsite}>Add a new website</button>
                 <input ref={inputRef}></input>
             </div>
             <div>
