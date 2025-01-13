@@ -50,11 +50,11 @@ function Header3({ pages, currentPage, setCurrentPage, headerEditMode, setHeader
     const [headerEditButtonsVisible, setHeaderEditButtonsVisible] = useState(false);
     const [addElementsMenuVisible, setAddElementsMenuVisible] = useState(false);
     const [editDesignMenuVisible, setEditDesignMenuVisible] = useState(false);
-
+    
     const [isHamburger, setIsHamburger] = useState(false);
     // const chosenPagesRef = useRef(pages.map(page => page.name));
     // const [chosenPages, setChosenPages] = useState(pages.map(page => page.name));
-
+    
     const pageNames = pages.map(page => page.name);
     const inputRef = useRef<HTMLInputElement>();
 
@@ -176,16 +176,13 @@ function Header3({ pages, currentPage, setCurrentPage, headerEditMode, setHeader
         e.stopPropagation();
         const checked = e.target.checked;
         if(elementName === 'button') {
-            data.hasExtraButton = checked;
-            setData(data);
+            setData({...data, hasExtraButton:checked});
         }
         if(elementName === 'social_links') {
-            data.hasSocialLinks = checked;
-            setData(data);
+            setData({...data, hasSocialLinks: checked});
         }
         if(elementName === 'account') {
-            data.hasAccount = checked;
-            setData(data);
+            setData({...data, hasAccount: checked});
         }
     }
 

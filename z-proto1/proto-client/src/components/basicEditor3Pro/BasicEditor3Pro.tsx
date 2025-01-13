@@ -82,10 +82,21 @@ function BasicEditor3Pro({ currentWebsite, saveCurrentWebsite }: BasicEditor3Pro
   const isRenderElements = !(renderElements.length === 0);
   const isPagesFetched = useRef(false);
   
+  
   useEffect(() => {
     setPages(currentWebsite.pages);
     setCurrentPage(currentWebsite.pages[0].name)
+    setHeaderData(currentWebsite.headerData);
+    // console.log("basic editor says header data:",headerData)
+    // console.log("current website:",currentWebsite.name);
+    // console.log("current website header data:",currentWebsite.headerData);
   }, [currentWebsite])
+  
+  useEffect(() => {
+    currentWebsite.headerData = headerData;
+    // console.log("current website:",currentWebsite.name);
+    // console.log("current website header data:",currentWebsite.headerData);
+  },[headerData])
 
   useEffect(() => {//displays the current page
     displayPage(currentPage);
@@ -149,6 +160,8 @@ function BasicEditor3Pro({ currentWebsite, saveCurrentWebsite }: BasicEditor3Pro
   }
 
   function saveChangesToWebsite(){
+    console.log("current website:",currentWebsite.name);
+    console.log("current website header data:",currentWebsite.headerData);
     saveSnapshotToPages(currentPage, renderElements);
     saveCurrentWebsite();
   }
@@ -162,18 +175,18 @@ function BasicEditor3Pro({ currentWebsite, saveCurrentWebsite }: BasicEditor3Pro
     }
   }
 
-  function saveHeaderToLS() {
-    localStorage.setItem("headerData", JSON.stringify(headerData));
-  }
+  // function saveHeaderToLS() {
+  //   localStorage.setItem("headerData", JSON.stringify(headerData));
+  // }
 
-  function retrieveHeaderFromLS() {
-    try {
-      const headerDataString = localStorage.getItem("headerData");
-      if (headerDataString) setHeaderData(JSON.parse(headerDataString));
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  // function retrieveHeaderFromLS() {
+  //   try {
+  //     const headerDataString = localStorage.getItem("headerData");
+  //     if (headerDataString) setHeaderData(JSON.parse(headerDataString));
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
   function saveWebsites() {
 
@@ -193,8 +206,8 @@ function BasicEditor3Pro({ currentWebsite, saveCurrentWebsite }: BasicEditor3Pro
         <button onClick={saveChangesToWebsite}>save changes from Basic editor</button>
         {/* <button onClick={() => { retrievePagesFromLS() }}>Retrieve pages</button> */}
         <button onClick={() => { setIsEditMode(prev => !prev) }}>toggle edit mode</button>
-        <button onClick={saveHeaderToLS}>save header data</button>
-        <button onClick={retrieveHeaderFromLS}>retrieve header data</button>
+        {/* <button onClick={saveHeaderToLS}>save header data</button> */}
+        {/* <button onClick={retrieveHeaderFromLS}>retrieve header data</button> */}
 
         {isEditMode && <label style={{ border: '1px solid red' }}>edit mode on</label>}
         <PageNav3 pages={pages} currentPage={currentPage} setCurrentPage={setCurrentPage} saveSnapshotToPages={saveSnapshotToPages} savePagesToLS={saveCurrentWebsite} />

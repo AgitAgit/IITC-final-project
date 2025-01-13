@@ -63,6 +63,7 @@ function Wrapper3Pro({ currentUser = defaultUser }: Wrapper3ProProps) {
     }
 
     function saveWebsitesToLS() {
+        console.log("Wrapper save websites says:",websites)
         try {
             const websitesSnapshot = JSON.stringify(websites);
             localStorage.setItem("websites", websitesSnapshot);
@@ -76,9 +77,7 @@ function Wrapper3Pro({ currentUser = defaultUser }: Wrapper3ProProps) {
             const websitesSnapshot = localStorage.getItem("websites");
             if (!websitesSnapshot) return;
             const retrieved = JSON.parse(websitesSnapshot)
-            console.log("pre hydration websites:", retrieved);
             hydrateWebsites(retrieved);
-            console.log("post hydration websites:", retrieved);
             setWebsites(retrieved);
         } catch (error) {
             console.error(error);
