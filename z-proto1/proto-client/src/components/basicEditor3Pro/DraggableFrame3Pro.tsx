@@ -1,9 +1,9 @@
 import React, { type ReactNode, useState, useEffect, useRef, useContext } from 'react'
 
-import { type DataObject3, DataObject3Content, DataObject3Style, RenderElement3, BaseFunctions, RenderElementNames } from './BasicEditor3Types'
+import { type DataObject3, DataObject3Content, DataObject3Style, RenderElement3, BaseFunctions, RenderElementNames } from './BasicEditor3ProTypes'
 import { Position } from '../basicEditor/basicEditorTypes'
-import BlockEditor3 from './BlockEditor3';
-import { BasicEditorContext } from './basicEditor3';
+import BlockEditor3 from './BlockEditor3Pro';
+import { BasicEditorContext } from './BasicEditor3Pro';
 
 // interface Props {
 //   element: React.ComponentType<any>; // Type for the dynamic component

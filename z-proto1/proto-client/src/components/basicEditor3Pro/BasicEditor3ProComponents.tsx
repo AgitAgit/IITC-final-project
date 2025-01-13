@@ -1,6 +1,6 @@
 import { useContext, useRef } from "react"
-import { BasicEditorContext } from "./basicEditor3"
-import { DataObject3Content, DataObject3Style } from "./BasicEditor3Types"
+import { BasicEditorContext } from "./BasicEditor3Pro"
+import { DataObject3Content, DataObject3Style } from "./BasicEditor3ProTypes"
 import { isEmpty } from "./utils";
 
 export function RedRectangle3({id}:{id:string}) {
