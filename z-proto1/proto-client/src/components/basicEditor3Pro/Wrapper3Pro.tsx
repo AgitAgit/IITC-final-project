@@ -20,7 +20,7 @@ const defaultUser = { mongoId: '1234abcd', username: 'user1' }
 
 const defaultWebsite: BasicEditor3Website = {
     owner: defaultUser,
-    name: 'defaultWebsite1',
+    name: 'defaultWebsite0',
     headerData: defaultHeaderData,
     pages: [{ name: "Home2", renderElements: [] }, { name: "Home3", renderElements: [] }],
     footerData: {}

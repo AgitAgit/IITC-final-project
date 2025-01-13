@@ -45,10 +45,11 @@ import Header3, { Header3Data } from './Header3';
 //task DONE.
 //create 2 different websites and toggle between them.
 
+//task DONE.
+//save changes to the website header as well
+
 //task
-//save changes to the header as well
-//for some reason the default website doesn't work with that. But additional websites
-//do work. What is the problem?
+//change things so it can start without a default website
 
 // goal 1. 
 // Cover as 7 of the basic editor blocks functionality an unique editors if they exist.
