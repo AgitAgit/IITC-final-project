@@ -2,6 +2,13 @@ NOTES
 For future versions where Porat and Eden will contribute, strong typing will be important
 so they know how to use the frame I am building.
 
+Maybe if I had used a separate, central data center, something like redux,
+Changing the structure of the app(like moving to websites from pages) would have been easier,
+as there would be way less states to lift?
+
+I could try later to migrate all data to a dataCenter object who will wrap the app with
+useContext
+
 
 basic editor1
 
@@ -49,6 +56,8 @@ Website {
 
 basic editor4
 General aim:
+-1. store and pass all state data in a central data unit that will wrap the app via useContext;
+could generate a structure similar to redux but with my own approach.
 0. Update the data structure of BasicEditor3 to fit the new data structure written below.
 1. Cover as 7 of the basic editor blocks functionality an unique editors if they exist.
 2. Imitiate the style of the squarespace editor.

@@ -62,9 +62,7 @@ import Header3, { Header3Data } from './Header3';
 
 
 export type BasicEditor3ProProps = {
-  // websites: BasicEditor3Website[]
   currentWebsite: BasicEditor3Website
-  // setCurrentWebsite:Dispatch<SetStateAction<string>>
 }
 
 export const BasicEditorContext = createContext<BasicEditorContextType>({});
@@ -76,6 +74,8 @@ function BasicEditor3Pro({ currentWebsite }: BasicEditor3ProProps) {
   // const [websites, setWebsites] = useState<BasicEditor3Website[]>([]);
 
   const [headerData, setHeaderData] = useState(currentWebsite.headerData);
+  //this and current page, should they be pulled up to wrapper3 and passed as parameters?
+  //maybe it would be easier to keep the data saving here and modify the current website from here.
   const [pages, setPages] = useState<BasicEditor3Page[]>([]);
   const [currentPage, setCurrentPage] = useState<string>("Home");
   const [renderElements, setRenderElements] = useState<RenderElement3[]>([]);
@@ -83,6 +83,14 @@ function BasicEditor3Pro({ currentWebsite }: BasicEditor3ProProps) {
   const isPages = !(pages.length === 0);
   const isRenderElements = !(renderElements.length === 0);
   const isPagesFetched = useRef(false);
+
+  useEffect(() => {//retrieve saved pages on component mount.
+    setPages(currentWebsite.pages);
+  }, [])
+
+  useEffect(() => {//displays the current page
+    displayPage(currentPage);
+  }, [currentPage, pages])
 
   const baseFunctions = {
     deleteObject: function (id: string) {
@@ -116,7 +124,6 @@ function BasicEditor3Pro({ currentWebsite }: BasicEditor3ProProps) {
   function mapRenderElements(): ReactNode[] {
     return isRenderElements ?
       renderElements.map(element =>
-        //shouldn't this be draggableFrame3Pro? Is there a difference?
         <DraggableFrame3Pro key={element.data.id} renderElement={element} />
       )
       : []
