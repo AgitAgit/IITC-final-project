@@ -57,7 +57,7 @@ function WebsiteNav3({websites, currentWebsite, setCurrentWebsite, saveChangesTo
                 <input ref={inputRef}></input>
             </div>
             <div>
-                <button onClick={handleSaveClick}>Save</button>
+                {/* <button onClick={handleSaveClick}>Save</button> */}
                 {/* <button>Retrieve snapshot</button> */}
             </div>
         </div>

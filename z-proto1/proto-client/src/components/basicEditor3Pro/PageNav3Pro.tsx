@@ -19,19 +19,19 @@ function PageNav3({pages, currentPage, setCurrentPage, saveSnapshotToPages, save
         const newPageName = inputRef.current.value;
         if(!newPageName || newPageName === '') return;
         saveSnapshotToPages(newPageName, []);
-        savePagesToLS();
+        // savePagesToLS();
         inputRef.current.value = '';
     }
 
     function handleNavigateToPage(pageName:string){
         saveSnapshotToPages(currentPage);//save the former page's state
-        savePagesToLS();//save to ls the last state of the pages.
+        // savePagesToLS();//save to ls the last state of the pages.
         setCurrentPage(pageName);
     }
 
     function handleSaveClick(){
         saveSnapshotToPages(currentPage);
-        savePagesToLS();
+        // savePagesToLS();
     }
 
     return (
@@ -50,7 +50,7 @@ function PageNav3({pages, currentPage, setCurrentPage, saveSnapshotToPages, save
                 <input ref={inputRef}></input>
             </div>
             <div>
-                <button onClick={handleSaveClick}>Save</button>
+                {/* <button onClick={handleSaveClick}>Save</button> */}
                 {/* <button>Retrieve snapshot</button> */}
             </div>
         </div>

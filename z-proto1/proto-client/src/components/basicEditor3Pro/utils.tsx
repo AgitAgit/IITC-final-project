@@ -46,3 +46,31 @@ export function hydrateWebsite(website: BasicEditor3Website){
 export function hydrateWebsites(websites: BasicEditor3Website[]){
     websites.forEach(website => hydrateWebsite(website));
 }
+
+
+
+
+
+
+
+
+
+  // function savePagesToLS() {
+  //   console.log("savePagesToLS says:\nrender elements:", renderElements);
+  //   console.log("pages:", pages);
+  //   const pagesSnapshot = JSON.stringify(pages);
+  //   localStorage.setItem("pages", pagesSnapshot);
+  // }
+  // function retrievePagesFromLS() {
+  //   try {
+  //     const retrievedPages: BasicEditor3Page[] = JSON.parse(localStorage.getItem("pages"));
+  //     const hydratedPages = retrievedPages.map(page => hydratePage(page));
+  //     // console.log("basicEditor3.retrievePagesFromLS says:", hydratedPages)
+  //     setPages(hydratedPages);
+  //     isPagesFetched.current = true;
+  //   } catch (error) {
+  //     console.log("basicEditor3.retrievePagesFromLS caught an error an set renderElements to []")
+  //     setRenderElements([]);
+  //     console.log(error);
+  //   }
+  // }

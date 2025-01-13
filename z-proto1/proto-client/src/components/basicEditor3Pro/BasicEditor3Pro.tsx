@@ -63,34 +63,33 @@ import Header3, { Header3Data } from './Header3';
 export type BasicEditor3ProProps = {
   // websites: BasicEditor3Website[]
   currentWebsite: BasicEditor3Website
+  saveCurrentWebsite:() => void
   // setCurrentWebsite:Dispatch<SetStateAction<string>>
 }
 
 export const BasicEditorContext = createContext<BasicEditorContextType>({});
 
-function BasicEditor3Pro({ currentWebsite }: BasicEditor3ProProps) {
+function BasicEditor3Pro({ currentWebsite, saveCurrentWebsite }: BasicEditor3ProProps) {
   const [isEditMode, setIsEditMode] = useState(true);
   const [headerEditMode, setHeaderEditMode] = useState(false);
-
-  // const [websites, setWebsites] = useState<BasicEditor3Website[]>([]);
-
+  
   const [headerData, setHeaderData] = useState(currentWebsite.headerData);
-  const [pages, setPages] = useState<BasicEditor3Page[]>([]);
-  const [currentPage, setCurrentPage] = useState<string>("Home");
+  const [pages, setPages] = useState<BasicEditor3Page[]>(currentWebsite.pages);
+  const [currentPage, setCurrentPage] = useState<string>(pages[0].name);
   const [renderElements, setRenderElements] = useState<RenderElement3[]>([]);
 
   const isPages = !(pages.length === 0);
   const isRenderElements = !(renderElements.length === 0);
   const isPagesFetched = useRef(false);
-
   
-  
-  useEffect(() => {//retrieve saved pages on component mount.
+  useEffect(() => {
     setPages(currentWebsite.pages);
-  }, [])
+    setCurrentPage(currentWebsite.pages[0].name)
+  }, [currentWebsite])
 
   useEffect(() => {//displays the current page
     displayPage(currentPage);
+    currentWebsite.pages = pages;
   }, [currentPage, pages])
 
   const baseFunctions = {
@@ -107,7 +106,7 @@ function BasicEditor3Pro({ currentWebsite }: BasicEditor3ProProps) {
       //I want to edit only the element with matching id
       setRenderElements(prev => prev.map(element => element.data.id === id ? { data: { ...element.data, style: newStyle }, body: element.body } : element))
     },
-    saveChanges: savePagesToLS
+    saveChanges: saveCurrentWebsite
   }
 
   function addRenderElement(renderElementName: RenderElementNames, position: Position = { x: 50, y: 50 }, content: DataObject3Content = {}, style: DataObject3Style = {}) {
@@ -121,7 +120,6 @@ function BasicEditor3Pro({ currentWebsite }: BasicEditor3ProProps) {
     }
   }
 
-
   function mapRenderElements(): ReactNode[] {
     return isRenderElements ?
       renderElements.map(element =>
@@ -132,7 +130,7 @@ function BasicEditor3Pro({ currentWebsite }: BasicEditor3ProProps) {
 
   function saveSnapshotToPages(pageName: string, pageElements?: RenderElement3[]) {
     const newPage = { name: pageName, renderElements }
-    console.log('render elements from saveSnapshotToPages:', renderElements)
+    // console.log('render elements from saveSnapshotToPages:', renderElements)
     if (pageElements) newPage.renderElements = pageElements;
     if (isPages) {
       const pageIndex = pages.findIndex(page => page.name === pageName);
@@ -150,27 +148,14 @@ function BasicEditor3Pro({ currentWebsite }: BasicEditor3ProProps) {
     }
   }
 
-  function savePagesToLS() {
-    console.log("savePagesToLS says:\nrender elements:", renderElements);
-    console.log("pages:", pages);
-    const pagesSnapshot = JSON.stringify(pages);
-    localStorage.setItem("pages", pagesSnapshot);
-  }
-  function retrievePagesFromLS() {
-    try {
-      const retrievedPages: BasicEditor3Page[] = JSON.parse(localStorage.getItem("pages"));
-      const hydratedPages = retrievedPages.map(page => hydratePage(page));
-      // console.log("basicEditor3.retrievePagesFromLS says:", hydratedPages)
-      setPages(hydratedPages);
-      isPagesFetched.current = true;
-    } catch (error) {
-      console.log("basicEditor3.retrievePagesFromLS caught an error an set renderElements to []")
-      setRenderElements([]);
-      console.log(error);
-    }
+  function saveChangesToWebsite(){
+    saveSnapshotToPages(currentPage, renderElements);
+    saveCurrentWebsite();
   }
 
   function displayPage(pageName: string) {
+    // console.log("displayPage says current website is:", currentWebsite.name);
+    // console.log("current page is:", currentPage);
     const displayPageElements = pages.find(page => page.name === pageName)?.renderElements
     if (displayPageElements) {
       setRenderElements(displayPageElements);
@@ -205,13 +190,14 @@ function BasicEditor3Pro({ currentWebsite }: BasicEditor3ProProps) {
   return (
     <BasicEditorContext.Provider value={{ renderElements, baseFunctions, isEditMode }}>
       <div>BasicEditor3
-        <button onClick={() => { retrievePagesFromLS() }}>Retrieve pages</button>
+        <button onClick={saveChangesToWebsite}>save changes from Basic editor</button>
+        {/* <button onClick={() => { retrievePagesFromLS() }}>Retrieve pages</button> */}
         <button onClick={() => { setIsEditMode(prev => !prev) }}>toggle edit mode</button>
         <button onClick={saveHeaderToLS}>save header data</button>
         <button onClick={retrieveHeaderFromLS}>retrieve header data</button>
 
         {isEditMode && <label style={{ border: '1px solid red' }}>edit mode on</label>}
-        <PageNav3 pages={pages} currentPage={currentPage} setCurrentPage={setCurrentPage} saveSnapshotToPages={saveSnapshotToPages} savePagesToLS={savePagesToLS} />
+        <PageNav3 pages={pages} currentPage={currentPage} setCurrentPage={setCurrentPage} saveSnapshotToPages={saveSnapshotToPages} savePagesToLS={saveCurrentWebsite} />
         <div>
           <button onClick={() => addRenderElement(RenderElementNames.red_rectangle3)}>+RedRectangle3</button>
           <button onClick={() => addRenderElement(RenderElementNames.red_text_rectangle3)}>+RedTextRectangle3</button>
