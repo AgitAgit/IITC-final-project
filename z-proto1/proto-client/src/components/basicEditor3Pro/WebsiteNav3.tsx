@@ -45,7 +45,7 @@ function WebsiteNav3({websites, currentWebsite, setCurrentWebsite, saveChangesTo
         <div style={{border:'1px solid green'}}>
             WebsiteNav3
             <br></br>
-            <label>Select a Page:</label>
+            <label>Select a Website:</label>
             <select 
             // ref={selectPageRef}
             onChange={(e) => handleNavigateToWebsite(e.target.value)}

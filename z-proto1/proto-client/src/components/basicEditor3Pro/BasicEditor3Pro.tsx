@@ -69,14 +69,13 @@ export type BasicEditor3ProProps = {
 export const BasicEditorContext = createContext<BasicEditorContextType>({});
 
 function BasicEditor3Pro({ currentWebsite }: BasicEditor3ProProps) {
-  console.log("BasicEditor says:", currentWebsite.name);
   const [isEditMode, setIsEditMode] = useState(true);
   const [headerEditMode, setHeaderEditMode] = useState(false);
 
   // const [websites, setWebsites] = useState<BasicEditor3Website[]>([]);
 
   const [headerData, setHeaderData] = useState(currentWebsite.headerData);
-  const [pages, setPages] = useState<BasicEditor3Page[]>([])
+  const [pages, setPages] = useState<BasicEditor3Page[]>([]);
   const [currentPage, setCurrentPage] = useState<string>("Home");
   const [renderElements, setRenderElements] = useState<RenderElement3[]>([]);
 
@@ -87,7 +86,7 @@ function BasicEditor3Pro({ currentWebsite }: BasicEditor3ProProps) {
   
   
   useEffect(() => {//retrieve saved pages on component mount.
-    retrievePagesFromLS();
+    setPages(currentWebsite.pages);
   }, [])
 
   useEffect(() => {//displays the current page
@@ -206,7 +205,7 @@ function BasicEditor3Pro({ currentWebsite }: BasicEditor3ProProps) {
   return (
     <BasicEditorContext.Provider value={{ renderElements, baseFunctions, isEditMode }}>
       <div>BasicEditor3
-        {/* <button onClick={() => { retrievePagesFromLS() }}>Retrieve pages</button> */}
+        <button onClick={() => { retrievePagesFromLS() }}>Retrieve pages</button>
         <button onClick={() => { setIsEditMode(prev => !prev) }}>toggle edit mode</button>
         <button onClick={saveHeaderToLS}>save header data</button>
         <button onClick={retrieveHeaderFromLS}>retrieve header data</button>
