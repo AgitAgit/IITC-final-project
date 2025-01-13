@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import MobileMenu from "./HeadBurger";
 
 import {
   NavigationMenu,
@@ -9,7 +10,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "./ui/navigation-menu";
-import ProfileDropdown from "./Profile";
+import ProfileDropdown from "./DropProfile";
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
@@ -17,6 +18,88 @@ const Header: React.FC = () => {
 
   const [isTop, setIsTop] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isXL, setIsXL] = useState(false);
+
+  const images = [
+    {
+      hl: "Made with Squarespace",
+      image:
+        "https://media-www.sqspcdn.com/images/site-navigation/drinkminna-1000w.jpg",
+      text: "A collection of inspirational websites made by real Squarespace users.",
+    },
+    {
+      hl: "Squarespace Blog",
+      image:
+        "https://media-www.sqspcdn.com/images/site-navigation/blog-2-1000w.jpg",
+      text: "Stories and solutions for the modern entrepreneur.",
+    },
+    {
+      hl: "Help Center",
+      image:
+        "https://media-www.sqspcdn.com/images/site-navigation/help-2-1000w.jpg",
+      text: "In-depth guides and videos about the platform, our services, and how to get started.",
+    },
+    {
+      hl: "Forum",
+      image:
+        "https://media-www.sqspcdn.com/images/site-navigation/forum-2-1000w.jpg",
+      text: "An online community for Squarespace users and professionals to discuss best practices and seek advice.",
+    },
+    {
+      hl: "Webinars",
+      image:
+        "https://media-www.sqspcdn.com/images/site-navigation/webinars-2-1000w.jpg",
+      text: "Free, online sessions where you'll learn the basics and refine your Squarespace skills.",
+    },
+    {
+      hl: "For Professionals",
+      image:
+        "https://media-www.sqspcdn.com/images/site-navigation/circle-1-1000w.jpg",
+      text: "Earn rewards for building custom websites your clients can easily manage with Circle.",
+    },
+  ];
+
+  const [currentImage, setCurrentImage] = useState(images[0].image);
+  const [currentText, setCurrentText] = useState(images[0].text);
+
+  const handleResources = (image: string, text: string) => {
+    setCurrentImage(image);
+    setCurrentText(text);
+  };
+
+  const createWebsiteButtons = [
+    "Website Overview",
+    "Website Templates",
+    "Design Intelligence",
+    "For Portfolios",
+    "For Blogs",
+    "Analytics",
+    "Hire an Expert",
+    "Enterprise Solutions",
+    "Find a Domain",
+    "Transfer a Domain",
+  ];
+
+  const sellAnythingButtons = [
+    "Ecommerce Overview",
+    "Templates for Sellers",
+    "Online Stores",
+    "Sell Services",
+    "Scheduling",
+    "Content & Memberships",
+    "Invoicing",
+    "Donations",
+    "Store Management",
+    "Commerce Extensions",
+  ];
+
+  const buildYourBrandButtons = [
+    "Marketing Overview",
+    "Email Marketing",
+    "SEO Tools",
+    "Creator Tools",
+    "Logo Maker",
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,16 +114,11 @@ const Header: React.FC = () => {
 
   const handleMouseEnter = () => {
     setIsMenuOpen(true);
-    console.log("Mouse Enter Triggered");
   };
 
   const handleMouseLeave = () => {
     setIsMenuOpen(false);
   };
-
-  useEffect(() => {
-    console.log(isMenuOpen);
-  }, [isMenuOpen]);
 
   const headerTextColor =
     location.pathname === "/"
@@ -63,30 +141,35 @@ const Header: React.FC = () => {
       ? "block"
       : "hidden";
 
-  const headerJustify =
-    location.pathname === "/templates"
-      ? "justify-evenly"
-      : location.pathname === "/"
-      ? "justify-between"
-      : "justify-evenly";
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(min-width: 1280px)");
+    const handleMediaChange = (e) => setIsXL(e.matches);
+
+    setIsXL(mediaQuery.matches);
+
+    mediaQuery.addEventListener("change", handleMediaChange);
+
+    // Cleanup listener on unmount
+    return () => mediaQuery.removeEventListener("change", handleMediaChange);
+  }, []);
 
   return (
     <header
       className={`${
-        isMenuOpen ? "text-white" : headerTextColor
+        isMenuOpen || !isTop ? "text-white" : headerTextColor
       } fixed top-0 left-0 z-50 w-full transition-all duration-300 ${
         isMenuOpen || !isTop ? "bg-black" : "bg-transparent"
-      }`}
+      } `}
     >
       <div
-        className={`container mx-auto flex items-center ${headerJustify} p-4`}
+        className={`container mx-auto flex items-center justify-between p-4`}
       >
         {/* Logo */}
         <div>
           <Link to="/" className="hover:opacity-45">
             <svg
               className={`${
-                isMenuOpen ? "fill-white" : headerLogoColor
+                isMenuOpen || !isTop ? "fill-white" : headerLogoColor
               } logo-path w-[250px] h-auto -ml-16`}
               xmlns="http://www.w3.org/2000/svg"
               width="166px"
@@ -145,7 +228,7 @@ const Header: React.FC = () => {
           </Link>
         </div>
         {/* Buttons div */}
-        <div className="flex items-center gap-4">
+        <div className={`flex items-center gap-4 ${isXL ? "flex" : "hidden"}`}>
           {/* First Button: NavigationMenu */}
           <NavigationMenu>
             <NavigationMenuList>
@@ -158,7 +241,7 @@ const Header: React.FC = () => {
                   <b>PRODUCTS</b>
                 </NavigationMenuTrigger>
                 <NavigationMenuContent
-                  className={`overflow-hidden transition-all duration-1000 ease-in-out transform origin-top border-t-2 border-white ${
+                  className={`overflow-hidden transition-all duration-1000 ease-in-out transform origin-top border-t-2 border-slate-100 border-opacity-20 ${
                     isMenuOpen
                       ? "scale-y-100 opacity-100"
                       : "scale-y-0 opacity-0"
@@ -166,8 +249,129 @@ const Header: React.FC = () => {
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}
                 >
-                  <NavigationMenuLink className="hover:underline">
-                    Page 1
+                  <NavigationMenuLink>
+                    <div className="flex relative h-full">
+                      {/* Right side */}
+                      <div className="flex text-2xl mt-5 w-2/3 ml-20 overflow-y-auto">
+                        {/* CREATE A WEBSITE Column */}
+                        <div className="text-white flex flex-col h-full w-1/3">
+                          <h1 className="opacity-60 text-base">
+                            CREATE A WEBSITE
+                          </h1>
+                          <div className="flex flex-col space-y-2 mt-10">
+                            {createWebsiteButtons.map((button, index) => (
+                              <span
+                                key={index}
+                                className="relative group text-white cursor-pointer"
+                              >
+                                <span className="block hover:underline mb-5">
+                                  {button}
+                                  <span className="absolute opacity-0 ml-1 text-white transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-2">
+                                    →
+                                  </span>
+                                </span>
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                        {/* SELL ANYTHING Column */}
+                        <div className="text-white flex flex-col h-full w-1/3">
+                          <h1 className="opacity-60 text-base">
+                            SELL ANYTHING
+                          </h1>
+                          <div className="flex flex-col space-y-2 mt-10">
+                            {sellAnythingButtons.map((button, index) => (
+                              <span
+                                key={index}
+                                className="relative group text-white cursor-pointer"
+                              >
+                                <span className="block hover:underline mb-5">
+                                  {button}
+                                  <span className="absolute opacity-0 ml-1 text-white transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-2">
+                                    →
+                                  </span>
+                                </span>
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                        {/* BUILD YOUR BRAND Column */}
+                        <div className="text-white flex flex-col h-full w-1/3">
+                          <h1 className="opacity-60 text-base">
+                            BUILD YOUR BRAND
+                          </h1>
+                          <div className="flex flex-col space-y-2 mt-10">
+                            {buildYourBrandButtons.map((button, index) => (
+                              <span
+                                key={index}
+                                className="relative group text-white cursor-pointer"
+                              >
+                                <span className="block hover:underline mb-5">
+                                  {button}
+                                  <span className="absolute opacity-0 ml-1 text-white transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-2">
+                                    →
+                                  </span>
+                                </span>
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                      {/* Left side */}
+                      <div
+                        className={`absolute right-0 w-[30vw] h-screen border-l border-slate-100 border-opacity-20`}
+                      >
+                        <div className="ml-10 mt-4">
+                          <h1 className="opacity-60 text-lg">
+                            From Squarespace
+                          </h1>
+                          <div>
+                            {/* First Headline */}
+                            <h2 className="text-2xl mt-8 flex items-center group relative cursor-pointer">
+                              <span className="mr-2 flex flex-col items-center">
+                                <span className="w-3 h-3 bg-white rounded-full mb-1"></span>
+                                <span className="w-3 h-3 bg-white rounded-full"></span>
+                              </span>
+                              Acuity Scheduling
+                              <span className="opacity-0 ml-1 text-white transition-all duration-300 transform group-hover:opacity-100 group-hover:translate-x-2 group-hover:-rotate-45">
+                                →
+                              </span>
+                            </h2>
+                            <p className="opacity-60 text-lg">
+                              The scheduling solution for appointment-based
+                            </p>
+                            {/* Second Headline */}
+                            <h2 className="text-2xl mt-10 flex items-center group relative cursor-pointer">
+                              <span className="mr-2 flex items-center">
+                                <span className="w-5 h-5 bg-white rounded-full mr-1"></span>
+                                <span className="w-2 h-2 bg-white rounded-full"></span>
+                              </span>
+                              services Bio Sites
+                              <span className="opacity-0 ml-1 text-white transition-all duration-300 transform group-hover:opacity-100 group-hover:translate-x-2 group-hover:-rotate-45">
+                                →
+                              </span>
+                            </h2>
+                            <p className="opacity-60 text-lg">
+                              Share your online world in one link
+                            </p>
+                            {/* Third Headline */}
+                            <h2 className="text-2xl mt-10 flex items-center group relative cursor-pointer">
+                              <span className="mr-2 flex items-center">
+                                <span className="w-4 h-4 border-2 border-white rounded-full mr-1"></span>
+                                <span className="w-4 h-4 border-2 border-white rounded-full"></span>
+                              </span>
+                              Unfold
+                              <span className="opacity-0 ml-1 text-white transition-all duration-300 transform group-hover:opacity-100 group-hover:translate-x-2 group-hover:-rotate-45">
+                                →
+                              </span>
+                            </h2>
+                            <p className="opacity-60 text-lg">
+                              Everything to stand out on social
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </NavigationMenuLink>
                 </NavigationMenuContent>
               </NavigationMenuItem>
@@ -192,7 +396,7 @@ const Header: React.FC = () => {
                   <b>RESOURCES</b>
                 </NavigationMenuTrigger>
                 <NavigationMenuContent
-                  className={`overflow-hidden transition-all duration-1000 ease-in-out transform origin-top ${
+                  className={`overflow-hidden transition-all duration-1000 ease-in-out transform origin-top border-t-2 border-slate-100 border-opacity-20  ${
                     isMenuOpen
                       ? "scale-y-100 opacity-100"
                       : "scale-y-0 opacity-0"
@@ -200,8 +404,39 @@ const Header: React.FC = () => {
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}
                 >
-                  <NavigationMenuLink className="hover:underline">
-                    Page 2
+                  <NavigationMenuLink>
+                    <div className="flex relative h-full">
+                      {/* Left: Headlines */}
+                      <div className="w-1/2 flex flex-col justify-center p-8 space-y-6">
+                        {images.map((item, index) => (
+                          <h2
+                            key={index}
+                            className="relative text-xl font-semibold cursor-pointer transition-all duration-300 opacity-50 hover:opacity-100 hover:text-white group"
+                            onMouseEnter={() =>
+                              handleResources(item.image, item.text)
+                            }
+                          >
+                            {item.hl}
+                            <span className="relative left-0 top-0 opacity-0 ml-1 text-white transition-all duration-300 group-hover:opacity-100 z-10">
+                              →
+                            </span>
+                          </h2>
+                        ))}
+                        <p className="absolute bottom-8 font-bold text-lg">
+                          {currentText}
+                        </p>
+                      </div>
+                      {/* Right: Image */}
+                      <div className="w-1/2 p-14 flex items-center justify-center">
+                        <div className="bg-black w-[40vw] h-[52vh] overflow-hidden">
+                          <img
+                            src={currentImage}
+                            alt="Dynamic"
+                            className="w-full h-full object-cover transition-opacity duration-300"
+                          />
+                        </div>
+                      </div>
+                    </div>
                   </NavigationMenuLink>
                 </NavigationMenuContent>
               </NavigationMenuItem>
@@ -209,14 +444,17 @@ const Header: React.FC = () => {
           </NavigationMenu>
         </div>
         {/* Get Started button div */}
-        <div className="flex gap-5">
-          <ProfileDropdown />
+        <div className="flex">
+          <ProfileDropdown isMenuOpen={isMenuOpen} />
           <button
             onClick={() => navigate("/templates")}
-            className={`text-black px-6 py-1 h-12 mt-1 bg-white text-sm font-semibold hover:bg-slate-100 ${headerStartButton}`}
+            className={`text-black px-6 py-1 h-12 mt-1 ml-6 bg-white text-sm font-semibold hover:bg-slate-100 ${headerStartButton} ${
+              isXL ? "block" : "hidden"
+            }`}
           >
             Get Started
           </button>
+          <MobileMenu />
         </div>
       </div>
     </header>

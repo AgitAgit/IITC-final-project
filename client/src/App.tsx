@@ -5,7 +5,8 @@ import Error from "./pages/Error";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import TemplatesPage from "./pages/Templates";
-
+import Favorites from "./pages/Favorites";
+import AccountDashboard from "./pages/AccountDashboard";
 import "./App.css";
 
 function App() {
@@ -18,7 +19,11 @@ function App() {
           element: <Landing />,
         },
         {
-          path: "/templates",
+          path: "/templates/",
+          element: <TemplatesPage />,
+        },
+        {
+          path: "/templates/:filter",
           element: <TemplatesPage />,
         },
         {
@@ -28,12 +33,20 @@ function App() {
       ],
     },
     {
+      path: "/accountdashboard",
+      element: <AccountDashboard />,
+    },
+    {
       path: "/login",
       element: <Login />,
     },
     {
       path: "/signup",
       element: <SignUp />,
+    },
+    {
+      path: "/my-favorites",
+      element: <Favorites />,
     },
   ]);
 

@@ -4,6 +4,7 @@ import { Request, Response } from "express";
 import User from "../models/userModel";
 import { IUser } from "../types/userTypes";
 import { AuthenticatedRequest } from "../types/expressTypes";
+import { log } from "console";
 
 export const getUserById = async (
   req: AuthenticatedRequest,
@@ -45,9 +46,12 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    const displayName = firstName + " " + lastName;
+
     const newUser = await User.create({
       firstName,
       lastName,
+      displayName,
       email,
       password: hashedPassword,
     });
@@ -88,14 +92,19 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
 export const logIn = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password }: { email: string; password: string } = req.body;
+    console.log(email);
+    console.log(password);
 
     const user: IUser | null = await User.findOne({ email });
+
     if (!user) {
       res.status(404).json({ message: "User not found." });
       return;
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
+    console.log(isMatch);
+
     if (!isMatch) {
       res.status(400).json({ message: "Invalid credentials." });
       return;
@@ -132,41 +141,53 @@ export const updateUser = async (
 ): Promise<void> => {
   try {
     const userId = req.params.id;
+    const updateData: Partial<IUser> = req.body;
+    const { password, favoriteTemplateId } = req.body;
 
-    const {
-      firstName,
-      lastName,
-      email,
-      password,
-      googleId,
-      profileImage,
-      role,
-      sites,
-    }: IUser = req.body;
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      updateData.password = hashedPassword;
+    }
 
     const user = await User.findById(userId);
+
     if (!user) {
       res.status(404).json({ message: "User not found." });
       return;
     }
 
-    if (password) {
-      const hashedPassword = await bcrypt.hash(password, 10);
-      user.password = hashedPassword;
+    if (favoriteTemplateId) {
+      const favoriteTemplates = user.favoriteTemplates || [];
+      const index = favoriteTemplates.indexOf(favoriteTemplateId);
+
+      if (index > -1) {
+        favoriteTemplates.splice(index, 1);
+      } else {
+        favoriteTemplates.push(favoriteTemplateId);
+      }
+
+      updateData.favoriteTemplates = favoriteTemplates;
     }
 
-    if (firstName) user.firstName = firstName;
-    if (lastName) user.lastName = lastName;
-    if (email) user.email = email;
-    if (googleId) user.googleId = googleId;
-    if (profileImage) user.profileImage = profileImage;
-    if (role) user.role = role;
-    if (sites) user.sites = sites;
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { ...updateData },
+      { new: true, runValidators: true }
+    );
 
-    await user.save();
+    console.log(updatedUser);
 
-    res.status(200).json({ message: "User updated successfully", user });
+    if (!updatedUser) {
+      res.status(404).json({ message: "User not found." });
+      return;
+    }
+
+    res.status(200).json({
+      message: "User updated successfully",
+      user: updatedUser,
+    });
   } catch (err) {
+    console.error(err);
     res.status(500).json({ message: "Server error", error: err });
   }
 };

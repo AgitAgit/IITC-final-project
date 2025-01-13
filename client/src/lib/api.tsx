@@ -2,15 +2,26 @@ import axios from "axios";
 
 export const getAuthTokenFromCookie = () => {
   const cookies = document.cookie.split("; ");
-  const tokenCookie = cookies.find((cookie) => cookie.startsWith("jwt"));
+  const tokenCookie = cookies.find((cookie) => cookie.startsWith("token"));
   return tokenCookie ? tokenCookie.split("=")[1] : null;
 };
-const token = getAuthTokenFromCookie();
+
+export const deleteToken = () => {
+  document.cookie = `token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;
+};
 
 export const usersCliant = axios.create({
   baseURL: "http://localhost:3000/api/users",
   headers: {
     Accept: "application/json",
-    Authorization: `Bearer ${token}`,
+    Authorization: `Bearer ${getAuthTokenFromCookie()}`,
+  },
+});
+
+export const siteCliant = axios.create({
+  baseURL: "http://localhost:3000/api/sites",
+  headers: {
+    Accept: "application/json",
+    Authorization: `Bearer ${getAuthTokenFromCookie()}`,
   },
 });

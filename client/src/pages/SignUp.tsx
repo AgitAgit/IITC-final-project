@@ -3,7 +3,7 @@ import { ChevronLeftIcon, ArrowLeftIcon } from "@heroicons/react/24/solid";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
-import { signUpService } from "../Services/userService";
+import { signUpService } from "../services/userService";
 
 interface SignUpData {
   firstName: string;
@@ -45,7 +45,7 @@ const SignUp = () => {
   const { mutate, isLoading }: any = useMutation({
     mutationFn: (data: SignUpData) => signUpService(data),
     onSuccess: () => {
-      navigate("/");
+      window.location.href = "/";
     },
     onError: (err: any) => {
       if (err?.message === "Email is already registered.") {

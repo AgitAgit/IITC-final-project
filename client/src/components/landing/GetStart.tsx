@@ -125,7 +125,7 @@ const GetStarted: React.FC = () => {
         </h1>
         <div className="flex mt-8 self-start">
           <button
-            className="bg-white w-64 h-24 px-4 py-3 text-xl mr-3"
+            className="bg-white hover:bg-gray-100 w-64 h-24 px-4 py-3 text-xl mr-3"
             onClick={() => navigate("/templates")}
           >
             <b>GET STARTED</b>

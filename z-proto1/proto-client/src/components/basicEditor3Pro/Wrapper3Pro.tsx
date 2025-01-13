@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import BasicEditor3Pro from './BasicEditor3Pro'
 import { BasicEditor3Page, BasicEditor3User, BasicEditor3Website } from './BasicEditor3ProTypes'
@@ -22,7 +22,7 @@ const defaultWebsite: BasicEditor3Website = {
     owner: defaultUser,
     name: 'defaultWebsite1',
     headerData: defaultHeaderData,
-    pages: [{ name: "Home2", renderElements: [] }],
+    pages: [{ name: "Home2", renderElements: [] }, { name: "Home3", renderElements: [] }],
     footerData: {}
 }
 
@@ -41,6 +41,10 @@ function Wrapper3Pro({ currentUser = defaultUser }: Wrapper3ProProps) {
     const pages = currentWebsite.pages;
     const [currentPage, setCurrentPage] = useState<BasicEditor3Page>();
 
+    useEffect(() => {
+        retrieveWebsitesFromLS();
+    },[])
+
     function saveChangesToCurrentWebsite(newWebsite: BasicEditor3Website) {
         if (websites.length > 0) {
             const websiteIndex = websites.findIndex(website => website.name === newWebsite.name);
@@ -54,6 +58,13 @@ function Wrapper3Pro({ currentUser = defaultUser }: Wrapper3ProProps) {
             }
         }
         else setWebsites([newWebsite]);
+        // console.log("current website:", currentWebsite.name);
+        // console.log("current website pages:", currentWebsite.pages);
+    }
+
+    function saveCurrentWebsite(){
+        saveChangesToCurrentWebsite(currentWebsite);
+        saveWebsitesToLS();
     }
 
     function saveWebsitesToLS() {
@@ -93,7 +104,7 @@ function Wrapper3Pro({ currentUser = defaultUser }: Wrapper3ProProps) {
             Wrapper3Pro
             <button onClick={retrieveWebsitesFromLS}>retrieveWebsites</button>
             <WebsiteNav3 websites={websites} currentWebsite={currentWebsite} setCurrentWebsite={setCurrentWebsite} saveChangesToCurrentWebsite={saveChangesToCurrentWebsite} saveWebsitesToLS={saveWebsitesToLS} retrieveWebsitesFromLS={retrieveWebsitesFromLS} addWebsite={addWebsite} />
-            <BasicEditor3Pro currentWebsite={currentWebsite} />
+            <BasicEditor3Pro currentWebsite={currentWebsite} saveCurrentWebsite={saveCurrentWebsite}/>
         </>
     )
 }

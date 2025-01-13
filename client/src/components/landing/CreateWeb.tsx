@@ -99,7 +99,6 @@ function CreateWeb() {
             <span className="material-icons relative z-10">arrow_forward</span>
           </button>
         </div>
-
         <div className="space-y-6">
           <h1 className="text-2xl font-bold mt-16">
             Sell your products and offerings
@@ -114,7 +113,6 @@ function CreateWeb() {
             <span className="material-icons relative z-10">arrow_forward</span>
           </button>
         </div>
-
         <div className="space-y-6">
           <h1 className="text-2xl font-bold mt-16">Market your business</h1>
           <p className="text-gray-600">
