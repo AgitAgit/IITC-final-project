@@ -16,7 +16,7 @@ function TemplatesPage() {
           templates to get started.
           <div className="absolute right-14 -bottom-20 flex flex-col space-y-2">
             <button
-              onClick={() => navigate("/editor-page")}
+              onClick={() => navigate("/editor-page/website")}
               className="relative group border border-black border-opacity-20 p-2 font-bold cursor-pointer overflow-hidden"
             >
               <span className="absolute inset-0 bg-gray-100 from-gray-100 to-transparent translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500"></span>
