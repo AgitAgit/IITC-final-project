@@ -8,18 +8,40 @@ const EditorSidebar = () => {
   const navigate = useNavigate();
 
   const sidebarItems = [
-    { title: "Setup Guide", subItems: [] },
-    { title: "Website", subItems: ["Pages", "styles", "assets"] },
+    { title: "Setup Guide", path: "/editor-page/setup-guide", subItems: [] },
+    {
+      title: "Website",
+      path: "/editor-page/website",
+      subItems: ["Pages", "styles", "assets"],
+    },
     {
       title: "Products & Services",
+      path: "/editor-page/products&services",
       subItems: ["Products", "Orders", "Discounts", "Selling Tools"],
     },
-    { title: "Content & Memberships", subItems: ["Orders", "Products"] },
-    { title: "Scheduling", subItems: ["Calendar"] },
-    { title: "Donations", subItems: ["Contributions", "Funds"] },
-    { title: "Invoicing", subItems: ["Invoices", "Projects"] },
+    {
+      title: "Content & Memberships",
+      path: "/editor-page/content&memberships",
+      subItems: ["Orders", "Products"],
+    },
+    {
+      title: "Scheduling",
+      path: "/editor-page/scheduling",
+      subItems: ["Calendar"],
+    },
+    {
+      title: "Donations",
+      path: "/editor-page/donations",
+      subItems: ["Contributions", "Funds"],
+    },
+    {
+      title: "Invoicing",
+      path: "/editor-page/invoicing",
+      subItems: ["Invoices", "Projects"],
+    },
     {
       title: "Marketing",
+      path: "/editor-page/marketing",
       subItems: [
         "Email Campaigns",
         "Automations",
@@ -27,9 +49,9 @@ const EditorSidebar = () => {
         "Discounts",
       ],
     },
-    { title: "Contacts", subItems: [] },
-    { title: "Analytics", subItems: [] },
-    { title: "Finance", subItems: [] },
+    { title: "Contacts", path: "/editor-page/contacts", subItems: [] },
+    { title: "Analytics", path: "/editor-page/analytics", subItems: [] },
+    { title: "Finance", path: "/editor-page/finance", subItems: [] },
   ];
 
   const toggleExpand = (item: string) => {
@@ -37,7 +59,12 @@ const EditorSidebar = () => {
   };
 
   return (
-    <div className="w-72 h-screen bg-white text-black border-opacity-20 flex flex-col p-6">
+    <div
+      className="w-72 h-screen bg-white text-black border-opacity-20 flex flex-col p-6"
+      transition-all
+      duration-300
+      ease-in-out
+    >
       {/* Header Section */}
       <header className="p-5 py-14 flex justify-between">
         {/* logo */}
@@ -78,8 +105,8 @@ const EditorSidebar = () => {
       </header>
       {/* Sidebar Items */}
       <ul className="space-y-2 flex-1 overflow-y-auto">
-        {sidebarItems.map(({ title, subItems }) => (
-          <li key={title} className="relative">
+        {sidebarItems.map(({ title, subItems, path }) => (
+          <li key={title} onClick={() => navigate(path)} className="relative">
             <button
               onClick={() => toggleExpand(title)}
               className={`w-full text-left p-2 rounded-md opacity-70 hover:opacity-100 transition group ${
