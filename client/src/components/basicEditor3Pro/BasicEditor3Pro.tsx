@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, ReactNode, useContext, createContext, Dispatch, SetStateAction } from 'react'
 import { v4 as uuidv4 } from 'uuid';
 
-import { type Position } from '../basicEditor/basicEditorTypes'
+import { Position } from '../basicEditor/basicEditorTypes'
 import { DataObject3Content, DataObject3Style, DataObject3, RenderElement3, RenderElementNames, BasicEditorContextType, BasicEditor3Page, BasicEditor3Website } from './BasicEditor3ProTypes';
 
 import PageNav3 from './PageNav3Pro';
@@ -77,7 +77,8 @@ export const BasicEditorContext = createContext<BasicEditorContextType>({});
 function BasicEditor3Pro({ currentWebsite, saveCurrentWebsite }: BasicEditor3ProProps) {
   const [isEditMode, setIsEditMode] = useState(true);
   const [headerEditMode, setHeaderEditMode] = useState(false);
-  
+  const [ originOfCoordinates, setOriginOfCoordinates] = useState<Position>({x:0, y:0});
+
   const [headerData, setHeaderData] = useState(currentWebsite.headerData);
   const [pages, setPages] = useState<BasicEditor3Page[]>(currentWebsite.pages);
   const [currentPage, setCurrentPage] = useState<string>(pages[0]?.name);
@@ -86,8 +87,16 @@ function BasicEditor3Pro({ currentWebsite, saveCurrentWebsite }: BasicEditor3Pro
   const isPages = !(pages.length === 0);
   const isRenderElements = !(renderElements.length === 0);
   const isPagesFetched = useRef(false);
+  const editorRef = useRef();
   
-  
+  useEffect(() => {
+    if(!editorRef.current) return;
+    const rect:DOMRect = editorRef.current.getBoundingClientRect();
+    const newPosition:Position = {x: rect.left, y:rect.top}
+    setOriginOfCoordinates(newPosition);
+    console.log("new OoC:", newPosition);
+  },[])
+
   useEffect(() => {
     setPages(currentWebsite.pages);
     if(currentWebsite.pages[0]){
@@ -208,8 +217,8 @@ function BasicEditor3Pro({ currentWebsite, saveCurrentWebsite }: BasicEditor3Pro
   }
 
   return (
-    <BasicEditorContext.Provider value={{ renderElements, baseFunctions, isEditMode }}>
-      <div>BasicEditor3
+    <BasicEditorContext.Provider value={{ renderElements, baseFunctions, isEditMode, originOfCoordinates }}>
+      <div ref={editorRef}>BasicEditor3
         <button onClick={saveChangesToWebsite}>save changes from Basic editor</button>
         {/* <button onClick={() => { retrievePagesFromLS() }}>Retrieve pages</button> */}
         <button onClick={() => { setIsEditMode(prev => !prev) }}>toggle edit mode</button>
