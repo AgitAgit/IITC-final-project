@@ -9,6 +9,8 @@ import Favorites from "./pages/Favorites";
 import AccountDashboard from "./pages/AccountDashboard";
 import FakeEditor from "./pages/EditorTools";
 import "./App.css";
+import BasicEditor3Pro from "./components/basicEditor3Pro/BasicEditor3Pro";
+import Wrapper3Pro from "./components/basicEditor3Pro/Wrapper3Pro";
 
 function App() {
   const router = createBrowserRouter([
@@ -53,6 +55,10 @@ function App() {
       path: "/fakeEditor",
       element: <FakeEditor />,
     },
+    {
+      path:"/testEditor1",
+      element:<Wrapper3Pro />
+    }
   ]);
 
   return <RouterProvider router={router} />;
