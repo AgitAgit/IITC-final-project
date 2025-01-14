@@ -8,6 +8,8 @@ import TemplatesPage from "./pages/Templates";
 import Favorites from "./pages/Favorites";
 import AccountDashboard from "./pages/AccountDashboard";
 import FakeEditor from "./pages/FakeEditor";
+import EditorLayout from "./pages/EditorLayout";
+
 import "./App.css";
 
 function App() {
@@ -52,6 +54,10 @@ function App() {
     {
       path: "/fakeEditor",
       element: <FakeEditor />,
+    },
+    {
+      path: "/editor-page",
+      element: <EditorLayout />,
     },
   ]);
 
