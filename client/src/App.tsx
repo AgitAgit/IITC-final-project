@@ -9,9 +9,10 @@ import Favorites from "./pages/Favorites";
 import AccountDashboard from "./pages/AccountDashboard";
 import FakeEditor from "./pages/EditorTools";
 import EditorLayout from "./pages/EditorLayout";
+import Domains from "./pages/Domains";
+import Dashboard from "./pages/Dashboard";
 
 import "./App.css";
-import BasicEditor3Pro from "./components/basicEditor3Pro/BasicEditor3Pro";
 import Wrapper3Pro from "./components/basicEditor3Pro/Wrapper3Pro";
 
 function App() {
@@ -38,8 +39,12 @@ function App() {
       ],
     },
     {
-      path: "/accountdashboard",
+      path: "/accountdashboard/",
       element: <AccountDashboard />,
+      children: [
+        { path: "domains", element: <Domains /> },
+        { path: "dashboard", element: <Dashboard /> },
+      ],
     },
     {
       path: "/login",
@@ -60,11 +65,57 @@ function App() {
     {
       path: "/editor-page",
       element: <EditorLayout />,
+      children: [
+        {
+          path: "setup-guide",
+          element: <div>Setup Guide Content</div>,
+        },
+        {
+          path: "website",
+          element: <div>Pages Content</div>,
+        },
+        {
+          path: "products&services",
+          element: <div>Pages Content 1</div>,
+        },
+        {
+          path: "content&memberships",
+          element: <div>Pages Content 2 3</div>,
+        },
+        {
+          path: "scheduling",
+          element: <div>Pages Content 4</div>,
+        },
+        {
+          path: "donations",
+          element: <div>Pages Content 5</div>,
+        },
+        {
+          path: "invoicing",
+          element: <div>Pages Content 6</div>,
+        },
+        {
+          path: "marketing",
+          element: <div>Pages Content</div>,
+        },
+        {
+          path: "contacts",
+          element: <div>Pages Content</div>,
+        },
+        {
+          path: "analytics",
+          element: <div>Pages Content</div>,
+        },
+        {
+          path: "finance",
+          element: <div>Pages Content</div>,
+        },
+      ],
     },
     {
       path: "/wrapper3",
-      element: <Wrapper3Pro />
-    }
+      element: <Wrapper3Pro />,
+    },
   ]);
 
   return <RouterProvider router={router} />;

@@ -32,7 +32,12 @@ function ProfileDropdown({ isMenuOpen }: ProfileDropdownProps) {
 
   const handleClickProfile = () => {
     setIsOpen(false);
-    navigate("/accountdashboard");
+    navigate("/accountdashboard/dashboard");
+  };
+
+  const handleClickDomain = () => {
+    setIsOpen(false);
+    navigate("/accountdashboard/domains");
   };
 
   const handleClickLogIn = () => {
@@ -102,8 +107,11 @@ function ProfileDropdown({ isMenuOpen }: ProfileDropdownProps) {
             >
               Profile
             </li>
-            <li className="px-4 py-2 hover:bg-gray-700 cursor-pointer">
-              Settings
+            <li
+              onClick={handleClickDomain}
+              className="px-4 py-2 hover:bg-gray-700 cursor-pointer"
+            >
+              Domains
             </li>
             <li
               className="px-4 py-2 hover:bg-gray-700 cursor-pointer"

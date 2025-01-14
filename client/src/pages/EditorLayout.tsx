@@ -1,12 +1,13 @@
 import { useState } from "react";
+import { Outlet, useLocation } from "react-router-dom";
 import EditorHeader from "../components/EditorComponents/EditorHeader";
 import EditorSideBar from "../components/EditorComponents/EditorSidebar";
-import EditorPage from "../components/EditorComponents/EditorTemplateCard";
 import Wrapper3Pro from "../components/basicEditor3Pro/Wrapper3Pro";
 
 function EditorLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isMobileView, setIsMobileView] = useState(false);
+  const location = useLocation();
 
   // Function to toggle sidebar layout
   const toggleSidebarLayout = () => {
@@ -19,13 +20,20 @@ function EditorLayout() {
     console.log(isMobileView);
   };
 
+  const counterPageTop =
+    location.pathname === "/"
+      ? "top-0"
+      : location.pathname === "/editor-page/website"
+      ? "top-24"
+      : "top-0";
+
   return (
-    <div className="flex min-h-screen overflow-hidden relative">
+    <div className="flex min-h-screen overflow-hidden relative ">
       {/* Sidebar */}
       <div
         className={`flex-shrink-0 ${
-          isSidebarOpen ? "w-72" : "hidden"
-        } transition-all duration-300`}
+          isSidebarOpen ? "w-72" : "w-0"
+        } overflow-hidden transition-all duration-300 ease-in-out`}
         style={{ height: "100vh" }}
       >
         <EditorSideBar />
@@ -36,10 +44,11 @@ function EditorLayout() {
         <EditorHeader
           toggleSidebarLayout={toggleSidebarLayout}
           setMobileView={setMobileView}
+          isMobileView={isMobileView}
         />
         {/* EditorPage */}
         <div
-          className={`absolute top-24 bottom-0 ${
+          className={`absolute ${counterPageTop} transition-all duration-500 bottom-0 ${
             isMobileView
               ? "w-[375px] mx-auto left-0 right-0"
               : "w-full left-0 right-0"
@@ -48,7 +57,10 @@ function EditorLayout() {
           } bg-gray-100 shadow transition-all duration-300`}
         >
           {/* <EditorPage isMobileView={isMobileView} /> Pass isMobileView */}
-          <Wrapper3Pro />
+          {/* <Wrapper3Pro /> */}
+          <div>
+            <Outlet />
+          </div>
         </div>
       </div>
     </div>

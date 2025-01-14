@@ -3,18 +3,29 @@ import React from "react";
 interface EditorHeaderProps {
   toggleSidebarLayout: () => void;
   setMobileView: (view: "mobile" | "full") => void;
+  isMobileView: boolean;
 }
 
 const EditorHeader: React.FC<EditorHeaderProps> = ({
   toggleSidebarLayout,
   setMobileView,
+  isMobileView,
 }) => {
+  const editorHeaderHide =
+    location.pathname === "/"
+      ? "hidden p-0 m-0"
+      : location.pathname === "/editor-page/website"
+      ? "flex p-5 mt-2"
+      : "hidden p-0 m-0";
+
   return (
-    <div className="w-[99%] h-16 border-b shadow-md flex justify-between items-center p-5 mt-2">
+    <div
+      className={`w-[99%] h-16 border-b shadow-md ${editorHeaderHide} justify-between items-center p-5 mt-2`}
+    >
       {/* Sidebar toggle */}
       <h1
         onClick={toggleSidebarLayout}
-        className="hover:bg-slate-50 p-3 cursor-pointer"
+        className="hover:bg-slate-50 p-3 cursor-pointer transition-all duration-300 ease-in-out"
       >
         Edit
       </h1>
@@ -23,7 +34,9 @@ const EditorHeader: React.FC<EditorHeaderProps> = ({
         {/* Mobile View Button */}
         <button
           onClick={() => setMobileView("mobile")}
-          className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 flex items-center gap-2"
+          className={`px-4 py-2 ${
+            isMobileView ? "bg-gray-300" : "bg-gray-100"
+          } rounded hover:bg-gray-300 flex items-center gap-2`}
           aria-label="Switch to Mobile View"
         >
           <svg
@@ -41,11 +54,12 @@ const EditorHeader: React.FC<EditorHeaderProps> = ({
             ></path>
           </svg>
         </button>
-
         {/* Full View Button */}
         <button
           onClick={() => setMobileView("full")}
-          className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 flex items-center gap-2"
+          className={`px-4 py-2 ${
+            isMobileView ? "bg-gray-100" : "bg-gray-300"
+          } rounded hover:bg-gray-300 flex items-center gap-2`}
           aria-label="Switch to Full View"
         >
           <svg
