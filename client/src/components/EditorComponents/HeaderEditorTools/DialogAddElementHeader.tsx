@@ -20,7 +20,7 @@ import CartIcon from "../../../assets/shopping-cart.png";
 type Preferences = {
   [key: string]: boolean;
 };
-export const DialogAddElement: React.FC = () => {
+export const DialogAddElementHeader: React.FC = () => {
   const [preferences, setPreferences] = useState<Preferences>({
     Account: true, //
     "Social Links": true,

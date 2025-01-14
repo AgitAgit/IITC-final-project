@@ -11,6 +11,8 @@ import FakeEditor from "./pages/FakeEditor";
 import EditorLayout from "./pages/EditorLayout";
 
 import "./App.css";
+import BasicEditor3Pro from "./components/basicEditor3Pro/BasicEditor3Pro";
+import Wrapper3Pro from "./components/basicEditor3Pro/Wrapper3Pro";
 
 function App() {
   const router = createBrowserRouter([
