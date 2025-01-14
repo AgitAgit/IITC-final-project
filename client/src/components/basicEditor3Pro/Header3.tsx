@@ -237,6 +237,7 @@ function Header3({ pages, currentPage, setCurrentPage, headerEditMode, setHeader
                     {/* <button onClick={(e) => handleAddHeaderElementsClick(e)}>ADD ELEMENTS</button> */}
                     <div onClick={(e) => handleAddHeaderElementsClick(e)}>
                         <AddBtn />
+                        {/* <DialogAddElementHeader /> */}
                     </div>
                     <button onClick={(e) => handleEditHeaderDesignClick(e)}>EDIT DESIGN</button>
                 </div>
@@ -258,6 +259,7 @@ function Header3({ pages, currentPage, setCurrentPage, headerEditMode, setHeader
                     //     </label>
                     // </div>
                     <DialogAddElementHeader />
+                    // <></>
                 }
                 {editDesignMenuVisible && headerEditMode &&
                     <div style={editDesignMenuStyle}>

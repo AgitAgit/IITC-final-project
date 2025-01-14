@@ -61,6 +61,10 @@ function App() {
       path: "/editor-page",
       element: <EditorLayout />,
     },
+    {
+      path: "/wrapper3",
+      element: <Wrapper3Pro />
+    }
   ]);
 
   return <RouterProvider router={router} />;

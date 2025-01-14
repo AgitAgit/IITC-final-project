@@ -2,6 +2,7 @@ import { useState } from "react";
 import EditorHeader from "../components/EditorComponents/EditorHeader";
 import EditorSideBar from "../components/EditorComponents/EditorSidebar";
 import EditorPage from "../components/EditorComponents/EditorTemplateCard";
+import Wrapper3Pro from "../components/basicEditor3Pro/Wrapper3Pro";
 
 function EditorLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -46,7 +47,8 @@ function EditorLayout() {
             isSidebarOpen ? "overflow-x-scroll" : "overflow-auto"
           } bg-gray-100 shadow transition-all duration-300`}
         >
-          <EditorPage isMobileView={isMobileView} /> {/* Pass isMobileView */}
+          {/* <EditorPage isMobileView={isMobileView} /> Pass isMobileView */}
+          <Wrapper3Pro />
         </div>
       </div>
     </div>
