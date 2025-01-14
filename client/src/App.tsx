@@ -13,6 +13,7 @@ import Domains from "./pages/Domains";
 import Dashboard from "./pages/Dashboard";
 
 import "./App.css";
+import Wrapper3Pro from "./components/basicEditor3Pro/Wrapper3Pro";
 
 function App() {
   const router = createBrowserRouter([
