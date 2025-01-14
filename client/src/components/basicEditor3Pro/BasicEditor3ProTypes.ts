@@ -74,4 +74,5 @@ export type BasicEditorContextType = {
     renderElements: RenderElement3[];
     baseFunctions: BaseFunctions;
     isEditMode: boolean;
+    originOfCoordinates:Position;
 }

@@ -28,8 +28,13 @@ export const DialogEditHeader = () => {
   };
 
   return (
-    <div>
-      <Dialog
+    <div
+      className="top-full min-h-[550px] max-h-[550px] overflow-y-auto mt-2 ml-auto w-auto bg-white rounded-lg shadow-lg border border-gray-300 flex flex-col min-w-[410px] font-serif"
+      style={{
+        transform: "none",
+      }}
+    >
+      {/* <Dialog
         onOpenChange={(isOpen: boolean) =>
           console.log("Dialog open state:", isOpen)
         }
@@ -39,70 +44,68 @@ export const DialogEditHeader = () => {
             <Pencil size={16} />
             <span className="font-medium">EDIT DESIGN</span>
           </button>
-        </DialogTrigger>
-        <DialogContent
+        </DialogTrigger> */}
+      {/* <DialogContent
           className="absolute top-full min-h-[550px] max-h-[550px] overflow-y-auto mt-2 left-0 w-auto bg-white rounded-lg shadow-lg border border-gray-300 flex flex-col min-w-[410px] font-serif"
           style={{
             transform: "none",
           }}
-        >
-          {isDropShadow ? (
-            <DropShadow setIsDropShadow={setIsDropShadow} />
-          ) : isOpenBorder ? (
-            <Border setIsOpenBorder={setIsOpenBorder} />
-          ) : (
-            <div>
-              <header className="relative pl-4 min-h-[60px] flex gap-6 items-center border-b-1 border-solid border-black text-[19px] mb-6">
-                <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gray-300"></div>
+        > */}
+      {isDropShadow ? (
+        <DropShadow setIsDropShadow={setIsDropShadow} />
+      ) : isOpenBorder ? (
+        <Border setIsOpenBorder={setIsOpenBorder} />
+      ) : (
+        <div>
+          <header className="relative pl-4 min-h-[60px] flex gap-6 items-center border-b-1 border-solid border-black text-[19px] mb-6">
+            <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gray-300"></div>
 
-                <button
-                  className={`relative pb-2 ${
-                    activeButton === "Design"
-                      ? "text-black font-semibold after:content-[''] after:absolute after:-bottom-[12px] after:left-0 after:w-full after:h-[2px] after:bg-black"
-                      : "text-gray-700"
-                  }`}
-                  onClick={() => handleClick("Design")}
-                >
-                  Design
-                </button>
-                <button
-                  className={`relative pb-2 ${
-                    activeButton === "Color"
-                      ? "text-black font-semibold after:content-[''] after:absolute after:-bottom-[12px] after:left-0 after:w-full after:h-[2px] after:bg-black"
-                      : "text-gray-700"
-                  }`}
-                  onClick={() => handleClick("Color")}
-                >
-                  Color
-                </button>
-              </header>
-              {activeButton === "Design" ? (
-                <div className="px-8 flex flex-col gap-4 ">
-                  <LayOut />
-                  <hr className="border-black border-1 opacity-30" />
-                  <Spacing />
-                  <hr className="border-black border-1 opacity-30" />
-                  <Effects
-                    setIsDropShadow={setIsDropShadow}
-                    setIsOpenBorder={setIsOpenBorder}
-                  />
-                  <hr className="border-black border-1 opacity-30" />
-                  <FixedPosition
-                    isFixed={isFixed}
-                    handleToggle={handleToggle}
-                  />
-                  <hr className="border-black border-1 opacity-30" />
-                  <SizeHightWidth />
-                </div>
-              ) : (
-                <div className="p-8">
-                  <Color />
-                </div>
-              )}
+            <button
+              className={`relative pb-2 ${activeButton === "Design"
+                  ? "text-black font-semibold after:content-[''] after:absolute after:-bottom-[12px] after:left-0 after:w-full after:h-[2px] after:bg-black"
+                  : "text-gray-700"
+                }`}
+              onClick={() => handleClick("Design")}
+            >
+              Design
+            </button>
+            <button
+              className={`relative pb-2 ${activeButton === "Color"
+                  ? "text-black font-semibold after:content-[''] after:absolute after:-bottom-[12px] after:left-0 after:w-full after:h-[2px] after:bg-black"
+                  : "text-gray-700"
+                }`}
+              onClick={() => handleClick("Color")}
+            >
+              Color
+            </button>
+          </header>
+          {activeButton === "Design" ? (
+            <div className="px-8 flex flex-col gap-4 ">
+              <LayOut />
+              <hr className="border-black border-1 opacity-30" />
+              <Spacing />
+              <hr className="border-black border-1 opacity-30" />
+              <Effects
+                setIsDropShadow={setIsDropShadow}
+                setIsOpenBorder={setIsOpenBorder}
+              />
+              <hr className="border-black border-1 opacity-30" />
+              <FixedPosition
+                isFixed={isFixed}
+                handleToggle={handleToggle}
+              />
+              <hr className="border-black border-1 opacity-30" />
+              <SizeHightWidth />
+            </div>
+          ) : (
+            <div className="p-8">
+              <Color />
             </div>
           )}
-        </DialogContent>
-      </Dialog>
-    </div>
+        </div>
+      )}
+    {/* </DialogContent> */}
+      {/* </Dialog > */}
+    </div >
   );
 };
