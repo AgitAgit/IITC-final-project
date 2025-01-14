@@ -7,7 +7,7 @@ import Login from "./pages/Login";
 import TemplatesPage from "./pages/Templates";
 import Favorites from "./pages/Favorites";
 import AccountDashboard from "./pages/AccountDashboard";
-import FakeEditor from "./pages/FakeEditor";
+import FakeEditor from "./pages/EditorTools";
 import EditorLayout from "./pages/EditorLayout";
 
 import "./App.css";
