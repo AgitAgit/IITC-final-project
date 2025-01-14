@@ -6,6 +6,8 @@ import { BasicEditorContext } from './BasicEditor3Pro';
 
 import AddBtn from '../EditorComponents/HeaderEditorTools/AddBtn';
 import { DialogAddElementHeader } from '../EditorComponents/HeaderEditorTools/DialogAddElementHeader';
+import EditBtn from '../EditorComponents/HeaderEditorTools/EditBtn';
+import { DialogEditHeader } from '../EditorComponents/HeaderEditorTools/DialogEditHeader';
 
 export type Header3Props = {
     pages: BasicEditor3Page[]
@@ -175,9 +177,9 @@ function Header3({ pages, currentPage, setCurrentPage, headerEditMode, setHeader
         setEditDesignMenuVisible(true);
     }
 
-    function handleToggleElement(e, elementName) {
-        e.stopPropagation();
-        const checked = e.target.checked;
+    function handleToggleElement(checked:boolean, elementName:string) {
+        // e.stopPropagation();
+        // const checked = e.target.checked;
         if(elementName === 'button') {
             setData({...data, hasExtraButton:checked});
         }
@@ -239,7 +241,10 @@ function Header3({ pages, currentPage, setCurrentPage, headerEditMode, setHeader
                         <AddBtn />
                         {/* <DialogAddElementHeader /> */}
                     </div>
-                    <button onClick={(e) => handleEditHeaderDesignClick(e)}>EDIT DESIGN</button>
+                    {/* <button onClick={(e) => handleEditHeaderDesignClick(e)}>EDIT DESIGN</button> */}
+                    <div onClick={(e) => handleEditHeaderDesignClick(e)}>
+                        <EditBtn nameBtn={"EDIT DESIGN"}/>
+                    </div>
                 </div>
             }
             <div style={menusContainerStyle}>
@@ -258,7 +263,7 @@ function Header3({ pages, currentPage, setCurrentPage, headerEditMode, setHeader
                     //         <input type='checkbox' defaultChecked={data.hasAccount} onChange={(e) => handleToggleElement(e, 'account')}></input>
                     //     </label>
                     // </div>
-                    <DialogAddElementHeader />
+                    <DialogAddElementHeader handleToggleElement={handleToggleElement} data={data}/>
                     // <></>
                 }
                 {editDesignMenuVisible && headerEditMode &&

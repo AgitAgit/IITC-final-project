@@ -5,23 +5,30 @@ import SocialLinksIcon from "../../../assets/share.png";
 import LanguageIcon from "../../../assets/internet.png";
 import AccountIcon from "../../../assets/user.png";
 import CartIcon from "../../../assets/shopping-cart.png";
+import { Header3Data } from "../../basicEditor3Pro/Header3";
 
 // Define preferences type
 type Preferences = {
   [key: string]: boolean;
 };
-export const DialogAddElementHeader: React.FC = ({}) => {
-  const [preferences, setPreferences] = useState<Preferences>({
-    Account: true, //
-    "Social Links": true,
-  });
 
-  const handleToggle = (key: string): void => {
-    setPreferences((prev) => ({
-      ...prev,
-      [key]: !prev[key],
-    }));
-  };
+type DialogAddElementHeaderProps = {
+  handleToggleElement:(checked:boolean, elementName:string) => void
+  data:Header3Data
+}
+
+export const DialogAddElementHeader: React.FC<DialogAddElementHeaderProps> = ({handleToggleElement, data}) => {
+  // const [preferences, setPreferences] = useState<Preferences>({
+  //   Account: true, //
+  //   "Social Links": true,
+  // });
+
+  // const handleToggle = (key: string): void => {
+  //   setPreferences((prev) => ({
+  //     ...prev,
+  //     [key]: !prev[key],
+  //   }));
+  // };
 
   return (
         <div
@@ -41,9 +48,11 @@ export const DialogAddElementHeader: React.FC = ({}) => {
               </div>
               <Switch
                 id="Button"
-                checked={preferences["Button"] || false}
-                onCheckedChange={() => handleToggle("Button")}
-                className={preferences["Button"] ? "bg-green-400" : ""}
+                // checked={preferences["Button"] || false}
+                defaultChecked={data.hasExtraButton}
+                // onCheckedChange={() => handleToggle("Button")}
+                onCheckedChange={(checked) => handleToggleElement(checked, "button")}
+                className={data.hasExtraButton ? "bg-green-400" : ""}
               />
             </div>
             {/* Element: Social Links */}
@@ -60,9 +69,11 @@ export const DialogAddElementHeader: React.FC = ({}) => {
               </div>
               <Switch
                 id="Social Links"
-                checked={preferences["Social Links"] || false}
-                onCheckedChange={() => handleToggle("Social Links")}
-                className={preferences["Social Links"] ? "bg-green-400" : ""}
+                // checked={preferences["Social Links"] || false}
+                // onCheckedChange={() => handleToggle("Social Links")}
+                defaultChecked={data.hasSocialLinks}
+                onCheckedChange={(checked) => handleToggleElement(checked,"social_links")}
+                className={data.hasSocialLinks ? "bg-green-400" : ""}
               />
             </div>
             {/* Element: Cart */}
@@ -75,9 +86,9 @@ export const DialogAddElementHeader: React.FC = ({}) => {
               </div>
               <Switch
                 id="Cart"
-                checked={preferences["Cart"] || false}
-                onCheckedChange={() => handleToggle("Cart")}
-                className={preferences["Cart"] ? "bg-green-400" : ""}
+                // checked={preferences["Cart"] || false}
+                // onCheckedChange={() => handleToggle("Cart")}
+                className={data.hasCart ? "bg-green-400" : ""}
               />
             </div>
             {/* Element: Account */}
@@ -90,9 +101,11 @@ export const DialogAddElementHeader: React.FC = ({}) => {
               </div>
               <Switch
                 id="Account"
-                checked={preferences["Account"] || false}
-                onCheckedChange={() => handleToggle("Account")}
-                className={preferences["Account"] ? "bg-green-400" : ""}
+                // checked={preferences["Account"] || false}
+                // onCheckedChange={() => handleToggle("Account")}
+                defaultChecked={data.hasAccount}
+                onCheckedChange={(checked) => handleToggleElement(checked,"account")}
+                className={data.hasAccount ? "bg-green-400" : ""}
               />
             </div>
             {/* Element: Language Switch */}
@@ -109,9 +122,9 @@ export const DialogAddElementHeader: React.FC = ({}) => {
               </div>
               <Switch
                 id="Language Switch"
-                checked={preferences["Language Switch"] || false}
-                onCheckedChange={() => handleToggle("Language Switch")}
-                className={preferences["Language Switch"] ? "bg-green-400" : ""}
+                // checked={preferences["Language Switch"] || false}
+                // onCheckedChange={() => handleToggle("Language Switch")}
+                className={data.hasLanguageSwitch ? "bg-green-400" : ""}
               />
             </div>
           </div>
