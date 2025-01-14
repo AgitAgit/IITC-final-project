@@ -4,6 +4,9 @@ import { BasicEditor3Page, RenderElement3 } from './BasicEditor3ProTypes'
 import defaultLogo from '../../assets/icons8-website-50.png';
 import { BasicEditorContext } from './BasicEditor3Pro';
 
+import AddBtn from '../EditorComponents/HeaderEditorTools/AddBtn';
+import { DialogAddElementHeader } from '../EditorComponents/HeaderEditorTools/DialogAddElementHeader';
+
 export type Header3Props = {
     pages: BasicEditor3Page[]
     currentPage: string
@@ -231,26 +234,30 @@ function Header3({ pages, currentPage, setCurrentPage, headerEditMode, setHeader
             </div>
             {headerEditMode && headerEditButtonsVisible &&
                 <div style={headerEditButtonsContainerStyle}>
-                    <button onClick={(e) => handleAddHeaderElementsClick(e)}>ADD ELEMENTS</button>
+                    {/* <button onClick={(e) => handleAddHeaderElementsClick(e)}>ADD ELEMENTS</button> */}
+                    <div onClick={(e) => handleAddHeaderElementsClick(e)}>
+                        <AddBtn />
+                    </div>
                     <button onClick={(e) => handleEditHeaderDesignClick(e)}>EDIT DESIGN</button>
                 </div>
             }
             <div style={menusContainerStyle}>
                 {addElementsMenuVisible && headerEditMode &&
-                    <div style={addElementsMenuStyle}>
-                        <label>
-                            Button
-                            <input type='checkbox' defaultChecked={data.hasExtraButton} onChange={(e) => handleToggleElement(e, 'button')}></input>
-                        </label>
-                        <label>
-                            Social Links
-                            <input type='checkbox' defaultChecked={data.hasSocialLinks} onChange={(e) => handleToggleElement(e, 'social_links')}></input>
-                        </label>
-                        <label>
-                            Account
-                            <input type='checkbox' defaultChecked={data.hasAccount} onChange={(e) => handleToggleElement(e, 'account')}></input>
-                        </label>
-                    </div>
+                    // <div style={addElementsMenuStyle}>
+                    //     <label>
+                    //         Button
+                    //         <input type='checkbox' defaultChecked={data.hasExtraButton} onChange={(e) => handleToggleElement(e, 'button')}></input>
+                    //     </label>
+                    //     <label>
+                    //         Social Links
+                    //         <input type='checkbox' defaultChecked={data.hasSocialLinks} onChange={(e) => handleToggleElement(e, 'social_links')}></input>
+                    //     </label>
+                    //     <label>
+                    //         Account
+                    //         <input type='checkbox' defaultChecked={data.hasAccount} onChange={(e) => handleToggleElement(e, 'account')}></input>
+                    //     </label>
+                    // </div>
+                    <DialogAddElementHeader />
                 }
                 {editDesignMenuVisible && headerEditMode &&
                     <div style={editDesignMenuStyle}>
