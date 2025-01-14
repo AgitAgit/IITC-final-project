@@ -1,5 +1,7 @@
 import { ArrowLeftIcon, ChevronLeftIcon } from "lucide-react";
 import { useState } from "react";
+import { Popover, PopoverContent, PopoverTrigger } from "../../../ui/popover";
+import ColorPicker from "../../ColorPicker";
 
 const borders = [
   { type: "all", label: "◫", description: "All Borders" },
@@ -19,6 +21,8 @@ const Border: React.FC<BorderProps> = ({ setIsOpenBorder }) => {
   //
   const [selectedBorder, setSelectedBorder] = useState("all");
 
+  const [borderColor, setBorderColor] = useState("#000000");
+
   const handleThicknessClick = (value: any) => {
     setSelectedThickness(value);
     if (value !== "Custom") {
@@ -37,11 +41,23 @@ const Border: React.FC<BorderProps> = ({ setIsOpenBorder }) => {
             <ArrowLeftIcon className="h-5 w-5 absolute left-0 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:scale-100 scale-90" />
             <span className="ml-2">BACK</span>
           </button>
-          <h1 className="font-semibold opacity-70 text-lg">Boredr</h1>
+          <h1 className="font-semibold opacity-70 text-lg">Border</h1>
         </header>
         <div className="flex justify-between cursor-pointer mt-8">
           <span className="text-lg font-medium">Color</span>
-          <div className="w-6 h-6 rounded-full bg-black x-2"></div>
+          <Popover>
+            <PopoverTrigger asChild>
+              <div className="flex justify-between items-center cursor-pointer">
+                <div
+                  className="w-6 h-6 rounded-full"
+                  style={{ backgroundColor: borderColor }}
+                />
+              </div>
+            </PopoverTrigger>
+            <PopoverContent className="w-64">
+              <ColorPicker color={borderColor} onChange={setBorderColor} />
+            </PopoverContent>
+          </Popover>{" "}
         </div>
         <hr className="border-black border-1 opacity-30 my-2" />
         <div className="flex flex-col items-center">

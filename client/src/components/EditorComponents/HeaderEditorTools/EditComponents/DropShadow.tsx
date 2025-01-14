@@ -1,20 +1,24 @@
 import { ArrowLeftIcon, ChevronLeftIcon } from "lucide-react";
 import React, { useState } from "react";
 import { Slider } from "../../../ui/slider";
+import { Popover, PopoverContent, PopoverTrigger } from "../../../ui/popover";
+import ColorPicker from "../../ColorPicker";
 
-const DropShadow = ({ setIsDropShadow }) => {
+const DropShadow = ({ setIsDropShadow }: any) => {
   const [selectedStrength, setSelectedStrength] = useState("Soft");
 
   const [spreadSpacing, setSpreadSpacing] = useState([50]);
   const [distanceSpacing, setDistanceSpacing] = useState([50]);
   const [blurSpacing, setBlurSpacing] = useState([50]);
 
+  const [dropShadowColor, setDropShadowColor] = useState("#000000");
+
   return (
     <div>
       <div className="min-w-[370px] p-5 pt-0">
         <header className="flex gap-[46px] min-h-[60px] items-center">
           <button
-            onClick={() => setIsDropShadow((prev) => !prev)}
+            onClick={() => setIsDropShadow((prev: any) => !prev)}
             className="flex items-center text-gray-700 hover:text-gray-900 group relative ml-2"
           >
             <ChevronLeftIcon className="h-5 w-5 transition-all duration-300 group-hover:opacity-0" />
@@ -59,7 +63,22 @@ const DropShadow = ({ setIsDropShadow }) => {
         </div>
         <div className="flex justify-between cursor-pointer">
           <span className="text-lg font-medium">Color</span>
-          <div className="w-6 h-6 rounded-full bg-black x-2"></div>
+          <Popover>
+            <PopoverTrigger asChild>
+              <div className="flex justify-between items-center cursor-pointer">
+                <div
+                  className="w-6 h-6 rounded-full"
+                  style={{ backgroundColor: dropShadowColor }}
+                />
+              </div>
+            </PopoverTrigger>
+            <PopoverContent className="w-64">
+              <ColorPicker
+                color={dropShadowColor}
+                onChange={setDropShadowColor}
+              />
+            </PopoverContent>
+          </Popover>
         </div>
         <hr className="border-black border-1 opacity-30 my-3" />
         <div>
@@ -107,7 +126,7 @@ const DropShadow = ({ setIsDropShadow }) => {
         <div
           className="flex justify-center items-center mt-8"
           onClick={() => {
-            setIsDropShadow((prev) => !prev);
+            setIsDropShadow((prev: any) => !prev);
           }}
         >
           <button className="relative group overflow-hidden mt-[90px]">
