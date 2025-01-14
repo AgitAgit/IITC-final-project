@@ -10,6 +10,7 @@ import { RedRectangle3, ColorRectangle3, TextBox3, RedTextRectangle3 } from './B
 import { isEmpty, hydrateRenderElement, hydratePage } from './utils';
 import styles from './BasicEditor3ProStyles';
 import Header3, { Header3Data } from './Header3';
+import MouseLocator from './MouseLocator';
 
 //goal 0. 
 // Update the data structure of BasicEditor3 to fit the new data structure:
@@ -136,7 +137,7 @@ function BasicEditor3Pro({ currentWebsite, saveCurrentWebsite }: BasicEditor3Pro
     saveChanges: saveCurrentWebsite
   }
 
-  function addRenderElement(renderElementName: RenderElementNames, position: Position = { x: 50, y: 50 }, content: DataObject3Content = {}, style: DataObject3Style = {}) {
+  function addRenderElement(renderElementName: RenderElementNames, position: Position = { x: 0, y: 0 }, content: DataObject3Content = {}, style: DataObject3Style = {}) {
     try {
       const id = uuidv4();
       const newRenderElement = hydrateRenderElement(id, renderElementName, position, content, style);
@@ -218,7 +219,10 @@ function BasicEditor3Pro({ currentWebsite, saveCurrentWebsite }: BasicEditor3Pro
 
   return (
     <BasicEditorContext.Provider value={{ renderElements, baseFunctions, isEditMode, originOfCoordinates }}>
-      <div ref={editorRef}>BasicEditor3
+      <div 
+      ref={editorRef}
+      style={{position:"relative"}}
+      >BasicEditor3
         <button onClick={saveChangesToWebsite}>save changes from Basic editor</button>
         {/* <button onClick={() => { retrievePagesFromLS() }}>Retrieve pages</button> */}
         <button onClick={() => { setIsEditMode(prev => !prev) }}>toggle edit mode</button>
@@ -238,6 +242,7 @@ function BasicEditor3Pro({ currentWebsite, saveCurrentWebsite }: BasicEditor3Pro
           {mapRenderElements()}
         </div>
       </div>
+      <MouseLocator />
     </BasicEditorContext.Provider>
   )
 }

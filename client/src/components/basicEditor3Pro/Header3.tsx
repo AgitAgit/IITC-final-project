@@ -267,9 +267,10 @@ function Header3({ pages, currentPage, setCurrentPage, headerEditMode, setHeader
                     // <></>
                 }
                 {editDesignMenuVisible && headerEditMode &&
-                    <div style={editDesignMenuStyle}>
-                        this is the edit design menu
-                    </div>
+                    // <div style={editDesignMenuStyle}>
+                    //     this is the edit design menu
+                    // </div>
+                    <DialogEditHeader />
                 }
             </div>
         </>

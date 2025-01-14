@@ -7,8 +7,8 @@ import EditText from "../components/EditorComponents/Element/EditText/EditText";
 const FakeEditor = () => {
   return (
     <div>
-      <DialogAddElementHeader />
-      <DialogEditHeader />
+      {/* <DialogAddElementHeader /> */}
+      {/* <DialogEditHeader /> */}
       <EditElement />
       <EditText />
       <DialogAddElement />
