@@ -1,15 +1,14 @@
 import Profile from "../components/AccountDashboardComponents/ProfileDialog";
 import DropDownUser from "../components/AccountDashboardComponents/DropDownUser";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-import Dashboard from "./Dashboard";
-import Domains from "./Domains";
 import { getAuthTokenFromCookie } from "../lib/api";
 
 const AccountDashboard = () => {
   const [activeButton, setActiveButton] = useState("Dashboard");
   const btnName = "Account Settings";
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const token = getAuthTokenFromCookie();
@@ -19,12 +18,27 @@ const AccountDashboard = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (location.pathname.includes("domains")) {
+      setActiveButton("Domains");
+    } else {
+      setActiveButton("Dashboard");
+    }
+  }, [location.pathname]);
+
   const navigateToHelp = () => {
     window.location.href = "https://support.squarespace.com/hc/en-us";
   };
 
   const handleClick = (buttonName: string) => {
     setActiveButton(buttonName);
+    if (buttonName === "Dashboard") {
+      navigate("/accountdashboard/dashboard");
+      setActiveButton(buttonName);
+    } else if (buttonName === "Domains") {
+      navigate("/accountdashboard/domains");
+      setActiveButton(buttonName);
+    }
   };
 
   return (
@@ -100,7 +114,9 @@ const AccountDashboard = () => {
           </div>
         </div>
       </div>
-      <div>{activeButton === "Dashboard" ? <Dashboard /> : <Domains />}</div>
+      <div>
+        <Outlet />
+      </div>
     </div>
   );
 };

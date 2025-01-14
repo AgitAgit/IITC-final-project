@@ -9,6 +9,8 @@ import Favorites from "./pages/Favorites";
 import AccountDashboard from "./pages/AccountDashboard";
 import FakeEditor from "./pages/EditorTools";
 import EditorLayout from "./pages/EditorLayout";
+import Domains from "./pages/Domains";
+import Dashboard from "./pages/Dashboard";
 
 import "./App.css";
 import BasicEditor3Pro from "./components/basicEditor3Pro/BasicEditor3Pro";
@@ -38,8 +40,12 @@ function App() {
       ],
     },
     {
-      path: "/accountdashboard",
+      path: "/accountdashboard/",
       element: <AccountDashboard />,
+      children: [
+        { path: "domains", element: <Domains /> },
+        { path: "dashboard", element: <Dashboard /> },
+      ],
     },
     {
       path: "/login",
@@ -63,8 +69,8 @@ function App() {
     },
     {
       path: "/wrapper3",
-      element: <Wrapper3Pro />
-    }
+      element: <Wrapper3Pro />,
+    },
   ]);
 
   return <RouterProvider router={router} />;
