@@ -1,12 +1,12 @@
 import React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-const WebsiteTools = ({ setIsSystemPagesSidebar }) => {
+const WebsiteTools = ({ setIsWebsiteTools }) => {
   return (
     <div className="p-6">
       <div className="flex items-center text-sm mb-8">
         <ChevronLeft className="w-4 h-4 mr-2" />
-        <span onClick={setIsSystemPagesSidebar(false)} className="uppercase">
+        <span onClick={setIsWebsiteTools(false)} className="uppercase">
           Website
         </span>
       </div>

@@ -2,27 +2,31 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 // Import your other sidebar components
-// import SystemPagesSidebar from "./SystemPagesSidebar";
-// import WebsiteToolsSidebar from "./WebsiteToolsSidebar";
-// import TrashSidebar from "./TrashSidebar";
+import SystemPagesSidebar from "./SystemPagesSidebar";
+import WebsiteTools from "./WebsiteTools";
+import TrashSidebar from "./TrashSidebar";
 
 function PagesSidebar() {
   const navigate = useNavigate();
   const [activeSidebar, setActiveSidebar] = useState("main");
 
   // Function to render the correct sidebar based on `activeSidebar`
-  //   const renderSidebar = () => {
-  //     switch (activeSidebar) {
-  //       case "systemPages":
-  //         return <SystemPagesSidebar />;
-  //       case "websiteTools":
-  //         return <WebsiteToolsSidebar />;
-  //       case "trash":
-  //         return <TrashSidebar />;
-  //       default:
-  //         return null;
-  //     }
-  //   };
+  const renderSidebar = () => {
+    switch (activeSidebar) {
+      case "systemPages":
+        return (
+          <SystemPagesSidebar
+            setIsSystemPagesSidebar={setIsSystemPagesSidebar}
+          />
+        );
+      case "websiteTools":
+        return <WebsiteTools setIsWebsiteTools={setIsWebsiteTools} />;
+      case "trash":
+        return <TrashSidebar />;
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="w-full h-screen bg-gray-50 text-black">
