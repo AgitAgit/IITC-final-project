@@ -1,18 +1,21 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useUserProfile } from "../../hooks/useUser";
+import PagesSidebar from "./sidebarComponents/PagesSidebar";
 
 const EditorSidebar = () => {
   const [expandedItems, setExpandedItems] = useState<string | null>(null);
+  const [showCustomSidebar, setShowCustomSidebar] = useState(false);
   const { data: userData } = useUserProfile();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const sidebarItems = [
     { title: "Setup Guide", path: "/editor-page/setup-guide", subItems: [] },
     {
       title: "Website",
       path: "/editor-page/website",
-      subItems: ["Pages", "styles", "assets"],
+      subItems: ["Pages", "Styles", "Assets"],
     },
     {
       title: "Products & Services",
@@ -54,13 +57,38 @@ const EditorSidebar = () => {
     { title: "Finance", path: "/editor-page/finance", subItems: [] },
   ];
 
-  const toggleExpand = (item: string) => {
-    setExpandedItems((prev) => (prev === item ? null : item)); // If the item is already expanded, collapse it, otherwise expand it
+  useEffect(() => {
+    const isPagesPath = location.pathname.toLowerCase().includes("/pages");
+    setShowCustomSidebar(isPagesPath);
+  }, [location.pathname]);
+
+  const handleMainItemClick = (title: string, path: string) => {
+    if (expandedItems === title) {
+      setExpandedItems(null);
+    } else {
+      setExpandedItems(title);
+    }
+    navigate(path);
   };
+
+  const handleSubItemClick = (mainTitle: string, subItem: string) => {
+    setExpandedItems(mainTitle);
+    navigate(
+      `/editor-page/${mainTitle.toLowerCase()}/${subItem.toLowerCase()}`
+    );
+  };
+
+  if (showCustomSidebar) {
+    return (
+      <div className="w-96 h-screen bg-gray-100 text-black border-opacity-20 flex flex-col p-6">
+        <PagesSidebar />
+      </div>
+    );
+  }
 
   return (
     <div
-      className="w-72 h-screen bg-white text-black border-opacity-20 flex flex-col p-6"
+      className="w-72 h-screen p-4 bg-white text-black border-opacity-20 flex flex-col"
       transition-all
       duration-300
       ease-in-out
@@ -106,26 +134,45 @@ const EditorSidebar = () => {
       {/* Sidebar Items */}
       <ul className="space-y-2 flex-1 overflow-y-auto">
         {sidebarItems.map(({ title, subItems, path }) => (
-          <li key={title} onClick={() => navigate(path)} className="relative">
+          <li key={title} className="relative">
             <button
-              onClick={() => toggleExpand(title)}
-              className={`w-full text-left p-2 rounded-md opacity-70 hover:opacity-100 transition group ${
-                expandedItems === title ? "bg-gray-200" : ""
+              onClick={() => handleMainItemClick(title, path)}
+              className={`w-full text-left p-2 rounded-md transition group hover:opacity-100 ${
+                location.pathname.startsWith(path)
+                  ? "opacity-100"
+                  : "opacity-60"
               }`}
             >
-              <span className="relative inline-block group-hover:text-black text-xl">
-                {title}
-                <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-black transition-all duration-300 group-hover:w-full"></span>
+              <span className="relative text-xl group-hover:text-black">
+                {title}{" "}
+                <span
+                  className={`absolute left-0 -bottom-1 w-0 h-[2px] bg-black transition-all duration-300 group-hover:w-full ${
+                    location.pathname.startsWith(path)
+                      ? "opacity-100 w-full"
+                      : "opacity-60 group-hover:w-full"
+                  }`}
+                ></span>
               </span>
             </button>
             {/* Sub-items */}
             {expandedItems === title && subItems.length > 0 && (
               <ul className="pl-6 mt-2 space-y-2">
                 {subItems.map((subItem) => (
-                  <li key={subItem} className="text-gray-600">
-                    <span className="relative group group-hover:text-black cursor-pointer font-bold opacity-75">
+                  <li key={subItem} className="relative">
+                    <span
+                      onClick={() => handleSubItemClick(title, subItem)}
+                      className="relative cursor-pointer opacity-70 hover:opacity-100 font-medium"
+                    >
                       {subItem}
-                      <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-black transition-all duration-300 group-hover:w-full"></span>
+                      <span
+                        className={`absolute left-0 -bottom-1 w-0 h-[2px] bg-black transition-all duration-300 group-hover:w-full ${
+                          location.pathname
+                            .toLowerCase()
+                            .endsWith(subItem.toLowerCase())
+                            ? "opacity-100 w-full"
+                            : "opacity-60 group-hover:w-full"
+                        }`}
+                      ></span>
                     </span>
                   </li>
                 ))}

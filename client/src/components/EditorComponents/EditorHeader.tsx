@@ -14,13 +14,14 @@ const EditorHeader: React.FC<EditorHeaderProps> = ({
   const editorHeaderHide =
     location.pathname === "/"
       ? "hidden p-0 m-0"
-      : location.pathname === "/editor-page/website"
+      : location.pathname === "/editor-page/website" ||
+        location.pathname === "/editor-page/website/pages"
       ? "flex p-5 mt-2"
       : "hidden p-0 m-0";
 
   return (
     <div
-      className={`w-[99%] h-16 border-b shadow-md ${editorHeaderHide} justify-between items-center p-5 mt-2`}
+      className={`w-[99%] max-h-14 shadow-md ${editorHeaderHide} justify-between items-center p-5 mt-[15px] bg-white`}
     >
       {/* Sidebar toggle */}
       <h1

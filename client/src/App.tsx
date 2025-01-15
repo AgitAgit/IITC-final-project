@@ -11,6 +11,7 @@ import FakeEditor from "./pages/EditorTools";
 import EditorLayout from "./pages/EditorLayout";
 import Domains from "./pages/Domains";
 import Dashboard from "./pages/Dashboard";
+import Assets from "./components/EditorComponents/sidebarComponents/Assets";
 
 import "./App.css";
 import Wrapper3Pro from "./components/basicEditor3Pro/Wrapper3Pro";
@@ -72,7 +73,17 @@ function App() {
         },
         {
           path: "website",
-          element: <div>Pages Content</div>,
+          element: <div className="bg-white h-screen">Website Content</div>,
+          children: [
+            {
+              path: "pages",
+              element: <div>Website Content</div>,
+            },
+            {
+              path: "assets",
+              element: <Assets />,
+            },
+          ],
         },
         {
           path: "products&services",
@@ -96,19 +107,19 @@ function App() {
         },
         {
           path: "marketing",
-          element: <div>Pages Content</div>,
+          element: <div>Marketing Content</div>,
         },
         {
           path: "contacts",
-          element: <div>Pages Content</div>,
+          element: <div>Contacts Content</div>,
         },
         {
           path: "analytics",
-          element: <div>Pages Content</div>,
+          element: <div>Analytics Content</div>,
         },
         {
           path: "finance",
-          element: <div>Pages Content</div>,
+          element: <div>Finance Content</div>,
         },
       ],
     },
