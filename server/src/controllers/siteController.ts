@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import Site from "../models/siteModel";
 import { AuthenticatedRequest } from "src/types/expressTypes";
-import User from "src/models/userModel";
+import User from "../models/userModel";
 
 export const createNewSite = async (
   req: AuthenticatedRequest,
