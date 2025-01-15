@@ -95,8 +95,7 @@ function BasicEditor3Pro({ currentWebsite, saveCurrentWebsite }: BasicEditor3Pro
   }, [])
 
   //resize event,
-  //look for a react hooks that checks for a
-  //should add some tolerance and debounce
+  //look for a react hooks that checks for a change in div position?
   const TOLERANCE = 1;
   function updateOOC() {//SHOULD REFACTOR currently works, but wasteful. For some reason the position is always considered different. 
     if (!editorRef.current) return;
