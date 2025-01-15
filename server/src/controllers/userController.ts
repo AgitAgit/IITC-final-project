@@ -18,7 +18,7 @@ export const getUserById = async (
       return;
     }
 
-    const user: IUser | null = await User.findById(userId);
+    const user: IUser | null = await User.findById(userId).populate("sites");
 
     if (!user) {
       res.status(404).json({ message: "User not found." });

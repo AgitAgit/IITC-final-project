@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import Site from "../models/siteModel";
 import { AuthenticatedRequest } from "src/types/expressTypes";
+import User from "src/models/userModel";
 
 export const createNewSite = async (
   req: AuthenticatedRequest,
@@ -10,9 +11,14 @@ export const createNewSite = async (
     const { data, screenShot, name, domain } = req.body;
     const owner = req.user?._id;
 
+    //
     const newSite = new Site({ data, owner, screenShot, name, domain });
-
     await newSite.save();
+
+    await User.findByIdAndUpdate(owner, {
+      $push: { sites: newSite._id },
+    });
+
     res.status(201).json(newSite);
   } catch (error) {
     res.status(400).json({ message: "Error creating site", error });
@@ -96,6 +102,10 @@ export const deleteSiteById = async (
       res.status(404).json({ message: "Site not found" });
       return;
     }
+
+    await User.findByIdAndUpdate(deletedSite.owner, {
+      $pull: { sites: deletedSite._id },
+    });
 
     res.status(200).json({ message: "Site deleted successfully" });
   } catch (error) {
