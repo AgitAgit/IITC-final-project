@@ -80,7 +80,7 @@ const EditorSidebar = () => {
 
   if (showCustomSidebar) {
     return (
-      <div className="w-96 h-screen bg-gray-100 text-black border-opacity-20 flex flex-col p-6">
+      <div className="w-96 h-screen bg-gray-50 text-black border-opacity-20 flex flex-col p-6">
         <PagesSidebar />
       </div>
     );

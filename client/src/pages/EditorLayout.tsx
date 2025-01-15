@@ -24,12 +24,13 @@ function EditorLayout() {
   const counterPageTop =
     location.pathname === "/"
       ? "top-0"
-      : location.pathname === "/editor-page/website"
+      : location.pathname === "/editor-page/website" ||
+        location.pathname === "/editor-page/website/pages"
       ? "top-[73px]"
       : "top-0";
 
   return (
-    <div className="flex min-h-screen bg-gray-100 overflow-hidden relative ">
+    <div className="flex min-h-screen bg-gray-50 overflow-hidden relative ">
       {/* Sidebar */}
       <div
         className={`flex-shrink-0 top-${
