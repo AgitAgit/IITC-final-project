@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useUserProfile } from "../../hooks/useUser";
-import PagesSidebar from "./sidebarComponents/pagesSidebar";
+import PagesSidebar from "./sidebarComponents/PagesSidebar";
 
 const EditorSidebar = () => {
   const [expandedItems, setExpandedItems] = useState<string | null>(null);
