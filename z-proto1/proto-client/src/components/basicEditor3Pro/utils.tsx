@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import styles from './BasicEditor3ProStyles';
 import { type Position } from '../basicEditor/basicEditorTypes';
-import { type RenderElementNames, type DataObject3, type RenderElement3, type BasicEditor3Page, type BasicEditor3Website } from './BasicEditor3ProTypes'
+import { RenderElementNames, type DataObject3, type RenderElement3, type BasicEditor3Page, type BasicEditor3Website } from './BasicEditor3ProTypes'
 import { RedRectangle3, ColorRectangle3, TextBox3, RedTextRectangle3 } from './BasicEditor3ProComponents';
 import DraggableFrame3Pro from './DraggableFrame3Pro';
 
