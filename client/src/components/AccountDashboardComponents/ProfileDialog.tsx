@@ -25,10 +25,10 @@ const ProfileDialog: React.FC<ProfileDialogProps> = ({ btnName }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setComponentToRender(renderComponent(selectedMenuItem)); // Update the component to render based on selectedMenuItem
-  }, [selectedMenuItem]); // Re-render when selectedMenuItem changes
+    setComponentToRender(renderComponent(selectedMenuItem));
+  }, [selectedMenuItem]);
 
-  const renderComponent = (menuItem: string) => {
+  const renderComponent = (menuItem: string): any => {
     switch (menuItem) {
       case "Profile":
         return <EditProfile isOpen={isOpen} setIsOpen={setIsOpen} />;
@@ -39,12 +39,18 @@ const ProfileDialog: React.FC<ProfileDialogProps> = ({ btnName }) => {
       case "Language":
         return <Language />;
       case "Help":
-        window.location.href = "https://support.squarespace.com/hc/en-us";
+        navigateToHelp(); //
+        return null;
       case "Log out":
         handleLogOut();
+        return null;
       default:
         return <EditProfile isOpen={isOpen} setIsOpen={setIsOpen} />;
     }
+  };
+
+  const navigateToHelp = () => {
+    window.location.href = "https://support.squarespace.com/hc/en-us";
   };
 
   const handleLogOut = () => {

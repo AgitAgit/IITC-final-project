@@ -32,7 +32,12 @@ function ProfileDropdown({ isMenuOpen }: ProfileDropdownProps) {
 
   const handleClickProfile = () => {
     setIsOpen(false);
-    navigate("/accountdashboard");
+    navigate("/accountdashboard/dashboard");
+  };
+
+  const handleClickDomain = () => {
+    setIsOpen(false);
+    navigate("/accountdashboard/domains");
   };
 
   const handleClickLogIn = () => {
@@ -88,6 +93,12 @@ function ProfileDropdown({ isMenuOpen }: ProfileDropdownProps) {
       {isOpen && (
         <div className="absolute -right-16 mt-2 w-48 bg-black rounded-lg shadow-lg">
           <ul className="py-2 text-white">
+            <li className="px-4 py-2 font-semibold text-lg">
+              {userData?.user?.firstName + " " + userData?.user?.lastName}{" "}
+            </li>
+            <li className="px-4 pb-2 text-sm opacity-60">
+              {userData?.user?.email}{" "}
+            </li>
             <li
               onClick={() => {
                 handleClickProfile();
@@ -96,8 +107,11 @@ function ProfileDropdown({ isMenuOpen }: ProfileDropdownProps) {
             >
               Profile
             </li>
-            <li className="px-4 py-2 hover:bg-gray-700 cursor-pointer">
-              Settings
+            <li
+              onClick={handleClickDomain}
+              className="px-4 py-2 hover:bg-gray-700 cursor-pointer"
+            >
+              Domains
             </li>
             <li
               className="px-4 py-2 hover:bg-gray-700 cursor-pointer"
