@@ -41,11 +41,6 @@ function Wrapper3Pro({ currentUser = defaultUser }: Wrapper3ProProps) {
     useEffect(() => {
         retrieveWebsitesFromLS();
     },[])
-    
-    useEffect(() => {
-        const websiteDataString = JSON.stringify(currentWebsite);
-        setStringCurrentWebsite(websiteDataString);
-    },[currentWebsite])
 
     function saveChangesToCurrentWebsite(newWebsite: BasicEditor3Website) {
         if (websites.length > 0) {

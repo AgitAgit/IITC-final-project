@@ -144,7 +144,6 @@ function BasicEditor3Pro({
   }
 
   useEffect(() => {
-    console.log("BasicEditor says:", currentWebsite.pages);
     setPages(currentWebsite.pages);
     if (currentWebsite.pages[0]) {
       setCurrentPage(currentWebsite.pages[0].name);
