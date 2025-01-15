@@ -1,5 +1,7 @@
-function TrashSidebar() {
-    return (
+import React from "react";
 
-    )
-} export default TrashSidebar
+const TrashSidebar = () => {
+  return <div></div>;
+};
+
+export default TrashSidebar;

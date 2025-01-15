@@ -14,13 +14,9 @@ function PagesSidebar() {
   const renderSidebar = () => {
     switch (activeSidebar) {
       case "systemPages":
-        return (
-          <SystemPagesSidebar
-            setIsSystemPagesSidebar={setIsSystemPagesSidebar}
-          />
-        );
+        return <SystemPagesSidebar setActiveSidebar={setActiveSidebar} />;
       case "websiteTools":
-        return <WebsiteTools setIsWebsiteTools={setIsWebsiteTools} />;
+        return <WebsiteTools setActiveSidebar={setActiveSidebar} />;
       case "trash":
         return <TrashSidebar />;
       default:
@@ -31,26 +27,28 @@ function PagesSidebar() {
   return (
     <div className="w-full h-screen bg-gray-50 text-black">
       {/* Back Button */}
-      <button
-        onClick={() => navigate("/editor-page/website")}
-        className="absolute left-5 top-5 transform flex items-center text-gray-600 hover:text-black p-2 rounded-md"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-5 w-5 mr-2"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth="2"
+      {activeSidebar === "main" && (
+        <button
+          onClick={() => navigate("/editor-page/website")}
+          className="absolute left-5 top-5 transform flex items-center text-gray-600 hover:text-black p-2 rounded-md"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M15 19l-7-7 7-7"
-          />
-        </svg>
-        Home
-      </button>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5 mr-2"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+          Home
+        </button>
+      )}
 
       {activeSidebar === "main" ? (
         // Main Sidebar Content
