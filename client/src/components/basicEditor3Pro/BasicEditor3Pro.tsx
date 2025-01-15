@@ -11,6 +11,7 @@ import { isEmpty, hydrateRenderElement, hydratePage } from './utils';
 import styles from './BasicEditor3ProStyles';
 import Header3, { Header3Data } from './Header3';
 import MouseLocator from './MouseLocator';
+import DisplayWebsite3 from '../basicDisplay3Pro/DisplayWebsite3';
 
 //goal 0. 
 // Update the data structure of BasicEditor3 to fit the new data structure:
@@ -94,8 +95,7 @@ function BasicEditor3Pro({ currentWebsite, saveCurrentWebsite }: BasicEditor3Pro
     updateOOC();
   }, [])
 
-  //resize event,
-  //look for a react hooks that checks for a change in div position?
+  //resize event? look for a react hooks that checks for a change in div position?
   const TOLERANCE = 1;
   function updateOOC() {//SHOULD REFACTOR currently works, but wasteful. For some reason the position is always considered different. 
     if (!editorRef.current) return;
@@ -106,7 +106,7 @@ function BasicEditor3Pro({ currentWebsite, saveCurrentWebsite }: BasicEditor3Pro
       setOriginOfCoordinates(newPosition);
       // console.log("new OoC:", newPosition);
     }
-    setTimeout(updateOOC, 100);
+    setTimeout(updateOOC, 300);
   }
 
   useEffect(() => {
@@ -115,15 +115,10 @@ function BasicEditor3Pro({ currentWebsite, saveCurrentWebsite }: BasicEditor3Pro
       setCurrentPage(currentWebsite.pages[0].name)
     }
     setHeaderData(currentWebsite.headerData);
-    // console.log("basic editor says header data:",headerData)
-    // console.log("current website:",currentWebsite.name);
-    // console.log("current website header data:",currentWebsite.headerData);
   }, [currentWebsite])
 
   useEffect(() => {
     currentWebsite.headerData = headerData;
-    // console.log("current website:",currentWebsite.name);
-    // console.log("current website header data:",currentWebsite.headerData);
   }, [headerData])
 
   useEffect(() => {//displays the current page
@@ -169,7 +164,6 @@ function BasicEditor3Pro({ currentWebsite, saveCurrentWebsite }: BasicEditor3Pro
 
   function saveSnapshotToPages(pageName: string, pageElements?: RenderElement3[]) {
     const newPage = { name: pageName, renderElements }
-    // console.log('render elements from saveSnapshotToPages:', renderElements)
     if (pageElements) newPage.renderElements = pageElements;
     if (isPages) {
       const pageIndex = pages.findIndex(page => page.name === pageName);
@@ -188,44 +182,15 @@ function BasicEditor3Pro({ currentWebsite, saveCurrentWebsite }: BasicEditor3Pro
   }
 
   function saveChangesToWebsite() {
-    console.log("current website:", currentWebsite.name);
-    console.log("current website header data:", currentWebsite.headerData);
     saveSnapshotToPages(currentPage, renderElements);
     saveCurrentWebsite();
   }
 
   function displayPage(pageName: string) {
-    // console.log("displayPage says current website is:", currentWebsite.name);
-    // console.log("current page is:", currentPage);
     const displayPageElements = pages.find(page => page.name === pageName)?.renderElements
     if (displayPageElements) {
       setRenderElements(displayPageElements);
     }
-  }
-
-  // function saveHeaderToLS() {
-  //   localStorage.setItem("headerData", JSON.stringify(headerData));
-  // }
-
-  // function retrieveHeaderFromLS() {
-  //   try {
-  //     const headerDataString = localStorage.getItem("headerData");
-  //     if (headerDataString) setHeaderData(JSON.parse(headerDataString));
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
-
-  function saveWebsites() {
-
-  }
-
-  function retrieveWebsites() {
-
-  }
-
-  function displayWebsite(name: string) {
-
   }
 
   return (
@@ -253,7 +218,7 @@ function BasicEditor3Pro({ currentWebsite, saveCurrentWebsite }: BasicEditor3Pro
           {mapRenderElements()}
         </div>
       </div>
-      <MouseLocator />
+      {/* <MouseLocator /> */}
     </BasicEditorContext.Provider>
   )
 }
