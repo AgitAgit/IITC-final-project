@@ -1,29 +1,29 @@
 import React, { useEffect, useState } from 'react'
-import { BasicEditor3Page, BasicEditor3Website } from '../basicEditor3Pro/BasicEditor3ProTypes'
-import Header3 from '../basicEditor3Pro/Header3'
+import { BasicEditor3Website } from '../basicEditor3Pro/BasicEditor3ProTypes'
 
 import { hydrateWebsite } from '../basicEditor3Pro/utils'
+import BasicEditor3Pro from '../basicEditor3Pro/BasicEditor3Pro'
 
 export type DisplayWebsite3Props = {
-  websiteData: BasicEditor3Website
+  websiteDataString: string
 }
 
-function DisplayWebsite3({ websiteData }: DisplayWebsite3Props) {
+function DisplayWebsite3({ websiteDataString }: DisplayWebsite3Props) {
   const [website, setWebsite] = useState<BasicEditor3Website>()
-  const [currentPage, setCurrentPage] = useState<BasicEditor3Page>();
 
   useEffect(() => {
-    hydrateWebsite(websiteData)
+    const websiteData = JSON.parse(websiteDataString);
+    hydrateWebsite(websiteData);
     setWebsite(websiteData);
-    setCurrentPage(websiteData.pages[0])
-  }, [])
+  }, [websiteDataString])
 
   return (
-    <div>
-      {
-        website && currentPage?.renderElements.map(element => element.body)
+    <>
+      {/* <BasicEditor3Pro currentWebsite={websiteData} isEditModeProp={false} /> */}
+      {!(typeof (website) === "undefined") &&
+        <BasicEditor3Pro currentWebsite={website} isEditModeProp={false} />
       }
-    </div>
+    </>
   )
 }
 

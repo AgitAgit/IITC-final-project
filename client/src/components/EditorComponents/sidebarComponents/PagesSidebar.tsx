@@ -49,7 +49,6 @@ function PagesSidebar() {
           Home
         </button>
       )}
-
       {activeSidebar === "main" ? (
         // Main Sidebar Content
         <div className="h-4/5 mt-20 overflow-y-scroll">
@@ -76,12 +75,11 @@ function PagesSidebar() {
               </button>
             </div>
           </header>
-
           {/* Main Navigation Items */}
           <div className="mt-16 text-xl">
             <ul className="space-y-2 mb-4">
               <li className="flex justify-between items-center p-2 rounded-md">
-                <span>Main Navigation</span>
+                <span>Main Navigation </span>
                 <button className="text-gray-600 hover:text-black hover:bg-gray-200 p-3 cursor-pointer">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -128,7 +126,12 @@ function PagesSidebar() {
                 className="relative group flex justify-between items-center p-2 rounded-md cursor-pointer"
                 onClick={() => setActiveSidebar("systemPages")}
               >
-                <span>System Pages</span>
+                <span>
+                  System Pages{" "}
+                  <span
+                    className={`absolute left-0 -bottom-2 w-0 h-[1.5px] bg-black transition-all duration-300 group-hover:w-full`}
+                  ></span>
+                </span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-5 w-5 mr-2"
@@ -149,7 +152,12 @@ function PagesSidebar() {
                 className="relative group flex justify-between items-center p-2 rounded-md cursor-pointer"
                 onClick={() => setActiveSidebar("websiteTools")}
               >
-                <span>Website Tools</span>
+                <span>
+                  Website Tools{" "}
+                  <span
+                    className={`absolute left-0 -bottom-2 w-0 h-[1.5px] bg-black transition-all duration-300 group-hover:w-full`}
+                  ></span>
+                </span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-5 w-5 mr-2"
@@ -170,7 +178,12 @@ function PagesSidebar() {
                 className="relative group flex justify-between items-center p-2 rounded-md cursor-pointer"
                 onClick={() => setActiveSidebar("trash")}
               >
-                <span>Trash</span>
+                <span>
+                  Trash{" "}
+                  <span
+                    className={`absolute left-0 -bottom-2 w-0 h-[1.5px] bg-black transition-all duration-300 group-hover:w-full`}
+                  ></span>
+                </span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-5 w-5 mr-2"
