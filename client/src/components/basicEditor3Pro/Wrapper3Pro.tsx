@@ -36,10 +36,16 @@ function Wrapper3Pro({ currentUser = defaultUser }: Wrapper3ProProps) {
 
     const [websites, setWebsites] = useState<BasicEditor3Website[]>([defaultWebsite]);
     const [currentWebsite, setCurrentWebsite] = useState<BasicEditor3Website>(websites[0]);
-
+    const websiteDataString = JSON.stringify(currentWebsite);
+    
     useEffect(() => {
         retrieveWebsitesFromLS();
     },[])
+    
+    useEffect(() => {
+        const websiteDataString = JSON.stringify(currentWebsite);
+        setStringCurrentWebsite(websiteDataString);
+    },[currentWebsite])
 
     function saveChangesToCurrentWebsite(newWebsite: BasicEditor3Website) {
         if (websites.length > 0) {
@@ -100,8 +106,8 @@ function Wrapper3Pro({ currentUser = defaultUser }: Wrapper3ProProps) {
             Wrapper3Pro
             <button onClick={retrieveWebsitesFromLS}>retrieveWebsites</button>
             <WebsiteNav3 websites={websites} currentWebsite={currentWebsite} setCurrentWebsite={setCurrentWebsite} saveChangesToCurrentWebsite={saveChangesToCurrentWebsite} saveWebsitesToLS={saveWebsitesToLS} retrieveWebsitesFromLS={retrieveWebsitesFromLS} addWebsite={addWebsite} />
-            <BasicEditor3Pro currentWebsite={currentWebsite} saveCurrentWebsite={saveCurrentWebsite}/>
-            {/* <DisplayWebsite3 websiteData={currentWebsite}/> */}
+            {/* <BasicEditor3Pro currentWebsite={currentWebsite} saveCurrentWebsite={saveCurrentWebsite}/> */}
+            <DisplayWebsite3 websiteDataString={websiteDataString}/>
         </>
     )
 }

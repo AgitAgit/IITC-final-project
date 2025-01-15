@@ -58,9 +58,9 @@ function EditorLayout() {
           } bg-white shadow transition-all duration-300 overflow-y-scroll`}
         >
           {/* <EditorPage isMobileView={isMobileView} /> */}
-          {/* <Wrapper3Pro /> */}
+          <Wrapper3Pro />
           <div>
-            <Outlet />
+            {/* <Outlet /> */}
           </div>
         </div>
       </div>

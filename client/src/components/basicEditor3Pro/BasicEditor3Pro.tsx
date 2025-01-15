@@ -90,7 +90,8 @@ import DisplayWebsite3 from "../basicDisplay3Pro/DisplayWebsite3";
 export type BasicEditor3ProProps = {
   // websites: BasicEditor3Website[]
   currentWebsite: BasicEditor3Website;
-  saveCurrentWebsite: () => void;
+  saveCurrentWebsite?: () => void;
+  isEditModeProp?: boolean;
   // setCurrentWebsite:Dispatch<SetStateAction<string>>
 };
 
@@ -99,6 +100,7 @@ export const BasicEditorContext = createContext<BasicEditorContextType>({});
 function BasicEditor3Pro({
   currentWebsite,
   saveCurrentWebsite,
+  isEditModeProp = undefined
 }: BasicEditor3ProProps) {
   const [isEditMode, setIsEditMode] = useState(true);
   const [headerEditMode, setHeaderEditMode] = useState(false);
@@ -118,6 +120,9 @@ function BasicEditor3Pro({
   const editorRef = useRef();
 
   useEffect(() => {
+    if(typeof(isEditModeProp) !== "undefined"){
+      setIsEditMode(isEditModeProp);
+    }
     updateOOC();
   }, []);
 
@@ -139,6 +144,7 @@ function BasicEditor3Pro({
   }
 
   useEffect(() => {
+    console.log("BasicEditor says:", currentWebsite.pages);
     setPages(currentWebsite.pages);
     if (currentWebsite.pages[0]) {
       setCurrentPage(currentWebsite.pages[0].name);
@@ -167,9 +173,9 @@ function BasicEditor3Pro({
         prev.map((element) =>
           element.data.id === id
             ? {
-                data: { ...element.data, position: newPosition },
-                body: element.body,
-              }
+              data: { ...element.data, position: newPosition },
+              body: element.body,
+            }
             : element
         )
       );
@@ -179,9 +185,9 @@ function BasicEditor3Pro({
         prev.map((element) =>
           element.data.id === id
             ? {
-                data: { ...element.data, content: newContent },
-                body: element.body,
-              }
+              data: { ...element.data, content: newContent },
+              body: element.body,
+            }
             : element
         )
       );
@@ -225,12 +231,11 @@ function BasicEditor3Pro({
   function mapRenderElements(): ReactNode[] {
     return isRenderElements
       ? renderElements.map((element) => (
-          <DraggableFrame3
-            key={element.data.id}
-            renderElement={element}
-            baseFunctions={baseFunctions}
-          />
-        ))
+        <DraggableFrame3
+          key={element.data.id}
+          renderElement={element}
+        />
+      ))
       : [];
   }
 
