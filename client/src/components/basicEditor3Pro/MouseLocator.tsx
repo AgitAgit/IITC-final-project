@@ -6,15 +6,16 @@ function MouseLocator() {
 
     return (
         <div
+            onMouseMove={(e) => { setPosition({ x: e.clientX, y: e.clientY }) }}
             style={{
-                border:'3px solid purple',
                 position: 'fixed',
                 top: 0,
                 left: 0,
                 width: '100vw',
-                height: '100vh'
+                height: '100vh',
+                border: '3px solid purple',
+                pointerEvents: 'none'
             }}
-            onMouseMove={(e) => { setPosition({ x: e.clientX, y: e.clientY }) }}
         >
             MouseLocator
             {`(x,y) : (${position.x},${position.y})`}

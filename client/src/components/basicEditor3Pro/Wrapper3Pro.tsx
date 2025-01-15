@@ -6,6 +6,7 @@ import WebsiteNav3 from './WebsiteNav3'
 import { Header3Data } from './Header3'
 import { hydrateWebsites } from './utils'
 import { Footer3Data } from './Footer3'
+import DisplayWebsite3 from '../basicDisplay3Pro/DisplayWebsite3'
 
 const defaultHeaderData: Header3Data = {
     logo: { text: "LOGO1", imgSrc: null },
@@ -100,6 +101,7 @@ function Wrapper3Pro({ currentUser = defaultUser }: Wrapper3ProProps) {
             <button onClick={retrieveWebsitesFromLS}>retrieveWebsites</button>
             <WebsiteNav3 websites={websites} currentWebsite={currentWebsite} setCurrentWebsite={setCurrentWebsite} saveChangesToCurrentWebsite={saveChangesToCurrentWebsite} saveWebsitesToLS={saveWebsitesToLS} retrieveWebsitesFromLS={retrieveWebsitesFromLS} addWebsite={addWebsite} />
             <BasicEditor3Pro currentWebsite={currentWebsite} saveCurrentWebsite={saveCurrentWebsite}/>
+            {/* <DisplayWebsite3 websiteData={currentWebsite}/> */}
         </>
     )
 }

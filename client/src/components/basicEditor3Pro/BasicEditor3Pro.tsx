@@ -11,6 +11,7 @@ import { isEmpty, hydrateRenderElement, hydratePage } from './utils';
 import styles from './BasicEditor3ProStyles';
 import Header3, { Header3Data } from './Header3';
 import MouseLocator from './MouseLocator';
+import DisplayWebsite3 from '../basicDisplay3Pro/DisplayWebsite3';
 
 //goal 0. 
 // Update the data structure of BasicEditor3 to fit the new data structure:
@@ -69,7 +70,7 @@ import MouseLocator from './MouseLocator';
 export type BasicEditor3ProProps = {
   // websites: BasicEditor3Website[]
   currentWebsite: BasicEditor3Website
-  saveCurrentWebsite:() => void
+  saveCurrentWebsite: () => void
   // setCurrentWebsite:Dispatch<SetStateAction<string>>
 }
 
@@ -78,7 +79,7 @@ export const BasicEditorContext = createContext<BasicEditorContextType>({});
 function BasicEditor3Pro({ currentWebsite, saveCurrentWebsite }: BasicEditor3ProProps) {
   const [isEditMode, setIsEditMode] = useState(true);
   const [headerEditMode, setHeaderEditMode] = useState(false);
-  const [ originOfCoordinates, setOriginOfCoordinates] = useState<Position>({x:0, y:0});
+  const [originOfCoordinates, setOriginOfCoordinates] = useState<Position>({ x: 0, y: 0 });
 
   const [headerData, setHeaderData] = useState(currentWebsite.headerData);
   const [pages, setPages] = useState<BasicEditor3Page[]>(currentWebsite.pages);
@@ -89,31 +90,36 @@ function BasicEditor3Pro({ currentWebsite, saveCurrentWebsite }: BasicEditor3Pro
   const isRenderElements = !(renderElements.length === 0);
   const isPagesFetched = useRef(false);
   const editorRef = useRef();
-  
+
   useEffect(() => {
-    if(!editorRef.current) return;
-    const rect:DOMRect = editorRef.current.getBoundingClientRect();
-    const newPosition:Position = {x: rect.left, y:rect.top}
-    setOriginOfCoordinates(newPosition);
-    console.log("new OoC:", newPosition);
-  },[])
+    updateOOC();
+  }, [])
+
+  //resize event? look for a react hooks that checks for a change in div position?
+  const TOLERANCE = 1;
+  function updateOOC() {//SHOULD REFACTOR currently works, but wasteful. For some reason the position is always considered different. 
+    if (!editorRef.current) return;
+    const rect: DOMRect = editorRef.current.getBoundingClientRect();
+    const newPosition: Position = { x: rect.left, y: rect.top }
+    const updateRule2 = (Math.abs(newPosition.x - originOfCoordinates.x) > TOLERANCE) || (Math.abs(newPosition.y - originOfCoordinates.y) > TOLERANCE)
+    if (updateRule2) {
+      setOriginOfCoordinates(newPosition);
+      // console.log("new OoC:", newPosition);
+    }
+    setTimeout(updateOOC, 300);
+  }
 
   useEffect(() => {
     setPages(currentWebsite.pages);
-    if(currentWebsite.pages[0]){
+    if (currentWebsite.pages[0]) {
       setCurrentPage(currentWebsite.pages[0].name)
     }
     setHeaderData(currentWebsite.headerData);
-    // console.log("basic editor says header data:",headerData)
-    // console.log("current website:",currentWebsite.name);
-    // console.log("current website header data:",currentWebsite.headerData);
   }, [currentWebsite])
-  
+
   useEffect(() => {
     currentWebsite.headerData = headerData;
-    // console.log("current website:",currentWebsite.name);
-    // console.log("current website header data:",currentWebsite.headerData);
-  },[headerData])
+  }, [headerData])
 
   useEffect(() => {//displays the current page
     displayPage(currentPage);
@@ -158,7 +164,6 @@ function BasicEditor3Pro({ currentWebsite, saveCurrentWebsite }: BasicEditor3Pro
 
   function saveSnapshotToPages(pageName: string, pageElements?: RenderElement3[]) {
     const newPage = { name: pageName, renderElements }
-    // console.log('render elements from saveSnapshotToPages:', renderElements)
     if (pageElements) newPage.renderElements = pageElements;
     if (isPages) {
       const pageIndex = pages.findIndex(page => page.name === pageName);
@@ -176,52 +181,23 @@ function BasicEditor3Pro({ currentWebsite, saveCurrentWebsite }: BasicEditor3Pro
     }
   }
 
-  function saveChangesToWebsite(){
-    console.log("current website:",currentWebsite.name);
-    console.log("current website header data:",currentWebsite.headerData);
+  function saveChangesToWebsite() {
     saveSnapshotToPages(currentPage, renderElements);
     saveCurrentWebsite();
   }
 
   function displayPage(pageName: string) {
-    // console.log("displayPage says current website is:", currentWebsite.name);
-    // console.log("current page is:", currentPage);
     const displayPageElements = pages.find(page => page.name === pageName)?.renderElements
     if (displayPageElements) {
       setRenderElements(displayPageElements);
     }
   }
 
-  // function saveHeaderToLS() {
-  //   localStorage.setItem("headerData", JSON.stringify(headerData));
-  // }
-
-  // function retrieveHeaderFromLS() {
-  //   try {
-  //     const headerDataString = localStorage.getItem("headerData");
-  //     if (headerDataString) setHeaderData(JSON.parse(headerDataString));
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
-
-  function saveWebsites() {
-
-  }
-
-  function retrieveWebsites() {
-
-  }
-
-  function displayWebsite(name: string) {
-    
-  }
-
   return (
     <BasicEditorContext.Provider value={{ renderElements, baseFunctions, isEditMode, originOfCoordinates }}>
-      <div 
-      ref={editorRef}
-      style={{position:"relative"}}
+      <div
+        ref={editorRef}
+        style={{ position: "relative" }}
       >BasicEditor3
         <button onClick={saveChangesToWebsite}>save changes from Basic editor</button>
         {/* <button onClick={() => { retrievePagesFromLS() }}>Retrieve pages</button> */}
@@ -242,7 +218,7 @@ function BasicEditor3Pro({ currentWebsite, saveCurrentWebsite }: BasicEditor3Pro
           {mapRenderElements()}
         </div>
       </div>
-      <MouseLocator />
+      {/* <MouseLocator /> */}
     </BasicEditorContext.Provider>
   )
 }

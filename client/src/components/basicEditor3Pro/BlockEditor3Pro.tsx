@@ -7,7 +7,7 @@ export type BlockEditor3Props = {
 }
 
 function BlockEditor3({ blockId, blockRect }: BlockEditor3Props) {
-    const { renderElements, baseFunctions } = useContext(BasicEditorContext)
+    const { renderElements, baseFunctions, originOfCoordinates } = useContext(BasicEditorContext)
     const element = renderElements.filter(element => element.data.id === blockId)[0]
     const [editFormVisibility, setEditFormVisibility] = useState(false);
     const [contentMode, setContentMode] = useState(true);
@@ -17,14 +17,14 @@ function BlockEditor3({ blockId, blockRect }: BlockEditor3Props) {
 
     const editButtonsStyle = {
         position: 'absolute',
-        left: blockRect.left,
-        top: blockRect.top - 25
+        left: blockRect.left - originOfCoordinates.x,
+        top: blockRect.top - 25 - originOfCoordinates.y
     }
 
     const editFormStyle = {
         position: 'absolute',
-        left: 5 + blockRect.right,
-        top: blockRect.y,
+        left: 5 + blockRect.right - originOfCoordinates.x,
+        top: blockRect.y - originOfCoordinates.y,
         zIndex: 10
     }
 

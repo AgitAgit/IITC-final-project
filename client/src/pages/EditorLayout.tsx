@@ -59,9 +59,7 @@ function EditorLayout() {
         >
           {/* <EditorPage isMobileView={isMobileView} /> */}
           {/* <Wrapper3Pro /> */}
-          <div>
-            <Outlet />
-          </div>
+          <div>{/* <Outlet /> */}</div>
         </div>
       </div>
     </div>
