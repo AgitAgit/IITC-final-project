@@ -78,13 +78,8 @@ function PagesSidebar() {
           {/* Main Navigation Items */}
           <div className="mt-16 text-xl">
             <ul className="space-y-2 mb-4">
-              <li className="relative group flex justify-between items-center p-2 rounded-md">
-                <span>
-                  Main Navigation{" "}
-                  <span
-                    className={`absolute left-0 -bottom-3 w-0 h-[1.5px] bg-black transition-all duration-300 group-hover:w-full `}
-                  ></span>
-                </span>
+              <li className="flex justify-between items-center p-2 rounded-md">
+                <span>Main Navigation </span>
                 <button className="text-gray-600 hover:text-black hover:bg-gray-200 p-3 cursor-pointer">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -102,13 +97,8 @@ function PagesSidebar() {
                   </svg>
                 </button>
               </li>
-              <li className="relative group flex justify-between items-center p-2 rounded-md">
-                <span>
-                  Not Linked{" "}
-                  <span
-                    className={`absolute left-0 -bottom-3 w-0 h-[1.5px] bg-black transition-all duration-300 group-hover:w-full `}
-                  ></span>
-                </span>
+              <li className="flex justify-between items-center p-2 rounded-md">
+                <span>Not Linked</span>
                 <button className="text-gray-600 hover:text-black hover:bg-gray-200 p-3 cursor-pointer">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

@@ -33,7 +33,7 @@ function EditorLayout() {
     <div className="flex min-h-screen bg-gray-50 overflow-hidden relative ">
       {/* Sidebar */}
       <div
-        className={`flex-shrink-0 top-${
+        className={`flex-shrink-0 ${
           isSidebarOpen ? "w-72" : "w-0"
         } overflow-hidden transition-all duration-300 ease-in-out`}
         style={{ height: "100vh" }}
@@ -47,6 +47,7 @@ function EditorLayout() {
           toggleSidebarLayout={toggleSidebarLayout}
           setMobileView={setMobileView}
           isMobileView={isMobileView}
+          isSidebarOpen={isSidebarOpen}
         />
         {/* EditorPage */}
         <div
@@ -59,7 +60,7 @@ function EditorLayout() {
           } bg-white shadow transition-all duration-300 overflow-y-scroll`}
         >
           {/* <EditorPage isMobileView={isMobileView} /> */}
-          {/* <Wrapper3Pro /> */}
+          <Wrapper3Pro />
           <div>
             <Outlet />
           </div>

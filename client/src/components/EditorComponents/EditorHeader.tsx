@@ -4,12 +4,14 @@ interface EditorHeaderProps {
   toggleSidebarLayout: () => void;
   setMobileView: (view: "mobile" | "full") => void;
   isMobileView: boolean;
+  isSidebarOpen: boolean;
 }
 
 const EditorHeader: React.FC<EditorHeaderProps> = ({
   toggleSidebarLayout,
   setMobileView,
   isMobileView,
+  isSidebarOpen,
 }) => {
   const editorHeaderHide =
     location.pathname === "/"
@@ -24,12 +26,21 @@ const EditorHeader: React.FC<EditorHeaderProps> = ({
       className={`w-[99%] max-h-14 shadow-md ${editorHeaderHide} justify-between items-center p-5 mt-[15px] bg-white`}
     >
       {/* Sidebar toggle */}
-      <h1
-        onClick={toggleSidebarLayout}
-        className="hover:bg-slate-50 p-3 cursor-pointer transition-all duration-300 ease-in-out"
-      >
-        Edit
-      </h1>
+      <div className="flex flex-row-reverse gap-4">
+        <span
+          onClick={toggleSidebarLayout}
+          className="hover:bg-gray-100 rounded-lg p-3 cursor-pointer"
+        >
+          {isSidebarOpen ? "Edit" : "Exit"}
+        </span>
+        {isSidebarOpen ? (
+          <span className="hidden"></span>
+        ) : (
+          <span className="flex justify-center items-center font-bold bg-black text-white rounded-lg px-5 cursor-pointer">
+            Save
+          </span>
+        )}
+      </div>
       {/* Buttons for switching views */}
       <div className="flex gap-4">
         {/* Mobile View Button */}
