@@ -10,7 +10,7 @@ export const deleteToken = () => {
   document.cookie = `token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;
 };
 
-export const usersCliant = axios.create({
+export const usersClient = axios.create({
   baseURL: "http://localhost:3000/api/users",
   headers: {
     Accept: "application/json",
@@ -18,7 +18,7 @@ export const usersCliant = axios.create({
   },
 });
 
-export const siteCliant = axios.create({
+export const siteClient = axios.create({
   baseURL: "http://localhost:3000/api/sites",
   headers: {
     Accept: "application/json",

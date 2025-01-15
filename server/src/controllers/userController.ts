@@ -4,7 +4,6 @@ import { Request, Response } from "express";
 import User from "../models/userModel";
 import { IUser } from "../types/userTypes";
 import { AuthenticatedRequest } from "../types/expressTypes";
-import { log } from "console";
 
 export const getUserById = async (
   req: AuthenticatedRequest,

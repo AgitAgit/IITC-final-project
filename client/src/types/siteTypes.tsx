@@ -1,8 +1,6 @@
-import { Types } from "mongoose";
-
 export interface ISite {
   data: string;
-  owner: Types.ObjectId;
+  owner: string;
   screenShot?: string;
   name: string;
   domain: string;

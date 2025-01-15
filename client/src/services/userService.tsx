@@ -1,5 +1,5 @@
-import { usersCliant } from "../lib/api";
-import { InitialUpdateUser } from "../components/EditUser/EditProfile";
+import { usersClient } from "../lib/api";
+import { InitialUpdateUser } from "../components/AccountDashboardComponents/EditProfile";
 
 export const signUpService = async (userData: {
   firstName: string;
@@ -8,7 +8,7 @@ export const signUpService = async (userData: {
   password: string;
 }): Promise<any> => {
   try {
-    const response = await usersCliant.post("/signup", userData, {
+    const response = await usersClient.post("/signup", userData, {
       withCredentials: true,
     });
     return response.data;
@@ -26,7 +26,7 @@ export const loginService = async (credentials: {
   password: string;
 }): Promise<any> => {
   try {
-    const response = await usersCliant.post("/login", credentials, {
+    const response = await usersClient.post("/login", credentials, {
       withCredentials: true,
     });
     return response.data;
@@ -38,7 +38,7 @@ export const loginService = async (credentials: {
 
 export const getUserByToken = async (): Promise<any> => {
   try {
-    const response = await usersCliant.get("/getuserbyid");
+    const response = await usersClient.get("/getuserbyid");
     console.log(response.data);
 
     return response.data;
@@ -59,7 +59,7 @@ export const updateUserProfile = async ({
     console.log(updateData);
     console.log(id);
 
-    const response = await usersCliant.put(`/updateUser/${id}`, updateData);
+    const response = await usersClient.put(`/updateUser/${id}`, updateData);
     console.log(response.data);
 
     return response.data;
@@ -73,7 +73,7 @@ export const deleteProfile = async (id: string) => {
   try {
     console.log(id);
 
-    const response = await usersCliant.delete(`/deleteUser/${id}`);
+    const response = await usersClient.delete(`/deleteUser/${id}`);
     console.log(response.data);
 
     return response.data;

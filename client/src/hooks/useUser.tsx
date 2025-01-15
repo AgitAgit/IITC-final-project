@@ -13,7 +13,6 @@ export const useUserProfile = () => {
   });
 };
 
-//
 export const useUpdateUserMutation = () => {
   const queryClient = useQueryClient();
 

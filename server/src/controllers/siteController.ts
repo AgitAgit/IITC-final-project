@@ -1,83 +1,37 @@
 import { Request, Response } from "express";
 import Site from "../models/siteModel";
-import User from "../models/userModel";
-import { ISite } from "../types/siteTypes";
-import { IUser } from "../types/userTypes";
-import { AuthenticatedRequest } from "../types/expressTypes";
+import { AuthenticatedRequest } from "src/types/expressTypes";
 
-export const createSite = async (
+export const createNewSite = async (
   req: AuthenticatedRequest,
   res: Response
 ): Promise<void> => {
   try {
-    const ownerId = req.user?.id;
-    const { name, domain } = req.body;
+    const { data, screenShot, name, domain } = req.body;
+    const owner = req.user?._id;
 
-    const owner: IUser | null = await User.findById(ownerId);
-    if (!owner) {
-      res.status(404).json({ message: "Owner not found" });
-      return;
-    }
+    const newSite = new Site({ data, owner, screenShot, name, domain });
 
-    const site: ISite = new Site({
-      owner: ownerId,
-      name,
-      domain,
-    });
-
-    await site.save();
-
-    owner.sites.push(site._id as any);
-    await owner.save();
-
-    res.status(201).json(site);
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    await newSite.save();
+    res.status(201).json(newSite);
+  } catch (error) {
+    res.status(400).json({ message: "Error creating site", error });
   }
 };
 
-export const getSitesByUserId = async (
-  req: AuthenticatedRequest,
-  res: Response
-): Promise<void> => {
+export const getSites = async (req: Request, res: Response): Promise<void> => {
   try {
-    const userId = req.user?.id;
-
-    const sites = await Site.find({ owner: userId }).populate("owner");
-
-    if (!sites.length) {
-      res.status(404).json({ message: "No sites found for this user" });
-      return;
-    }
-
+    const sites = await Site.find().populate("owner", "name email");
     res.status(200).json(sites);
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching sites", error });
   }
 };
 
-export const getAllSites = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  try {
-    console.log("lkjkhgfghjkl;l");
-
-    const sites = await Site.find().populate("owner");
-    console.log(sites);
-    res.status(200).json(sites);
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-export const getSiteById = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
+export const getSite = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
-    const site = await Site.findById(id).populate("owner");
+    const site = await Site.findById(id).populate("owner", "name email");
 
     if (!site) {
       res.status(404).json({ message: "Site not found" });
@@ -85,57 +39,66 @@ export const getSiteById = async (
     }
 
     res.status(200).json(site);
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching site", error });
   }
 };
 
-export const updateSite = async (
+export const getUserSites = async (
+  req: AuthenticatedRequest,
+  res: Response
+): Promise<void> => {
+  try {
+    const userId = req.user?._id;
+    const sites = await Site.find({ owner: userId });
+
+    res.status(200).json(sites);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching user sites", error });
+  }
+};
+
+export const updateSiteById = async (
   req: Request,
   res: Response
 ): Promise<void> => {
   try {
     const { id } = req.params;
-    const updates = req.body;
+    const { data, screenShot, name, domain } = req.body;
 
-    const site = await Site.findByIdAndUpdate(id, updates, {
-      new: true,
-      runValidators: true,
-    });
+    const updatedSite = await Site.findByIdAndUpdate(
+      id,
+      { data, screenShot, name, domain },
+      { new: true, runValidators: true }
+    );
 
-    if (!site) {
+    if (!updatedSite) {
       res.status(404).json({ message: "Site not found" });
       return;
     }
 
-    res.status(200).json(site);
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    res.status(200).json(updatedSite);
+  } catch (error) {
+    res.status(400).json({ message: "Error updating site", error });
   }
 };
 
-export const deleteSite = async (
+export const deleteSiteById = async (
   req: Request,
   res: Response
 ): Promise<void> => {
   try {
     const { id } = req.params;
 
-    const site = await Site.findByIdAndDelete(id);
+    const deletedSite = await Site.findByIdAndDelete(id);
 
-    if (!site) {
+    if (!deletedSite) {
       res.status(404).json({ message: "Site not found" });
       return;
     }
 
-    const owner: IUser | null = await User.findById(site.owner);
-    if (owner) {
-      owner.sites = owner.sites.filter((siteId) => siteId.toString() !== id);
-      await owner.save();
-    }
-
-    res.status(200).json({ message: "Site deleted" });
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    res.status(200).json({ message: "Site deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting site", error });
   }
 };
