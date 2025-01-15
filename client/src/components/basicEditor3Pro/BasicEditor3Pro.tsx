@@ -69,7 +69,7 @@ import MouseLocator from './MouseLocator';
 export type BasicEditor3ProProps = {
   // websites: BasicEditor3Website[]
   currentWebsite: BasicEditor3Website
-  saveCurrentWebsite:() => void
+  saveCurrentWebsite: () => void
   // setCurrentWebsite:Dispatch<SetStateAction<string>>
 }
 
@@ -78,7 +78,7 @@ export const BasicEditorContext = createContext<BasicEditorContextType>({});
 function BasicEditor3Pro({ currentWebsite, saveCurrentWebsite }: BasicEditor3ProProps) {
   const [isEditMode, setIsEditMode] = useState(true);
   const [headerEditMode, setHeaderEditMode] = useState(false);
-  const [ originOfCoordinates, setOriginOfCoordinates] = useState<Position>({x:0, y:0});
+  const [originOfCoordinates, setOriginOfCoordinates] = useState<Position>({ x: 0, y: 0 });
 
   const [headerData, setHeaderData] = useState(currentWebsite.headerData);
   const [pages, setPages] = useState<BasicEditor3Page[]>(currentWebsite.pages);
@@ -89,18 +89,30 @@ function BasicEditor3Pro({ currentWebsite, saveCurrentWebsite }: BasicEditor3Pro
   const isRenderElements = !(renderElements.length === 0);
   const isPagesFetched = useRef(false);
   const editorRef = useRef();
-  
+
   useEffect(() => {
-    if(!editorRef.current) return;
-    const rect:DOMRect = editorRef.current.getBoundingClientRect();
-    const newPosition:Position = {x: rect.left, y:rect.top}
-    setOriginOfCoordinates(newPosition);
-    console.log("new OoC:", newPosition);
-  },[])
+    updateOOC();
+  }, [])
+
+  //resize event,
+  //look for a react hooks that checks for a
+  //should add some tolerance and debounce
+  const TOLERANCE = 1;
+  function updateOOC() {//SHOULD REFACTOR currently works, but wasteful. For some reason the position is always considered different. 
+    if (!editorRef.current) return;
+    const rect: DOMRect = editorRef.current.getBoundingClientRect();
+    const newPosition: Position = { x: rect.left, y: rect.top }
+    const updateRule2 = (Math.abs(newPosition.x - originOfCoordinates.x) > TOLERANCE) || (Math.abs(newPosition.y - originOfCoordinates.y) > TOLERANCE)
+    if (updateRule2) {
+      setOriginOfCoordinates(newPosition);
+      // console.log("new OoC:", newPosition);
+    }
+    setTimeout(updateOOC, 100);
+  }
 
   useEffect(() => {
     setPages(currentWebsite.pages);
-    if(currentWebsite.pages[0]){
+    if (currentWebsite.pages[0]) {
       setCurrentPage(currentWebsite.pages[0].name)
     }
     setHeaderData(currentWebsite.headerData);
@@ -108,12 +120,12 @@ function BasicEditor3Pro({ currentWebsite, saveCurrentWebsite }: BasicEditor3Pro
     // console.log("current website:",currentWebsite.name);
     // console.log("current website header data:",currentWebsite.headerData);
   }, [currentWebsite])
-  
+
   useEffect(() => {
     currentWebsite.headerData = headerData;
     // console.log("current website:",currentWebsite.name);
     // console.log("current website header data:",currentWebsite.headerData);
-  },[headerData])
+  }, [headerData])
 
   useEffect(() => {//displays the current page
     displayPage(currentPage);
@@ -176,9 +188,9 @@ function BasicEditor3Pro({ currentWebsite, saveCurrentWebsite }: BasicEditor3Pro
     }
   }
 
-  function saveChangesToWebsite(){
-    console.log("current website:",currentWebsite.name);
-    console.log("current website header data:",currentWebsite.headerData);
+  function saveChangesToWebsite() {
+    console.log("current website:", currentWebsite.name);
+    console.log("current website header data:", currentWebsite.headerData);
     saveSnapshotToPages(currentPage, renderElements);
     saveCurrentWebsite();
   }
@@ -214,14 +226,14 @@ function BasicEditor3Pro({ currentWebsite, saveCurrentWebsite }: BasicEditor3Pro
   }
 
   function displayWebsite(name: string) {
-    
+
   }
 
   return (
     <BasicEditorContext.Provider value={{ renderElements, baseFunctions, isEditMode, originOfCoordinates }}>
-      <div 
-      ref={editorRef}
-      style={{position:"relative"}}
+      <div
+        ref={editorRef}
+        style={{ position: "relative" }}
       >BasicEditor3
         <button onClick={saveChangesToWebsite}>save changes from Basic editor</button>
         {/* <button onClick={() => { retrievePagesFromLS() }}>Retrieve pages</button> */}

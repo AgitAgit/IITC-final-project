@@ -57,9 +57,9 @@ function EditorLayout() {
           } bg-gray-100 shadow transition-all duration-300`}
         >
           {/* <EditorPage isMobileView={isMobileView} /> Pass isMobileView */}
-          {/* <Wrapper3Pro /> */}
+          <Wrapper3Pro />
           <div>
-            <Outlet />
+            {/* <Outlet /> */}
           </div>
         </div>
       </div>

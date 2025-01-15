@@ -44,7 +44,7 @@ function DraggableFrame3({ renderElement }: DraggableFrame3Props) {
 
         const handleMouseMove = (e) => {
             // const newPosition = { x: e.clientX - offsetX, y: e.clientY - offsetY + windowYPosition }
-            const newPosition = { x: e.clientX - offsetX, y: e.clientY - offsetY}
+            const newPosition = { x: e.clientX - offsetX - originOfCoordinates.x, y: e.clientY - offsetY - originOfCoordinates.y}
             setPosition(newPosition);
             baseFunctions.setPosition(renderElement.data.id, newPosition)
         };
