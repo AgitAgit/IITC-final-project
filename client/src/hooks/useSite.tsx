@@ -39,16 +39,17 @@ export const useCreateSite = ({ onSuccess }: any) => {
 
   return useMutation({
     mutationFn: createSite,
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["allSites"] });
       queryClient.invalidateQueries({ queryKey: ["userSites"] });
       queryClient.invalidateQueries({
         queryKey: ["userProfile"],
       });
-      if (onSuccess) onSuccess();
+      if (onSuccess) onSuccess(data);
     },
   });
 };
+
 // const { mutate: createNewSite, isLoading, error } = useCreateSite();
 
 export const useUpdateSite = ({ onSuccess }: any) => {

@@ -100,7 +100,7 @@ export const BasicEditorContext = createContext<BasicEditorContextType>({});
 function BasicEditor3Pro({
   currentWebsite,
   saveCurrentWebsite,
-  isEditModeProp = undefined
+  isEditModeProp = undefined,
 }: BasicEditor3ProProps) {
   const [isEditMode, setIsEditMode] = useState(true);
   const [headerEditMode, setHeaderEditMode] = useState(false);
@@ -120,7 +120,7 @@ function BasicEditor3Pro({
   const editorRef = useRef();
 
   useEffect(() => {
-    if (typeof (isEditModeProp) !== "undefined") {
+    if (typeof isEditModeProp !== "undefined") {
       setIsEditMode(isEditModeProp);
     }
     updateOOC();
@@ -172,9 +172,9 @@ function BasicEditor3Pro({
         prev.map((element) =>
           element.data.id === id
             ? {
-              data: { ...element.data, position: newPosition },
-              body: element.body,
-            }
+                data: { ...element.data, position: newPosition },
+                body: element.body,
+              }
             : element
         )
       );
@@ -184,9 +184,9 @@ function BasicEditor3Pro({
         prev.map((element) =>
           element.data.id === id
             ? {
-              data: { ...element.data, content: newContent },
-              body: element.body,
-            }
+                data: { ...element.data, content: newContent },
+                body: element.body,
+              }
             : element
         )
       );
@@ -201,7 +201,7 @@ function BasicEditor3Pro({
         )
       );
     },
-    saveChanges: saveCurrentWebsite,
+    saveChanges: () => saveCurrentWebsite(currentWebsite),
   };
 
   function addRenderElement(
@@ -230,11 +230,8 @@ function BasicEditor3Pro({
   function mapRenderElements(): ReactNode[] {
     return isRenderElements
       ? renderElements.map((element) => (
-        <DraggableFrame3
-          key={element.data.id}
-          renderElement={element}
-        />
-      ))
+          <DraggableFrame3 key={element.data.id} renderElement={element} />
+        ))
       : [];
   }
 
@@ -260,7 +257,7 @@ function BasicEditor3Pro({
 
   function saveChangesToWebsite() {
     saveSnapshotToPages(currentPage, renderElements);
-    saveCurrentWebsite();
+    saveCurrentWebsite(currentWebsite);
   }
 
   function displayPage(pageName: string) {
@@ -277,7 +274,7 @@ function BasicEditor3Pro({
       value={{ renderElements, baseFunctions, isEditMode, originOfCoordinates }}
     >
       <div ref={editorRef} style={{ position: "relative" }}>
-        {isEditMode &&
+        {isEditMode && (
           <div>
             BasicEditor3
             <button onClick={saveChangesToWebsite}>
@@ -305,12 +302,14 @@ function BasicEditor3Pro({
             />
             <div>
               <button
-              onClick={() => addRenderElement(RenderElementNames.Text_Block3)}
+                onClick={() => addRenderElement(RenderElementNames.Text_Block3)}
               >
                 +TextBlock3
               </button>
               <button
-                onClick={() => addRenderElement(RenderElementNames.red_rectangle3)}
+                onClick={() =>
+                  addRenderElement(RenderElementNames.red_rectangle3)
+                }
               >
                 +RedRectangle3
               </button>
@@ -335,7 +334,9 @@ function BasicEditor3Pro({
               </button>
               <button>
                 <span
-                  onClick={() => addRenderElement(RenderElementNames.ImgContainer)}
+                  onClick={() =>
+                    addRenderElement(RenderElementNames.ImgContainer)
+                  }
                 >
                   +ImgContainer
                 </span>
@@ -350,9 +351,8 @@ function BasicEditor3Pro({
                 </span>
               </button>
             </div>
-
           </div>
-        }
+        )}
         <Header3
           pages={pages}
           currentPage={currentPage}
@@ -364,7 +364,6 @@ function BasicEditor3Pro({
         />
         <div>{mapRenderElements()}</div>
       </div>
-
     </BasicEditorContext.Provider>
   );
 }

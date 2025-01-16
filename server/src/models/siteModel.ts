@@ -11,7 +11,7 @@ const siteSchema: Schema<ISite> = new mongoose.Schema(
     },
     screenShot: { type: String, required: false },
     name: { type: String, required: true },
-    domain: { type: String, unique: true, required: true },
+    domain: { type: String, required: true },
   },
   {
     timestamps: true,

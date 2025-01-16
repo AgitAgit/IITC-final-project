@@ -24,15 +24,16 @@ function EditorLayout() {
   const navigate = useNavigate();
 
   const { mutate: createNewSite } = useCreateSite({
-    onSuccess: () => {
-      navigate("/accountdashboard/dashboard");
+    onSuccess: (data: any) => {
+      const newSiteId = data?.id || data?._id;
+      navigate(`/edituserwebsite/${newSiteId}`);
       window.location.reload();
     },
   });
 
   const { mutate: updateSite } = useUpdateSite({
     onSuccess: () => {
-      navigate("/accountdashboard/dashboard");
+      navigate(`/edituserwebsite/${id}`);
       window.location.reload();
     },
   });
