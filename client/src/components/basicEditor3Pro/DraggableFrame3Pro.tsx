@@ -27,7 +27,7 @@ function DraggableFrame3({ renderElement }: DraggableFrame3Props) {
     const [displayEditButtons, setDisplayEditButtons] = useState(false);
     const { baseFunctions, originOfCoordinates, isEditMode } = useContext(BasicEditorContext)
     const divRef = useRef();
-
+    
     useEffect(() => {
         setPosition(renderElement.data.position)
     }, [renderElement.data.position])

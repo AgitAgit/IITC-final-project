@@ -305,6 +305,11 @@ function BasicEditor3Pro({
             />
             <div>
               <button
+              onClick={() => addRenderElement(RenderElementNames.Text_Block3)}
+              >
+                +TextBlock3
+              </button>
+              <button
                 onClick={() => addRenderElement(RenderElementNames.red_rectangle3)}
               >
                 +RedRectangle3

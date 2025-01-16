@@ -70,6 +70,7 @@ export enum RenderElementNames {
   color_rectangle3 = "color_rectangle3",
   ImgContainer = "ImgContainer",
   VideoContainer = "VideoContainer",
+  Text_Block3 = "Text_Block3"
 }
 
 export type BasicEditorContextType = {

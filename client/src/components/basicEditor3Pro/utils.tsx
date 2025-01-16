@@ -16,6 +16,7 @@ import {
     RedTextRectangle3,
     ImgContainer,
     VideoContainer,
+    TextBlock3,
 } from "./BasicEditor3ProComponents";
 
 export function isEmpty(obj: { [key: string]: any }) {
@@ -54,6 +55,10 @@ export function hydrateRenderElement(
     if (renderElementName === RenderElementNames.VideoContainer) {
         body = <VideoContainer id={id} />;
         style = styles.default_video_Container_Style;
+    }
+    if (renderElementName === RenderElementNames.Text_Block3){
+        body = <TextBlock3 id={id} />
+        style = styles.default_Text_Block_Style;
     }
     const newRenderElement: RenderElement3 = {
         data: { id, renderElementName, position, content, style },

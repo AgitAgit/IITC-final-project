@@ -2,6 +2,7 @@ import React, { useState, useContext, useRef } from 'react'
 import { BasicEditorContext } from './BasicEditor3Pro'
 
 import EditElement from '../EditorComponents/Element/EditElementBox/EditElement';
+import EditText from '../EditorComponents/Element/EditText/EditText';
 
 export type BlockEditor3Props = {
     blockId: string
@@ -11,11 +12,16 @@ export type BlockEditor3Props = {
 function BlockEditor3({ blockId, blockRect }: BlockEditor3Props) {
     const { renderElements, baseFunctions, originOfCoordinates } = useContext(BasicEditorContext)
     const element = renderElements.filter(element => element.data.id === blockId)[0]
+    const [editMenuVisibility, setEditMenuVisibility] = useState(true);
+    const [textEditMenuVisibility, setTextEditMenuVisibility] = useState(false);
     const [editFormVisibility, setEditFormVisibility] = useState(false);
     const [contentMode, setContentMode] = useState(true);
     const textContentInputRef = useRef();
     const backgroundColors = ["white", "black", "gray", "red", "green", "blue", "yellow"];
     const fixedHeights = ["1rem", "2rem", "3rem", "4rem"];
+
+    const isTextElement = element.data.renderElementName === "Text_Block3"
+
 
     const editButtonsStyle = {
         position: 'absolute',
@@ -31,7 +37,14 @@ function BlockEditor3({ blockId, blockRect }: BlockEditor3Props) {
     }
 
     function handleEditClick() {
-        setEditFormVisibility(prev => !prev);
+        if(isTextElement){
+            setEditMenuVisibility(false);
+            setTextEditMenuVisibility(true);
+        }
+        else{
+            setEditMenuVisibility(true);
+            setEditFormVisibility(prev => !prev);
+        }
     }
 
     function handleDeleteClick() {
@@ -57,7 +70,7 @@ function BlockEditor3({ blockId, blockRect }: BlockEditor3Props) {
         <div>
             <div
                 style={editButtonsStyle}>
-                <EditElement handleEditClick={handleEditClick} handleDeleteClick={handleDeleteClick}/>
+                <EditElement handleEditClick={handleEditClick} handleDeleteClick={handleDeleteClick} />
                 {/* <button onClick={handleEditClick}>EDIT</button> */}
                 {/* <button onClick={handleDeleteClick}s>DELETE</button> */}
             </div>
