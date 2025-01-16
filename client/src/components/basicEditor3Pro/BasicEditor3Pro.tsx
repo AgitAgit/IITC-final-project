@@ -120,7 +120,7 @@ function BasicEditor3Pro({
   const editorRef = useRef();
 
   useEffect(() => {
-    if(typeof(isEditModeProp) !== "undefined"){
+    if (typeof (isEditModeProp) !== "undefined") {
       setIsEditMode(isEditModeProp);
     }
     updateOOC();
@@ -277,72 +277,77 @@ function BasicEditor3Pro({
       value={{ renderElements, baseFunctions, isEditMode, originOfCoordinates }}
     >
       <div ref={editorRef} style={{ position: "relative" }}>
-        BasicEditor3
-        <button onClick={saveChangesToWebsite}>
-          save changes from Basic editor
-        </button>
-        {/* <button onClick={() => { retrievePagesFromLS() }}>Retrieve pages</button> */}
-        <button
-          onClick={() => {
-            setIsEditMode((prev) => !prev);
-          }}
-        >
-          toggle edit mode
-        </button>
-        {/* <button onClick={saveHeaderToLS}>save header data</button> */}
-        {/* <button onClick={retrieveHeaderFromLS}>retrieve header data</button> */}
-        {isEditMode && (
-          <label style={{ border: "1px solid red" }}>edit mode on</label>
-        )}
-        <PageNav3
-          pages={pages}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          saveSnapshotToPages={saveSnapshotToPages}
-          savePagesToLS={saveCurrentWebsite}
-        />
-        <div>
-          <button
-            onClick={() => addRenderElement(RenderElementNames.red_rectangle3)}
-          >
-            +RedRectangle3
-          </button>
-          <button
-            onClick={() =>
-              addRenderElement(RenderElementNames.red_text_rectangle3)
-            }
-          >
-            +RedTextRectangle3
-          </button>
-          <button
-            onClick={() =>
-              addRenderElement(RenderElementNames.color_rectangle3)
-            }
-          >
-            +ColorRectangle3
-          </button>
-          <button
-            onClick={() => addRenderElement(RenderElementNames.text_box3)}
-          >
-            +TextBox3
-          </button>
-          <button>
-            <span
-              onClick={() => addRenderElement(RenderElementNames.ImgContainer)}
+        {isEditMode &&
+          <div>
+            BasicEditor3
+            <button onClick={saveChangesToWebsite}>
+              save changes from Basic editor
+            </button>
+            {/* <button onClick={() => { retrievePagesFromLS() }}>Retrieve pages</button> */}
+            <button
+              onClick={() => {
+                setIsEditMode((prev) => !prev);
+              }}
             >
-              +ImgContainer
-            </span>
-          </button>
-          <button>
-            <span
-              onClick={() =>
-                addRenderElement(RenderElementNames.VideoContainer)
-              }
-            >
-              +VideoContainer
-            </span>
-          </button>
-        </div>
+              toggle edit mode
+            </button>
+            {/* <button onClick={saveHeaderToLS}>save header data</button> */}
+            {/* <button onClick={retrieveHeaderFromLS}>retrieve header data</button> */}
+            {isEditMode && (
+              <label style={{ border: "1px solid red" }}>edit mode on</label>
+            )}
+            <PageNav3
+              pages={pages}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              saveSnapshotToPages={saveSnapshotToPages}
+              savePagesToLS={saveCurrentWebsite}
+            />
+            <div>
+              <button
+                onClick={() => addRenderElement(RenderElementNames.red_rectangle3)}
+              >
+                +RedRectangle3
+              </button>
+              <button
+                onClick={() =>
+                  addRenderElement(RenderElementNames.red_text_rectangle3)
+                }
+              >
+                +RedTextRectangle3
+              </button>
+              <button
+                onClick={() =>
+                  addRenderElement(RenderElementNames.color_rectangle3)
+                }
+              >
+                +ColorRectangle3
+              </button>
+              <button
+                onClick={() => addRenderElement(RenderElementNames.text_box3)}
+              >
+                +TextBox3
+              </button>
+              <button>
+                <span
+                  onClick={() => addRenderElement(RenderElementNames.ImgContainer)}
+                >
+                  +ImgContainer
+                </span>
+              </button>
+              <button>
+                <span
+                  onClick={() =>
+                    addRenderElement(RenderElementNames.VideoContainer)
+                  }
+                >
+                  +VideoContainer
+                </span>
+              </button>
+            </div>
+
+          </div>
+        }
         <Header3
           pages={pages}
           currentPage={currentPage}
@@ -354,7 +359,7 @@ function BasicEditor3Pro({
         />
         <div>{mapRenderElements()}</div>
       </div>
-      {/* <MouseLocator /> */}
+
     </BasicEditorContext.Provider>
   );
 }

@@ -25,7 +25,7 @@ export type DraggableFrame3Props = {
 function DraggableFrame3({ renderElement }: DraggableFrame3Props) {
     const [position, setPosition] = useState<Position>(renderElement.data.position);
     const [displayEditButtons, setDisplayEditButtons] = useState(false);
-    const { baseFunctions, originOfCoordinates } = useContext(BasicEditorContext)
+    const { baseFunctions, originOfCoordinates, isEditMode } = useContext(BasicEditorContext)
     const divRef = useRef();
 
     useEffect(() => {
@@ -36,6 +36,7 @@ function DraggableFrame3({ renderElement }: DraggableFrame3Props) {
     //the problem might be that the ooc from the pov of the div is the ooc of wrapper3,
     //but the ooc for e.client and rect are relative to the viewport.
     const handleMouseDown = (e) => {
+        if(!isEditMode) return;
         const windowYPosition = window.scrollY;
         const rect = divRef.current.getBoundingClientRect();
         const offsetX = e.clientX - rect.left;
@@ -69,7 +70,7 @@ function DraggableFrame3({ renderElement }: DraggableFrame3Props) {
     return (
         <>
             {
-                displayEditButtons && divRef.current &&
+                displayEditButtons && divRef.current && isEditMode &&
                 <BlockEditor3 blockId={renderElement.data.id} blockRect={divRef.current.getBoundingClientRect()} />
             }
             <div
