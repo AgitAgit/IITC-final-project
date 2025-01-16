@@ -12,6 +12,7 @@ import EditorLayout from "./pages/EditorLayout";
 import Domains from "./pages/Domains";
 import Dashboard from "./pages/Dashboard";
 import Assets from "./components/EditorComponents/sidebarComponents/Assets";
+import UserWebsite from "./pages/UserWebsite";
 
 import "./App.css";
 import Wrapper3Pro from "./components/basicEditor3Pro/Wrapper3Pro";
@@ -38,6 +39,10 @@ function App() {
           element: <Error />,
         },
       ],
+    },
+    {
+      path: "/userwebsite/:id",
+      element: <UserWebsite />,
     },
     {
       path: "/accountdashboard/",

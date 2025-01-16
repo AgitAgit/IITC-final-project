@@ -6,5 +6,5 @@ export interface ISite {
   domain: string;
   createdAt?: Date;
   updatedAt?: Date;
-  save: () => void;
+  save?: () => void;
 }

@@ -5,6 +5,7 @@ import DropdownMenu from "./DropdownMenu";
 import toast, { Toaster } from "react-hot-toast";
 import LoadingSpinner from "../LoadingSpinner";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface ListDashboardProps {
   activeTab: string;
@@ -15,6 +16,7 @@ const ListDashboard: React.FC<ListDashboardProps> = ({
   activeTab,
   searchValue,
 }) => {
+  const navigate = useNavigate();
   const { data: userData } = useUserProfile();
   const deleteSiteMutation = useDeleteSite();
   const [loadingSiteId, setLoadingSiteId] = useState<string | null>(null);
@@ -42,6 +44,10 @@ const ListDashboard: React.FC<ListDashboardProps> = ({
         </div>
       </div>
     ));
+  };
+
+  const handleMoveDisplayWeb = (id: string) => {
+    navigate(`/userwebsite/${id}`);
   };
 
   const confirmDelete = (siteId: string): void => {
@@ -84,7 +90,7 @@ const ListDashboard: React.FC<ListDashboardProps> = ({
                 />
                 <div className="absolute inset-0 bg-white bg-opacity-0 group-hover:bg-opacity-25 transition duration-300 flex items-center justify-center">
                   <button
-                    onClick={() => (window.location.href = site.websiteUrl)}
+                    onClick={() => handleMoveDisplayWeb(site._id)}
                     className="relative opacity-0 group-hover:opacity-100 text-white bg-black px-4 py-2 overflow-hidden transition duration-300"
                   >
                     <span className="z-10">Go to Website</span>
@@ -113,14 +119,14 @@ const ListDashboard: React.FC<ListDashboardProps> = ({
                 </p>
                 <div className="flex font-semibold justify-center lg:justify-start gap-4 mt-4">
                   <button
-                    onClick={() => (window.location.href = site.websiteUrl)}
+                    onClick={() => handleMoveDisplayWeb(site._id)}
                     className="relative overflow-hidden px-4 py-2 bg-white text-black rounded group border-[1px] min-w-[95px]"
                   >
                     <span className="absolute inset-0 bg-gradient-to-r from-gray-300 via-transparent to-gray-300 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
                     Website
                   </button>
                   <button
-                    onClick={() => (window.location.href = site.sellingUrl)}
+                    onClick={() => handleMoveDisplayWeb(site._id)}
                     className="relative overflow-hidden px-4 py-2 bg-white text-black rounded group border-[1px] min-w-[95px]"
                   >
                     <span className="absolute inset-0 bg-gradient-to-r from-gray-300 via-transparent to-gray-300 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>

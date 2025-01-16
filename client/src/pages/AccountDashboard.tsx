@@ -3,9 +3,11 @@ import DropDownUser from "../components/AccountDashboardComponents/DropDownUser"
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getAuthTokenFromCookie } from "../lib/api";
+import { useUserProfile } from "../hooks/useUser";
 
 const AccountDashboard = () => {
   const [activeButton, setActiveButton] = useState("Dashboard");
+  const { data: userData, isLoading: isUserLoading } = useUserProfile();
   const btnName = "Account Settings";
   const navigate = useNavigate();
   const location = useLocation();
@@ -13,10 +15,10 @@ const AccountDashboard = () => {
   useEffect(() => {
     const token = getAuthTokenFromCookie();
 
-    if (!token) {
+    if ((!isUserLoading && !userData) || !token) {
       navigate("/login");
     }
-  }, []);
+  }, [userData, isUserLoading, navigate]);
 
   useEffect(() => {
     if (location.pathname.includes("domains")) {
