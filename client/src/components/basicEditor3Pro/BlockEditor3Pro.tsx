@@ -1,6 +1,8 @@
 import React, { useState, useContext, useRef } from 'react'
 import { BasicEditorContext } from './BasicEditor3Pro'
 
+import EditElement from '../EditorComponents/Element/EditElementBox/EditElement';
+
 export type BlockEditor3Props = {
     blockId: string
     blockRect: DOMRect
@@ -18,7 +20,7 @@ function BlockEditor3({ blockId, blockRect }: BlockEditor3Props) {
     const editButtonsStyle = {
         position: 'absolute',
         left: blockRect.left - originOfCoordinates.x,
-        top: blockRect.top - 25 - originOfCoordinates.y
+        top: blockRect.top - 60 - originOfCoordinates.y
     }
 
     const editFormStyle = {
@@ -45,8 +47,8 @@ function BlockEditor3({ blockId, blockRect }: BlockEditor3Props) {
         baseFunctions.setStyle(blockId, { ...element.data.style, backgroundColor: newColor });
     }
 
-    function updateStyle(field:string, newValue: string | number){
-        const newStyle = {...element.data.style}
+    function updateStyle(field: string, newValue: string | number) {
+        const newStyle = { ...element.data.style }
         newStyle[field] = newValue;
         baseFunctions.setStyle(blockId, newStyle)
     }
@@ -55,8 +57,9 @@ function BlockEditor3({ blockId, blockRect }: BlockEditor3Props) {
         <div>
             <div
                 style={editButtonsStyle}>
-                <button onClick={handleEditClick}>EDIT</button>
-                <button onClick={handleDeleteClick}>DELETE</button>
+                <EditElement handleEditClick={handleEditClick} handleDeleteClick={handleDeleteClick}/>
+                {/* <button onClick={handleEditClick}>EDIT</button> */}
+                {/* <button onClick={handleDeleteClick}s>DELETE</button> */}
             </div>
             {
                 editFormVisibility &&

@@ -101,8 +101,8 @@ function Wrapper3Pro({ currentUser = defaultUser }: Wrapper3ProProps) {
             Wrapper3Pro
             <button onClick={retrieveWebsitesFromLS}>retrieveWebsites</button>
             <WebsiteNav3 websites={websites} currentWebsite={currentWebsite} setCurrentWebsite={setCurrentWebsite} saveChangesToCurrentWebsite={saveChangesToCurrentWebsite} saveWebsitesToLS={saveWebsitesToLS} retrieveWebsitesFromLS={retrieveWebsitesFromLS} addWebsite={addWebsite} />
-            {/* <BasicEditor3Pro currentWebsite={currentWebsite} saveCurrentWebsite={saveCurrentWebsite}/> */}
-            <DisplayWebsite3 websiteDataString={websiteDataString}/>
+            <BasicEditor3Pro currentWebsite={currentWebsite} saveCurrentWebsite={saveCurrentWebsite}/>
+            {/* <DisplayWebsite3 websiteDataString={websiteDataString}/> */}
         </>
     )
 }
