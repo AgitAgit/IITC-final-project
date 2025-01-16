@@ -168,8 +168,17 @@ export function TextBlock3({ id }: { id: string }) {
   const { renderElements, baseFunctions } = useContext(BasicEditorContext);
   const element = renderElements.filter((element) => element.data.id === id)[0];
   const style = element.data.style;
-  
-  return <div style={style}>
 
+  const textAreaStyle = {
+    overflow:'hidden',
+    background:'none',
+    border:'none',
+    outline:'none',
+    resize:'none',
+    height:'100%',
+    width:'100%'
+  }
+  return <div style={style}>
+    <textarea style={textAreaStyle}></textarea>
   </div>;
 }

@@ -4,6 +4,7 @@ import { type DataObject3, DataObject3Content, DataObject3Style, RenderElement3,
 import { Position } from './BasicEditor3ProTypes'
 import BlockEditor3 from './BlockEditor3Pro';
 import { BasicEditorContext } from './BasicEditor3Pro';
+import { utils2 } from './utils2';
 
 // interface Props {
 //   element: React.ComponentType<any>; // Type for the dynamic component
@@ -25,18 +26,41 @@ export type DraggableFrame3Props = {
 function DraggableFrame3({ renderElement }: DraggableFrame3Props) {
     const [position, setPosition] = useState<Position>(renderElement.data.position);
     const [displayEditButtons, setDisplayEditButtons] = useState(false);
+    const [borderHover, setBorderHover] = useState<string>('none');
     const { baseFunctions, originOfCoordinates, isEditMode } = useContext(BasicEditorContext)
     const divRef = useRef();
-    
+    const borderWidth = 10;
+
     useEffect(() => {
         setPosition(renderElement.data.position)
     }, [renderElement.data.position])
 
+    useEffect(() => {
+        console.log("border hover says:", borderHover);
+    },[borderHover])
+
+
+    function detectBorderHoverWrapper(e) {
+        const result = utils2.detectBorderHover(divRef.current.getBoundingClientRect(), e.clientX, e.clientY, borderWidth);
+        //should I debounce this?
+        if (result !== borderHover) {
+            setBorderHover(result);
+        }
+    }
+
+    function handleMouseEnter() {
+        window.addEventListener('mousemove', detectBorderHoverWrapper);
+        setTimeout(() => {window.removeEventListener('mousemove', detectBorderHoverWrapper)}, 2000)
+    }
+
+    function handleMouseLeave() {
+        window.removeEventListener('mousemove', detectBorderHoverWrapper);
+    }
 
     //the problem might be that the ooc from the pov of the div is the ooc of wrapper3,
     //but the ooc for e.client and rect are relative to the viewport.
     const handleMouseDown = (e) => {
-        if(!isEditMode) return;
+        if (!isEditMode) return;
         const windowYPosition = window.scrollY;
         const rect = divRef.current.getBoundingClientRect();
         const offsetX = e.clientX - rect.left;
@@ -45,9 +69,15 @@ function DraggableFrame3({ renderElement }: DraggableFrame3Props) {
 
         const handleMouseMove = (e) => {
             // const newPosition = { x: e.clientX - offsetX, y: e.clientY - offsetY + windowYPosition }
-            const newPosition = { x: e.clientX - offsetX - originOfCoordinates.x, y: e.clientY - offsetY - originOfCoordinates.y}
-            setPosition(newPosition);
-            baseFunctions.setPosition(renderElement.data.id, newPosition)
+            if(borderHover === 'none'){
+                const newPosition = { x: e.clientX - offsetX - originOfCoordinates.x, y: e.clientY - offsetY - originOfCoordinates.y }
+                setPosition(newPosition);
+                baseFunctions.setPosition(renderElement.data.id, newPosition)
+            }
+            else if( borderHover === 'right'){
+                // const newWidth =
+                // baseFunctions.setStyle(renderElement.data.id, renderElement.)
+            }
         };
 
         const handleMouseUp = () => {
@@ -76,13 +106,16 @@ function DraggableFrame3({ renderElement }: DraggableFrame3Props) {
             <div
                 ref={divRef}
                 onMouseDown={handleMouseDown}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
                 onClick={toggleDisplayEditButtons}
                 style={{
                     position: 'absolute',
                     left: position.x,
                     top: position.y,
                     cursor: "grab",
-                    border: '1px solid red'//remove this later...
+                    overflow: 'hidden',
+                    border: `${borderWidth}px solid yellow`
                 }}>
                 {renderElement.body}
                 {/* <DynamicComponent element={renderElement.body} propsForElement={{}}/> */}

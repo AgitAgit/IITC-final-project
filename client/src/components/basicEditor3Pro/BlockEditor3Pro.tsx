@@ -37,11 +37,11 @@ function BlockEditor3({ blockId, blockRect }: BlockEditor3Props) {
     }
 
     function handleEditClick() {
-        if(isTextElement){
+        if (isTextElement) {
             setEditMenuVisibility(false);
             setTextEditMenuVisibility(true);
         }
-        else{
+        else {
             setEditMenuVisibility(true);
             setEditFormVisibility(prev => !prev);
         }
@@ -70,7 +70,14 @@ function BlockEditor3({ blockId, blockRect }: BlockEditor3Props) {
         <div>
             <div
                 style={editButtonsStyle}>
-                <EditElement handleEditClick={handleEditClick} handleDeleteClick={handleDeleteClick} />
+                {
+                    editMenuVisibility &&
+                    <EditElement handleEditClick={handleEditClick} handleDeleteClick={handleDeleteClick} />
+                }
+                {
+                    textEditMenuVisibility &&
+                    <EditText />
+                }
                 {/* <button onClick={handleEditClick}>EDIT</button> */}
                 {/* <button onClick={handleDeleteClick}s>DELETE</button> */}
             </div>
