@@ -162,3 +162,20 @@ export function VideoContainer({ id }: { id: string }) {
     </div>
   );
 }
+
+
+export function TextBlock3({ id }: { id: string }) {
+  const { renderElements, baseFunctions } = useContext(BasicEditorContext);
+  const element = renderElements.filter((element) => element.data.id === id)[0];
+  const defaultStyle = {
+    width: "8rem",
+    height: "4rem",
+    backgroundColor: "red",
+    color:"white"
+  };
+  const style = element.data.style;
+  const finalStyle = isEmpty(style) ? defaultStyle : style;
+  return <div style={finalStyle}>
+    
+  </div>;
+}
