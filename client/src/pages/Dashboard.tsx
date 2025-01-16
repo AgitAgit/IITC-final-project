@@ -1,10 +1,15 @@
 import { useState } from "react";
 import ListDashboard from "../components/AccountDashboardComponents/ListDashboard";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("cards");
   const [searchValue, setSearchValue] = useState("");
-  console.log(activeTab);
+  const navigate = useNavigate();
+
+  const handleNavigateToTemplete = () => {
+    navigate("/templates");
+  };
 
   return (
     <div className="p-[60px] px-[140px] min-w-[480px]">
@@ -110,7 +115,10 @@ const Dashboard = () => {
               </button>
             )}
           </div>
-          <button className="bg-black text-white p-3 min-w-[132px]">
+          <button
+            onClick={() => handleNavigateToTemplete()}
+            className="bg-black text-white p-3 min-w-[132px]"
+          >
             Create Website
           </button>
         </div>

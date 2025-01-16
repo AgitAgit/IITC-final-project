@@ -3,10 +3,10 @@ import { ApiResponse } from "../types/generalTypes";
 import { ISite } from "../types/siteTypes";
 
 export const createSite = async (
-  siteData: Site
-): Promise<ApiResponse<Site>> => {
+  siteData: ISite
+): Promise<ApiResponse<ISite>> => {
   try {
-    const response = await siteClient.post<ApiResponse<Site>>(
+    const response = await siteClient.post<ApiResponse<ISite>>(
       "/create",
       siteData
     );
@@ -19,7 +19,7 @@ export const createSite = async (
 
 export const fetchAllSites = async (): Promise<ApiResponse<ISite[]>> => {
   try {
-    const response = await siteClient.get<ApiResponse<Site[]>>("/all");
+    const response = await siteClient.get<ApiResponse<ISite[]>>("/");
     return response.data;
   } catch (error) {
     console.error("Error fetching all sites:", error);
@@ -29,9 +29,9 @@ export const fetchAllSites = async (): Promise<ApiResponse<ISite[]>> => {
 
 export const fetchSiteById = async (
   siteId: string
-): Promise<ApiResponse<Site>> => {
+): Promise<ApiResponse<ISite>> => {
   try {
-    const response = await siteClient.get<ApiResponse<Site>>(`/find/${siteId}`);
+    const response = await siteClient.get<ApiResponse<ISite>>(`/${siteId}`);
     return response.data;
   } catch (error) {
     console.error("Error fetching site by ID:", error);
@@ -41,7 +41,7 @@ export const fetchSiteById = async (
 
 export const fetchUserSites = async (): Promise<ApiResponse<ISite[]>> => {
   try {
-    const response = await siteClient.get<ApiResponse<Site[]>>("/user-sites");
+    const response = await siteClient.get<ApiResponse<ISite[]>>("/user/sites");
     return response.data;
   } catch (error) {
     console.error("Error fetching user sites:", error);
@@ -51,11 +51,11 @@ export const fetchUserSites = async (): Promise<ApiResponse<ISite[]>> => {
 
 export const updateSite = async (
   siteId: string,
-  updatedData: Partial<Site>
-): Promise<ApiResponse<Site>> => {
+  updatedData: Partial<ISite>
+): Promise<ApiResponse<ISite>> => {
   try {
-    const response = await siteClient.put<ApiResponse<Site>>(
-      `/update/${siteId}`,
+    const response = await siteClient.put<ApiResponse<ISite>>(
+      `/${siteId}`,
       updatedData
     );
     return response.data;
@@ -69,9 +69,13 @@ export const deleteSite = async (
   siteId: string
 ): Promise<ApiResponse<{ message: string }>> => {
   try {
+    console.log(siteId);
+
     const response = await siteClient.delete<ApiResponse<{ message: string }>>(
-      `/delete/${siteId}`
+      `/${siteId}`
     );
+    console.log(response);
+
     return response.data;
   } catch (error) {
     console.error("Error deleting site:", error);

@@ -7,7 +7,11 @@ type Option =
   | "DUPLICATE WEBSITE"
   | "DELETE";
 
-const DropdownMenu = () => {
+interface DropdownMenuProps {
+  onDelete: () => void;
+}
+
+const DropdownMenu: React.FC<DropdownMenuProps> = ({ onDelete }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
 
@@ -44,7 +48,7 @@ const DropdownMenu = () => {
     BILLING: () => console.log("Redirecting to billing page..."),
     SETTING: () => console.log("Opening settings page..."),
     "DUPLICATE WEBSITE": () => console.log("Duplicating the website..."),
-    DELETE: () => console.log("Deleting the item..."),
+    DELETE: () => onDelete(),
   };
 
   const handleOptionClick = (option: Option): void => {

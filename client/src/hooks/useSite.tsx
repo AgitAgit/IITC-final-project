@@ -42,6 +42,9 @@ export const useCreateSite = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["allSites"] });
       queryClient.invalidateQueries({ queryKey: ["userSites"] });
+      queryClient.invalidateQueries({
+        queryKey: ["userProfile"],
+      });
     },
   });
 };
@@ -57,6 +60,9 @@ export const useUpdateSite = () => {
       queryClient.invalidateQueries({ queryKey: ["allSites"] });
       queryClient.invalidateQueries({ queryKey: ["siteById"] });
       queryClient.invalidateQueries({ queryKey: ["userSites"] });
+      queryClient.invalidateQueries({
+        queryKey: ["userProfile"],
+      });
     },
   });
 };
@@ -70,6 +76,9 @@ export const useDeleteSite = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["allSites"] });
       queryClient.invalidateQueries({ queryKey: ["userSites"] });
+      queryClient.invalidateQueries({
+        queryKey: ["userProfile"],
+      });
     },
   });
 };
