@@ -90,6 +90,12 @@ export function hydrateWebsite(website: BasicEditor3Website) {
     //pretty sure an object is passed by reference.
 }
 
+export function dataStringToWebsite(dataString:string):BasicEditor3Website{
+    const website = JSON.parse(dataString);
+    hydrateWebsite(website);
+    return website;
+}
+
 export function hydrateWebsites(websites: BasicEditor3Website[]) {
     websites.forEach((website) => hydrateWebsite(website));
 }
