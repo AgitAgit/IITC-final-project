@@ -41,7 +41,7 @@ function App() {
       ],
     },
     {
-      path: "/userwebsite/:id",
+      path: "/userwebsite/:domain/:id",
       element: <UserWebsite />,
     },
     {
@@ -67,6 +67,10 @@ function App() {
     {
       path: "/fakeEditor",
       element: <FakeEditor />,
+    },
+    {
+      path: "/edituserwebsite/:id",
+      element: <EditorLayout />,
     },
     {
       path: "/editor-page",

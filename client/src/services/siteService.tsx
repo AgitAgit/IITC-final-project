@@ -54,6 +54,9 @@ export const updateSite = async (
   updatedData: Partial<ISite>
 ): Promise<ApiResponse<ISite>> => {
   try {
+    console.log("siteId:", siteId);
+    console.log("updatedData:", updatedData);
+
     const response = await siteClient.put<ApiResponse<ISite>>(
       `/${siteId}`,
       updatedData

@@ -34,7 +34,7 @@ export const useUserSites = () => {
 };
 // const { data: userSites, isLoading, error } = useUserSites();
 
-export const useCreateSite = () => {
+export const useCreateSite = ({ onSuccess }: any) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -45,17 +45,23 @@ export const useCreateSite = () => {
       queryClient.invalidateQueries({
         queryKey: ["userProfile"],
       });
+      if (onSuccess) onSuccess();
     },
   });
 };
 // const { mutate: createNewSite, isLoading, error } = useCreateSite();
 
-export const useUpdateSite = () => {
+export const useUpdateSite = ({ onSuccess }: any) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (params: { siteId: string; updatedData: Partial<ISite> }) =>
-      updateSite(params.siteId, params.updatedData),
+    mutationFn: ({
+      siteId,
+      updatedData,
+    }: {
+      siteId: string;
+      updatedData: Partial<ISite>;
+    }) => updateSite(siteId, updatedData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["allSites"] });
       queryClient.invalidateQueries({ queryKey: ["siteById"] });
@@ -63,6 +69,7 @@ export const useUpdateSite = () => {
       queryClient.invalidateQueries({
         queryKey: ["userProfile"],
       });
+      if (onSuccess) onSuccess();
     },
   });
 };
