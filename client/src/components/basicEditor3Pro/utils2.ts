@@ -1,4 +1,4 @@
-import { RenderElement3 } from "./BasicEditor3ProTypes";
+import { BaseFunctions, RenderElement3 } from "./BasicEditor3ProTypes";
 
 export const utils2 = {
     detectBorderHover: function (rect: DOMRect, mouseX: number, mouseY: number, borderWidth: number):string{
@@ -31,5 +31,11 @@ export const utils2 = {
         //by now, if the mouse was in a border the function should have returnd.
         // console.log("not hovering over a border");
         return 'none';
+    },
+    
+    update0LayerStyle: function (element:RenderElement3, field: string, newValue: string | number, baseFunctions:BaseFunctions) {
+        const newStyle = { ...element.data.style }
+        newStyle[field] = newValue;
+        baseFunctions.setStyle(element.data.id, newStyle)
     }
 }

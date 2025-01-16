@@ -29,7 +29,17 @@ function DraggableFrame3({ renderElement }: DraggableFrame3Props) {
     const [borderHover, setBorderHover] = useState<string>('none');
     const { baseFunctions, originOfCoordinates, isEditMode } = useContext(BasicEditorContext)
     const divRef = useRef();
-    const borderWidth = 10;
+    const borderWidth = 5;
+
+    const frameStyle = {
+        position: 'absolute',
+        left: position.x,
+        top: position.y,
+        cursor: "grab",
+        overflow: 'hidden',
+        borderRight: borderHover === 'right' ? `${borderWidth}px solid blue` : "none",
+        borderBottom:borderHover === 'bottom' ? `${borderWidth}px solid blue` : "none"
+    }
 
     useEffect(() => {
         setPosition(renderElement.data.position)
@@ -37,11 +47,11 @@ function DraggableFrame3({ renderElement }: DraggableFrame3Props) {
 
     useEffect(() => {
         console.log("border hover says:", borderHover);
-    },[borderHover])
+    }, [borderHover])
 
 
     function detectBorderHoverWrapper(e) {
-        const result = utils2.detectBorderHover(divRef.current.getBoundingClientRect(), e.clientX, e.clientY, borderWidth);
+        const result = utils2.detectBorderHover(divRef.current.getBoundingClientRect(), e.clientX, e.clientY, borderWidth + 3);
         //should I debounce this?
         if (result !== borderHover) {
             setBorderHover(result);
@@ -50,7 +60,7 @@ function DraggableFrame3({ renderElement }: DraggableFrame3Props) {
 
     function handleMouseEnter() {
         window.addEventListener('mousemove', detectBorderHoverWrapper);
-        setTimeout(() => {window.removeEventListener('mousemove', detectBorderHoverWrapper)}, 2000)
+        setTimeout(() => { window.removeEventListener('mousemove', detectBorderHoverWrapper) }, 2000)
     }
 
     function handleMouseLeave() {
@@ -69,14 +79,18 @@ function DraggableFrame3({ renderElement }: DraggableFrame3Props) {
 
         const handleMouseMove = (e) => {
             // const newPosition = { x: e.clientX - offsetX, y: e.clientY - offsetY + windowYPosition }
-            if(borderHover === 'none'){
+            if (borderHover === 'none') {
                 const newPosition = { x: e.clientX - offsetX - originOfCoordinates.x, y: e.clientY - offsetY - originOfCoordinates.y }
                 setPosition(newPosition);
                 baseFunctions.setPosition(renderElement.data.id, newPosition)
             }
-            else if( borderHover === 'right'){
-                // const newWidth =
-                // baseFunctions.setStyle(renderElement.data.id, renderElement.)
+            else if (borderHover === 'right') {
+                const newWidth = e.clientX - rect.left;
+                utils2.update0LayerStyle(renderElement, 'width', `${newWidth}px`, baseFunctions);
+            }
+            else if (borderHover === 'bottom') {
+                const newHeight = e.clientY - rect.top;
+                utils2.update0LayerStyle(renderElement, 'height', `${newHeight}px`, baseFunctions);
             }
         };
 
@@ -109,14 +123,7 @@ function DraggableFrame3({ renderElement }: DraggableFrame3Props) {
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
                 onClick={toggleDisplayEditButtons}
-                style={{
-                    position: 'absolute',
-                    left: position.x,
-                    top: position.y,
-                    cursor: "grab",
-                    overflow: 'hidden',
-                    border: `${borderWidth}px solid yellow`
-                }}>
+                style={frameStyle}>
                 {renderElement.body}
                 {/* <DynamicComponent element={renderElement.body} propsForElement={{}}/> */}
             </div>
