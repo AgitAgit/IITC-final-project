@@ -78,6 +78,7 @@ function Wrapper3Pro({ currentUser = defaultUser }: Wrapper3ProProps) {
     // console.log("current website pages:", currentWebsite.pages);
   }
 
+  //this is sort of an interface. keep this function name and signature unchanged.
   function saveCurrentWebsite() {
     saveChangesToCurrentWebsite(currentWebsite);
     saveWebsitesToLS();
