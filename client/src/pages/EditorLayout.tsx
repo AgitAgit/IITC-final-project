@@ -156,7 +156,7 @@ function EditorLayout() {
           setWebsiteName={(name) => {
             setWebsiteName(name);
           }}
-          setIsOpen={(isOpen) => setIsOpenDialogName(isOpen)} // סוגר את הדיאלוג
+          setIsOpen={(isOpen) => setIsOpenDialogName(isOpen)}
         />
       )}
     </div>

@@ -1,4 +1,3 @@
-// עדכון handleOpenWidget לחזרה של Promise
 export const handleOpenWidget = () => {
     return new Promise<string>((resolve, reject) => {
       if (window.cloudinary) {
