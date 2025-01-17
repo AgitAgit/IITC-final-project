@@ -407,11 +407,11 @@ const Header: React.FC = () => {
                   <NavigationMenuLink>
                     <div className="flex relative h-full">
                       {/* Left: Headlines */}
-                      <div className="w-1/2 flex flex-col justify-center p-8 space-y-6">
+                      <div className="w-1/2 flex flex-col justify-center p-8 space-y-6 mb-14">
                         {images.map((item, index) => (
                           <h2
                             key={index}
-                            className="relative text-xl font-semibold cursor-pointer transition-all duration-300 opacity-50 hover:opacity-100 hover:text-white group"
+                            className="relative text-5xl font-semibold cursor-pointer transition-all duration-300 opacity-50 hover:opacity-100 hover:text-white group"
                             onMouseEnter={() =>
                               handleResources(item.image, item.text)
                             }
