@@ -51,7 +51,7 @@ const ListDashboard: React.FC<ListDashboardProps> = ({
   };
 
   const handleMoveEditWeb = (id: string) => {
-    navigate(`/edituserwebsite/${id}`);
+    navigate(`/editor-page/website/${id}`);
   };
 
   const confirmDelete = (siteId: string): void => {

@@ -10,6 +10,7 @@ import { dataStringToWebsite } from "../components/basicEditor3Pro/utils";
 import LoadingSpinner from "../components/LoadingSpinner";
 import WebsiteNameDialog from "../components/WebsiteNameDialog";
 import { BasicEditor3Website } from "../components/basicEditor3Pro/BasicEditor3ProTypes";
+import toast, { Toaster } from "react-hot-toast";
 
 function EditorLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -117,7 +118,12 @@ function EditorLayout() {
   }
 
   if (!isLoading && !userData) {
-    navigate("/login");
+    navigate("/login", {
+      state: {
+        toastMessage:
+          "Hold up! You need to log in first to start building your awesome website!",
+      },
+    });
     return null;
   }
 
