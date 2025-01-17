@@ -25,8 +25,6 @@ const styles = {
   default_Text_Block_Style:{
     width: "8rem",
     height: "4rem",
-    backgroundColor: "red",
-    color:"white"
   }
 };
 

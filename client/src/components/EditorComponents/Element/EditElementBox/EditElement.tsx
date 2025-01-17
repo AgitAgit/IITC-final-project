@@ -1,18 +1,37 @@
 import { Pencil, Palette, X, Copy, Trash2 } from "lucide-react";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import PositionContent from "./PositionContent";
 import { RenderElement3 } from "../../../basicEditor3Pro/BasicEditor3ProTypes";
 import { BasicEditorContext } from "../../../basicEditor3Pro/BasicEditor3Pro";
 
+import { Popover, PopoverContent, PopoverTrigger } from "../../../ui/popover";
+import ColorPicker from "../../ColorPicker";
+
+
 export type EditElementProps = {
-  element:RenderElement3
+  element: RenderElement3
   handleEditClick: () => void;
   handleDeleteClick: () => void;
 }
 
 const EditElement = ({ element, handleEditClick, handleDeleteClick }: EditElementProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { duplicateElement } = useContext(BasicEditorContext);
+  const { baseFunctions, duplicateElement } = useContext(BasicEditorContext);
+  const [backgroundColor, setBackgroundColor] = useState(element.data.style.backgroundColor || "clear");
+
+  useEffect(() => {
+      const style = element.data.style;
+      baseFunctions.setStyle(element.data.id, 
+        {
+           ...style, 
+          backgroundColor: backgroundColor
+        });
+    },[backgroundColor])
+  
+
+  function handleToggleOpen() {
+    setIsOpen(prev => !prev);
+  }
 
   return (
     <div className="w-fit flex items-center bg-gray-100 p-2 rounded-lg shadow">
@@ -20,15 +39,30 @@ const EditElement = ({ element, handleEditClick, handleDeleteClick }: EditElemen
         <Pencil size={18} />
         <span className="font-medium"></span>
       </button>
-      <button
+      <button className="p-1 hover:bg-gray-100 rounded">
+        <Popover>
+          <PopoverTrigger asChild>
+            <div className="flex justify-between items-center cursor-pointer">
+              <div
+                className="w-6 h-6 rounded-full"
+                style={{ backgroundColor }}
+              />
+            </div>
+          </PopoverTrigger>
+          <PopoverContent className="w-64">
+            <ColorPicker color={backgroundColor} onChange={setBackgroundColor} />
+          </PopoverContent>
+        </Popover>{" "}
+      </button>
+      {/* <button
         className="p-2 mx-1 text-gray-600 hover:text-gray-800 hover:bg-gray-200 rounded focus:outline-none"
         data-action="color"
         title="Color"
       >
         <Palette size={18} />
-      </button>
+      </button> */}
       <div className="relative">
-        <PositionContent isOpen={isOpen} setIsOpen={setIsOpen} />
+        <PositionContent isOpen={isOpen} setIsOpen={handleToggleOpen} />
       </div>
       <button
         className="p-2 mx-1 text-gray-600 hover:text-gray-800 hover:bg-gray-200 rounded focus:outline-none"

@@ -26,6 +26,8 @@ export function isEmpty(obj: { [key: string]: any }) {
     return true;
 }
 
+
+
 //recreates The RenderElement's component part from it's data part.
 export function hydrateRenderElement(
     id: string,
@@ -64,6 +66,9 @@ export function hydrateRenderElement(
         body = <TextBlock3 id={id} />
         if(isEmpty(style)){
             style = styles.default_Text_Block_Style;
+        }
+        if(isEmpty(content)){
+            content = {textContent:"Add some text here..."}
         }
     }
     const newRenderElement: RenderElement3 = {

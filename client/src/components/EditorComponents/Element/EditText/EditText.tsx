@@ -17,8 +17,6 @@ import ColorPicker from "../../ColorPicker";
 import { useState, useContext, useEffect } from "react";
 import { BasicEditorContext } from "../../../basicEditor3Pro/BasicEditor3Pro";
 import { RenderElement3 } from "../../../basicEditor3Pro/BasicEditor3ProTypes";
-import { fontWeight } from "html2canvas/dist/types/css/property-descriptors/font-weight";
-import { fontFamily } from "html2canvas/dist/types/css/property-descriptors/font-family";
 
 // const heading1 = {
 //   fontSize:'2rem',
@@ -88,7 +86,7 @@ const boldButtonNotPressed = "p-1 hover:bg-gray-100 rounded";
 
 const FormattingToolbar = ({ element }: { element: RenderElement3 }) => {
   const { baseFunctions, duplicateElement } = useContext(BasicEditorContext)
-  const [textColor, setTextColor] = useState(element.data.style.color || "#000000");
+  const [textColor, setTextColor] = useState(element.data.style.color || "#060606");
   const [isBold, setIsBold] = useState<boolean>(element.data.style.fontWeight === "bold");
   const [isItalics, setIsItalics] = useState<boolean>(element.data.style.fontStyle === "italic");
   const [textAlign, setTextAlign] = useState<string>(element.data.style.textAlign || "left")
@@ -146,6 +144,7 @@ const FormattingToolbar = ({ element }: { element: RenderElement3 }) => {
         className={isItalics ? boldButtonPressed : boldButtonNotPressed}>
           <Italic size={18} />
         </button>
+
         <button className="p-1 hover:bg-gray-100 rounded">
           <Popover>
             <PopoverTrigger asChild>
