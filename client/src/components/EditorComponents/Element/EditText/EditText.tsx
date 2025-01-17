@@ -14,80 +14,95 @@ import {
 } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "../../../ui/popover";
 import ColorPicker from "../../ColorPicker";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { BasicEditorContext } from "../../../basicEditor3Pro/BasicEditor3Pro";
 import { RenderElement3 } from "../../../basicEditor3Pro/BasicEditor3ProTypes";
 import { fontWeight } from "html2canvas/dist/types/css/property-descriptors/font-weight";
+import { fontFamily } from "html2canvas/dist/types/css/property-descriptors/font-family";
 
 // const heading1 = {
 //   fontSize:'2rem',
 //   fontWeight:'bold'
 // }
 
-const styleOptions = {
+const styleOptions: {
+  [key: string]: { [key: string]: any }
+} = {
   "Heading 1": {
-    fontSize:'2rem',
-    fontWeight:'bold'
-  }, 
+    fontSize: '2rem',
+    fontWeight: 'bold',
+    fontFamily: "serif"
+  },
   "Heading 2": {
     fontSize: '1.8rem',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    fontFamily: "serif"
   },
   "Heading 3": {
     fontSize: '1.6rem',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    fontFamily: "serif"
   },
   "Heading 4": {
     fontSize: '1.4rem',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    fontFamily: "serif"
   },
   "Paragraph 1": {
     fontSize: '1rem',
-    lineHeight: '1.5'
+    lineHeight: '1.5',
+    fontFamily: "serif"
   },
   "Paragraph 2": {
     fontSize: '0.9rem',
-    lineHeight: '1.4'
+    lineHeight: '1.4',
+    fontFamily:"serif"
   },
   "Paragraph 3": {
     fontSize: '0.8rem',
-    lineHeight: '1.3'
+    lineHeight: '1.3',
+    fontFamily: "serif"
   },
   "Monospace": {
     fontFamily: 'monospace'
   }
 };
 
-const FormattingToolbar = ({element}:{element:RenderElement3}) => {
+const paragraphOptions = [
+  "Heading 1",
+  "Heading 2",
+  "Heading 3",
+  "Heading 4",
+  "Paragraph 1",
+  "Paragraph 2",
+  "Paragraph 3",
+  "Monospace",
+];
+
+const FormattingToolbar = ({ element }: { element: RenderElement3 }) => {
   const { baseFunctions } = useContext(BasicEditorContext)
   const [textColor, setTextColor] = useState("#000000");
-  const [currentParagraphOption, setCurrentParagraphOption] = useState("Monospace");
-  
+  const [isBold, setIsBold] = useState<boolean>(element.data.style.fontWeight === "bold");
+  // const [currentParagraphOption, setCurrentParagraphOption] = useState();
+
   useEffect(() => {
+    const style = element.data.style;
+    baseFunctions.setStyle(element.data.id, { ...style, fontWeight: isBold ? "bold" : "normal"});
+  },[isBold])
 
-  },[currentParagraphOption])
-
-  const paragraphOptions = [
-    "Heading 1",
-    "Heading 2",
-    "Heading 3",
-    "Heading 4",
-    "Paragraph 1",
-    "Paragraph 2",
-    "Paragraph 3",
-    "Monospace",
-  ];
-
-  
+  function handleParagraphOptionChange(newValue: string) {
+    const style = element.data.style;
+    baseFunctions.setStyle(element.data.id, { ...style, ...styleOptions[newValue] });
+  }
 
   return (
     <div className="w-fit flex items-center gap-2 p-2 border rounded-md bg-white">
       <div className="relative">
-        <select defaultValue={currentParagraphOption} onChange={} className="p-1 min-w-36 border rounded-md text-sm bg-white hover:bg-gray-50">
+        <select onChange={(e) => handleParagraphOptionChange(e.target.value)} className="p-1 min-w-36 border rounded-md text-sm bg-white hover:bg-gray-50">
           {paragraphOptions.map((option, index) => (
             <option
               key={index}
-              value={option.toLowerCase().replace(" ", "-")}
+              // value={option.toLowerCase().replace(" ", "-")}
               className="hover:bg-gray-50"
             >
               {option}
@@ -99,7 +114,9 @@ const FormattingToolbar = ({element}:{element:RenderElement3}) => {
       <div className="h-4 w-px bg-gray-300 mx-1" />
 
       <div className="flex items-center gap-2">
-        <button className="p-1 hover:bg-gray-100 rounded">
+        <button 
+        onClick={() => setIsBold(prev => !prev)}
+        className="p-1 hover:bg-gray-100 rounded">
           <Bold size={18} />
         </button>
         <button className="p-1 hover:bg-gray-100 rounded">
