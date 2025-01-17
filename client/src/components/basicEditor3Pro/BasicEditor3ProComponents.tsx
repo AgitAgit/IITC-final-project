@@ -182,7 +182,8 @@ export function TextBlock3({ id }: { id: string }) {
     outline:'none',
     resize:'none',
     height:'100%',
-    width:'100%'
+    width:'100%',
+    ...style
   }
 
   return <div style={style}>

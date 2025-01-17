@@ -79,16 +79,34 @@ const paragraphOptions = [
   "Monospace",
 ];
 
+const boldButtonPressed = "p-1 bg-gray-100 rounded";
+const boldButtonNotPressed = "p-1 hover:bg-gray-100 rounded";
+
+// const italicsButtonPressed = "p-1 bg-gray-100 rounded";
+// const italicsButtonNotPressed = "p-1 hover:bg-gray-100 rounded";
+
+
 const FormattingToolbar = ({ element }: { element: RenderElement3 }) => {
   const { baseFunctions } = useContext(BasicEditorContext)
-  const [textColor, setTextColor] = useState("#000000");
+  const [textColor, setTextColor] = useState(element.data.style.color || "#000000");
   const [isBold, setIsBold] = useState<boolean>(element.data.style.fontWeight === "bold");
+  const [isItalics, setIsItalics] = useState<boolean>(element.data.style.fontStyle === "italic");
+  const [textAlign, setTextAlign] = useState<string>(element.data.style.textAlign || "left")
+
   // const [currentParagraphOption, setCurrentParagraphOption] = useState();
 
   useEffect(() => {
     const style = element.data.style;
-    baseFunctions.setStyle(element.data.id, { ...style, fontWeight: isBold ? "bold" : "normal"});
-  },[isBold])
+    baseFunctions.setStyle(element.data.id, 
+      {
+         ...style, 
+        fontWeight: isBold ? "bold" : "normal", 
+        fontStyle: isItalics ? "italic" : "normal",
+        textAlign:textAlign,
+        color: textColor
+      });
+      console.log(textAlign);
+  },[isBold, isItalics, textColor, textAlign])
 
   function handleParagraphOptionChange(newValue: string) {
     const style = element.data.style;
@@ -116,10 +134,12 @@ const FormattingToolbar = ({ element }: { element: RenderElement3 }) => {
       <div className="flex items-center gap-2">
         <button 
         onClick={() => setIsBold(prev => !prev)}
-        className="p-1 hover:bg-gray-100 rounded">
+        className={isBold ? boldButtonPressed : boldButtonNotPressed}>
           <Bold size={18} />
         </button>
-        <button className="p-1 hover:bg-gray-100 rounded">
+        <button 
+        onClick={() => setIsItalics(prev => !prev)}
+        className={isItalics ? boldButtonPressed : boldButtonNotPressed}>
           <Italic size={18} />
         </button>
         <button className="p-1 hover:bg-gray-100 rounded">
@@ -139,21 +159,18 @@ const FormattingToolbar = ({ element }: { element: RenderElement3 }) => {
         </button>
       </div>
 
-      <div className="h-4 w-px bg-gray-300 mx-1" />
+      {/* <div className="h-4 w-px bg-gray-300 mx-1" /> */}
 
-      <div className="flex items-center gap-2">
+      {/* <div className="flex items-center gap-2">
         <button className="p-1 hover:bg-gray-100 rounded">
           <Link size={18} />
         </button>
         <button className="p-1 hover:bg-gray-100 rounded text-sm">Aa</button>
-      </div>
+      </div> */}
 
-      <div className="h-4 w-px bg-gray-300 mx-1" />
-
+      {/* <div className="h-4 w-px bg-gray-300 mx-1" /> */}
+{/* 
       <div className="flex items-center gap-2">
-        <button className="p-1 hover:bg-gray-100 rounded">
-          <AlignLeft size={18} />
-        </button>
         <button className="p-1 hover:bg-gray-100 rounded">
           <Quote size={18} />
         </button>
@@ -163,18 +180,27 @@ const FormattingToolbar = ({ element }: { element: RenderElement3 }) => {
         <button className="p-1 hover:bg-gray-100 rounded">
           <ListOrdered size={18} />
         </button>
-      </div>
+        <button className="p-1 hover:bg-gray-100 rounded">
+          <Undo size={18} />
+        </button>
+      </div> */}
 
       <div className="h-4 w-px bg-gray-300 mx-1" />
 
       <div className="flex items-center gap-2">
-        <button className="p-1 hover:bg-gray-100 rounded">
-          <Undo size={18} />
+        <button 
+        onClick={() => setTextAlign("left")}
+        className="p-1 hover:bg-gray-100 rounded">
+          <AlignLeft size={18} />
         </button>
-        <button className="p-1 hover:bg-gray-100 rounded">
+        <button 
+        onClick={() => setTextAlign("center")}
+        className="p-1 hover:bg-gray-100 rounded">
           <AlignCenter size={18} />
         </button>
-        <button className="p-1 hover:bg-gray-100 rounded">
+        <button 
+        onClick={() => setTextAlign("right")}
+        className="p-1 hover:bg-gray-100 rounded">
           <AlignRight size={18} />
         </button>
       </div>
