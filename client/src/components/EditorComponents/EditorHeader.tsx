@@ -7,6 +7,7 @@ interface EditorHeaderProps {
   isMobileView: boolean;
   isSidebarOpen: boolean;
   siteId: string;
+  setSaveTrigger: Dispatch<SetStateAction<boolean>>;
 }
 
 const EditorHeader: React.FC<EditorHeaderProps> = ({
