@@ -168,6 +168,12 @@ export function TextBlock3({ id }: { id: string }) {
   const { renderElements, baseFunctions } = useContext(BasicEditorContext);
   const element = renderElements.filter((element) => element.data.id === id)[0];
   const style = element.data.style;
+  
+
+  function updateTextContentValue(newText:string){
+    const content = element.data.content;
+    baseFunctions.setContent(id, {...content, textContent:newText});
+  }
 
   const textAreaStyle = {
     overflow:'hidden',
@@ -178,7 +184,8 @@ export function TextBlock3({ id }: { id: string }) {
     height:'100%',
     width:'100%'
   }
+
   return <div style={style}>
-    <textarea style={textAreaStyle}></textarea>
+    <textarea style={textAreaStyle} onChange={(e) => updateTextContentValue(e.target.value)} defaultValue={element.data.content.textContent}></textarea>
   </div>;
 }

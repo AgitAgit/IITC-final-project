@@ -76,7 +76,7 @@ function BlockEditor3({ blockId, blockRect }: BlockEditor3Props) {
                 }
                 {
                     textEditMenuVisibility &&
-                    <EditText />
+                    <EditText element={element}/>
                 }
                 {/* <button onClick={handleEditClick}>EDIT</button> */}
                 {/* <button onClick={handleDeleteClick}s>DELETE</button> */}

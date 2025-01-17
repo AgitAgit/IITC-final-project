@@ -14,10 +14,58 @@ import {
 } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "../../../ui/popover";
 import ColorPicker from "../../ColorPicker";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { BasicEditorContext } from "../../../basicEditor3Pro/BasicEditor3Pro";
+import { RenderElement3 } from "../../../basicEditor3Pro/BasicEditor3ProTypes";
+import { fontWeight } from "html2canvas/dist/types/css/property-descriptors/font-weight";
 
-const FormattingToolbar = () => {
+// const heading1 = {
+//   fontSize:'2rem',
+//   fontWeight:'bold'
+// }
+
+const styleOptions = {
+  "Heading 1": {
+    fontSize:'2rem',
+    fontWeight:'bold'
+  }, 
+  "Heading 2": {
+    fontSize: '1.8rem',
+    fontWeight: 'bold'
+  },
+  "Heading 3": {
+    fontSize: '1.6rem',
+    fontWeight: 'bold'
+  },
+  "Heading 4": {
+    fontSize: '1.4rem',
+    fontWeight: 'bold'
+  },
+  "Paragraph 1": {
+    fontSize: '1rem',
+    lineHeight: '1.5'
+  },
+  "Paragraph 2": {
+    fontSize: '0.9rem',
+    lineHeight: '1.4'
+  },
+  "Paragraph 3": {
+    fontSize: '0.8rem',
+    lineHeight: '1.3'
+  },
+  "Monospace": {
+    fontFamily: 'monospace'
+  }
+};
+
+const FormattingToolbar = ({element}:{element:RenderElement3}) => {
+  const { baseFunctions } = useContext(BasicEditorContext)
   const [textColor, setTextColor] = useState("#000000");
+  const [currentParagraphOption, setCurrentParagraphOption] = useState("Monospace");
+  
+  useEffect(() => {
+
+  },[currentParagraphOption])
 
   const paragraphOptions = [
     "Heading 1",
@@ -30,10 +78,12 @@ const FormattingToolbar = () => {
     "Monospace",
   ];
 
+  
+
   return (
     <div className="w-fit flex items-center gap-2 p-2 border rounded-md bg-white">
       <div className="relative">
-        <select className="p-1 min-w-36 border rounded-md text-sm bg-white hover:bg-gray-50">
+        <select defaultValue={currentParagraphOption} onChange={} className="p-1 min-w-36 border rounded-md text-sm bg-white hover:bg-gray-50">
           {paragraphOptions.map((option, index) => (
             <option
               key={index}
