@@ -1,14 +1,16 @@
 import GoogleIcon from "../assets/google.png";
 import AppleeIcon from "../assets/apple-logo.png";
 import FacebookIcon from "../assets//communication.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronLeftIcon, ArrowLeftIcon } from "@heroicons/react/24/solid";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { loginService } from "../services/userService";
+import toast, { Toaster } from "react-hot-toast";
 
 const Login = () => {
+  const location = useLocation();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,6 +18,12 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const isFormValid = email !== "" && password !== "";
+
+  useEffect(() => {
+    if (location.state?.toastMessage) {
+      toast(location.state.toastMessage);
+    }
+  }, [location.state]);
 
   const navigateToSignUp = () => {
     navigate("/signup");
@@ -64,6 +72,7 @@ const Login = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-w-[330px]">
+      <Toaster position="top-center" reverseOrder={false} />
       <header className="flex items-center justify-between w-full p-6 font-medium mt-6 px-8">
         <button
           onClick={() => navigateToRoot()}

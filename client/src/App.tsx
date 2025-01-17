@@ -41,7 +41,7 @@ function App() {
       ],
     },
     {
-      path: "/userwebsite/:domain/:id",
+      path: "/userwebsite/:domain?/:id",
       element: <UserWebsite />,
     },
     {
