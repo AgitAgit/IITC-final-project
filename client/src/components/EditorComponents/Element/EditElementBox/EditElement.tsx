@@ -1,14 +1,18 @@
 import { Pencil, Palette, X, Copy, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import PositionContent from "./PositionContent";
+import { RenderElement3 } from "../../../basicEditor3Pro/BasicEditor3ProTypes";
+import { BasicEditorContext } from "../../../basicEditor3Pro/BasicEditor3Pro";
 
 export type EditElementProps = {
+  element:RenderElement3
   handleEditClick: () => void;
   handleDeleteClick: () => void;
 }
 
-const EditElement = ({ handleEditClick, handleDeleteClick }: EditElementProps) => {
+const EditElement = ({ element, handleEditClick, handleDeleteClick }: EditElementProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { duplicateElement } = useContext(BasicEditorContext);
 
   return (
     <div className="w-fit flex items-center bg-gray-100 p-2 rounded-lg shadow">
@@ -37,6 +41,7 @@ const EditElement = ({ handleEditClick, handleDeleteClick }: EditElementProps) =
         className="p-2 mx-1 text-gray-600 hover:text-gray-800 hover:bg-gray-200 rounded focus:outline-none"
         data-action="duplicate"
         title="Duplicate"
+        onClick={() => duplicateElement(element)}
       >
         <Copy size={18} />
       </button>

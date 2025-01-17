@@ -72,7 +72,7 @@ function BlockEditor3({ blockId, blockRect }: BlockEditor3Props) {
                 style={editButtonsStyle}>
                 {
                     editMenuVisibility &&
-                    <EditElement handleEditClick={handleEditClick} handleDeleteClick={handleDeleteClick} />
+                    <EditElement element={element} handleEditClick={handleEditClick} handleDeleteClick={handleDeleteClick} />
                 }
                 {
                     textEditMenuVisibility &&
