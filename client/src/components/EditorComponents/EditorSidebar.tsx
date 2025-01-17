@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useUserProfile } from "../../hooks/useUser";
 import PagesSidebar from "./sidebarComponents/PagesSidebar";
 
-const EditorSidebar = () => {
+const EditorSidebar = ({ siteId }) => {
   const [expandedItems, setExpandedItems] = useState<string | null>(null);
   const [showCustomSidebar, setShowCustomSidebar] = useState(false);
   const { data: userData } = useUserProfile();
@@ -68,14 +68,24 @@ const EditorSidebar = () => {
     } else {
       setExpandedItems(title);
     }
-    navigate(path);
+    if (siteId) {
+      navigate(path + "/" + siteId);
+    } else {
+      navigate(path);
+    }
   };
 
   const handleSubItemClick = (mainTitle: string, subItem: string) => {
     setExpandedItems(mainTitle);
-    navigate(
-      `/editor-page/${mainTitle.toLowerCase()}/${subItem.toLowerCase()}`
-    );
+    if (siteId) {
+      navigate(
+        `/editor-page/${mainTitle.toLowerCase()}/${subItem.toLowerCase()}/${siteId}`
+      );
+    } else {
+      navigate(
+        `/editor-page/${mainTitle.toLowerCase()}/${subItem.toLowerCase()}`
+      );
+    }
   };
 
   if (showCustomSidebar) {

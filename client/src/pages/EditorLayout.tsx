@@ -9,6 +9,7 @@ import { ISite } from "../types/siteTypes";
 import { dataStringToWebsite } from "../components/basicEditor3Pro/utils";
 import LoadingSpinner from "../components/LoadingSpinner";
 import WebsiteNameDialog from "../components/WebsiteNameDialog";
+import { BasicEditor3Website } from "../components/basicEditor3Pro/BasicEditor3ProTypes";
 
 function EditorLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -18,6 +19,7 @@ function EditorLayout() {
   const [isOpenDialogName, setIsOpenDialogName] = useState(false);
   const [websiteName, setWebsiteName] = useState("");
   const [websiteToSave, setWebsiteToSave]: any = useState();
+  const [currentWebsite, setCurrentWebsite] = useState<BasicEditor3Website>();
 
   const { id } = useParams();
   const location = useLocation();
@@ -26,14 +28,14 @@ function EditorLayout() {
   const { mutate: createNewSite } = useCreateSite({
     onSuccess: (data: any) => {
       const newSiteId = data?.id || data?._id;
-      navigate(`/edituserwebsite/${newSiteId}`);
+      navigate(`/editor-page/website/${newSiteId}`);
       window.location.reload();
     },
   });
 
   const { mutate: updateSite } = useUpdateSite({
     onSuccess: () => {
-      navigate(`/edituserwebsite/${id}`);
+      navigate(`/editor-page/website/${id}`);
       window.location.reload();
     },
   });
@@ -111,6 +113,11 @@ function EditorLayout() {
     );
   }
 
+  if (!isLoading && !userData) {
+    navigate("/login");
+    return null;
+  }
+
   return (
     <div className="flex min-h-screen bg-gray-50 overflow-hidden relative ">
       {/* Sidebar */}
@@ -120,13 +127,16 @@ function EditorLayout() {
         } overflow-hidden transition-all duration-300 ease-in-out`}
         style={{ height: "100vh" }}
       >
-        <EditorSideBar />
+        <EditorSideBar siteId={id} />
       </div>
 
       {/* Main content */}
       <div className="flex-1 flex flex-col relative">
         {/* Header */}
         <EditorHeader
+          siteId={id}
+          currentWebsite={currentWebsite}
+          saveCurrentWebsite={saveCurrentWebsite}
           toggleSidebarLayout={toggleSidebarLayout}
           setMobileView={setMobileView}
           isMobileView={isMobileView}
@@ -144,6 +154,8 @@ function EditorLayout() {
           } bg-white shadow transition-all duration-300 overflow-y-scroll`}
         >
           <EditorWrapper
+            currentWebsite={currentWebsite}
+            setCurrentWebsite={setCurrentWebsite}
             templete={templete}
             websiteToEdit={websiteToEdit}
             saveCurrentWebsite={saveCurrentWebsite}

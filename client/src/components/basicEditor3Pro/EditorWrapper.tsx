@@ -48,9 +48,13 @@ export type Wrapper3ProProps = {
 //for adding a new website:
 //conform to the BasicEditor3Website type, can use the addWebsite function here for reference.
 
-function EditorWrapper({ templete, websiteToEdit, saveCurrentWebsite }) {
-  const [currentWebsite, setCurrentWebsite] = useState<BasicEditor3Website>();
-
+function EditorWrapper({
+  templete,
+  websiteToEdit,
+  saveCurrentWebsite,
+  currentWebsite,
+  setCurrentWebsite,
+}) {
   useEffect(() => {
     if (websiteToEdit) {
       setCurrentWebsite(websiteToEdit);

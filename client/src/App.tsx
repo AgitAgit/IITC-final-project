@@ -73,23 +73,23 @@ function App() {
       element: <EditorLayout />,
     },
     {
-      path: "/editor-page",
+      path: "/editor-page/:id?",
       element: <EditorLayout />,
       children: [
         {
-          path: "setup-guide",
+          path: "setup-guide/:id?",
           element: <div>Setup Guide Content</div>,
         },
         {
-          path: "website",
+          path: "website/:id?",
           element: <div className="bg-white h-screen">Website Content</div>,
           children: [
             {
-              path: "pages",
+              path: "pages/:id?",
               element: <div>Website Content</div>,
             },
             {
-              path: "assets",
+              path: "assets/:id?",
               element: <Assets />,
             },
           ],

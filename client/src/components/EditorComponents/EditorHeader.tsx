@@ -1,4 +1,5 @@
 import React from "react";
+import { reviewgIcon } from "../../lib/icon";
 
 interface EditorHeaderProps {
   toggleSidebarLayout: () => void;
@@ -12,6 +13,9 @@ const EditorHeader: React.FC<EditorHeaderProps> = ({
   setMobileView,
   isMobileView,
   isSidebarOpen,
+  saveCurrentWebsite,
+  currentWebsite,
+  siteId,
 }) => {
   const editorHeaderHide =
     location.pathname === "/"
@@ -20,6 +24,7 @@ const EditorHeader: React.FC<EditorHeaderProps> = ({
         location.pathname === "/editor-page/website/pages"
       ? "flex p-5 mt-2"
       : "hidden p-0 m-0";
+  console.log(siteId);
 
   return (
     <div
@@ -36,7 +41,10 @@ const EditorHeader: React.FC<EditorHeaderProps> = ({
         {isSidebarOpen ? (
           <span className="hidden"></span>
         ) : (
-          <span className="flex justify-center items-center font-bold bg-black text-white rounded-lg px-5 cursor-pointer">
+          <span
+            onClick={() => saveCurrentWebsite(currentWebsite)}
+            className="flex justify-center items-center font-bold bg-black text-white rounded-lg px-5 cursor-pointer"
+          >
             Save
           </span>
         )}
@@ -88,6 +96,12 @@ const EditorHeader: React.FC<EditorHeaderProps> = ({
             ></path>
           </svg>
         </button>
+
+        {siteId && (
+          <button className="hover:bg-gray-300 p-2 rounded">
+            {reviewgIcon()}
+          </button>
+        )}
       </div>
     </div>
   );
