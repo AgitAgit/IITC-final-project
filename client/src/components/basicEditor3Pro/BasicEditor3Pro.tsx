@@ -92,6 +92,8 @@ export type BasicEditor3ProProps = {
   currentWebsite: BasicEditor3Website;
   saveCurrentWebsite?: () => void;
   isEditModeProp?: boolean;
+  saveTrigger: boolean;
+  setSaveTrigger: Dispatch<SetStateAction<boolean>>;
   // setCurrentWebsite:Dispatch<SetStateAction<string>>
 };
 
@@ -101,6 +103,8 @@ function BasicEditor3Pro({
   currentWebsite,
   saveCurrentWebsite,
   isEditModeProp = undefined,
+  saveTrigger,
+  setSaveTrigger,
 }: BasicEditor3ProProps) {
   const [isEditMode, setIsEditMode] = useState(true);
   const [headerEditMode, setHeaderEditMode] = useState(false);
@@ -125,6 +129,15 @@ function BasicEditor3Pro({
     }
     updateOOC();
   }, []);
+
+  useEffect(() => {
+    if (saveTrigger) {
+      saveChangesToWebsite();
+      setSaveTrigger(false);
+      console.log(saveTrigger + "is saving");
+    }
+    console.log(saveTrigger + "is Not !!!!!");
+  }, [saveTrigger]);
 
   //resize event? look for a react hooks that checks for a change in div position?
   const TOLERANCE = 1;

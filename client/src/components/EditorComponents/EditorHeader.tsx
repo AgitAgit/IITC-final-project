@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { reviewgIcon } from "../../lib/icon";
 
 interface EditorHeaderProps {
@@ -6,6 +6,8 @@ interface EditorHeaderProps {
   setMobileView: (view: "mobile" | "full") => void;
   isMobileView: boolean;
   isSidebarOpen: boolean;
+  siteId: string;
+  setSaveTrigger: Dispatch<SetStateAction<boolean>>;
 }
 
 const EditorHeader: React.FC<EditorHeaderProps> = ({
@@ -13,9 +15,8 @@ const EditorHeader: React.FC<EditorHeaderProps> = ({
   setMobileView,
   isMobileView,
   isSidebarOpen,
-  saveCurrentWebsite,
-  currentWebsite,
   siteId,
+  setSaveTrigger,
 }) => {
   const editorHeaderHide =
     location.pathname === "/"
@@ -42,7 +43,7 @@ const EditorHeader: React.FC<EditorHeaderProps> = ({
           <span className="hidden"></span>
         ) : (
           <span
-            onClick={() => saveCurrentWebsite(currentWebsite)}
+            onClick={() => setSaveTrigger((prev: boolean) => !prev)}
             className="flex justify-center items-center font-bold bg-black text-white rounded-lg px-5 cursor-pointer"
           >
             Save

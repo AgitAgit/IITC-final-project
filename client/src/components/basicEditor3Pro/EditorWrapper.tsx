@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 import BasicEditor3Pro from "./BasicEditor3Pro";
 import {
@@ -48,13 +48,25 @@ export type Wrapper3ProProps = {
 //for adding a new website:
 //conform to the BasicEditor3Website type, can use the addWebsite function here for reference.
 
+interface EditorWrapperProps {
+  templete: any;
+  websiteToEdit: any;
+  saveCurrentWebsite: () => void;
+  currentWebsite: any;
+  setCurrentWebsite: (website: any) => void;
+  saveTrigger: boolean;
+  setSaveTrigger: Dispatch<SetStateAction<boolean>>;
+}
+
 function EditorWrapper({
   templete,
   websiteToEdit,
   saveCurrentWebsite,
   currentWebsite,
   setCurrentWebsite,
-}) {
+  saveTrigger,
+  setSaveTrigger,
+}: EditorWrapperProps) {
   useEffect(() => {
     if (websiteToEdit) {
       setCurrentWebsite(websiteToEdit);
@@ -85,6 +97,8 @@ function EditorWrapper({
     <>
       {currentWebsite && (
         <BasicEditor3Pro
+          saveTrigger={saveTrigger}
+          setSaveTrigger={setSaveTrigger}
           currentWebsite={currentWebsite}
           saveCurrentWebsite={saveCurrentWebsite}
         />

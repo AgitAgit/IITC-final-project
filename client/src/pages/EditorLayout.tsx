@@ -20,6 +20,7 @@ function EditorLayout() {
   const [websiteName, setWebsiteName] = useState("");
   const [websiteToSave, setWebsiteToSave]: any = useState();
   const [currentWebsite, setCurrentWebsite] = useState<BasicEditor3Website>();
+  const [saveTrigger, setSaveTrigger] = useState(false);
 
   const { id } = useParams();
   const location = useLocation();
@@ -134,9 +135,8 @@ function EditorLayout() {
       <div className="flex-1 flex flex-col relative">
         {/* Header */}
         <EditorHeader
-          siteId={id}
-          currentWebsite={currentWebsite}
-          saveCurrentWebsite={saveCurrentWebsite}
+          setSaveTrigger={setSaveTrigger}
+          siteId={id!}
           toggleSidebarLayout={toggleSidebarLayout}
           setMobileView={setMobileView}
           isMobileView={isMobileView}
@@ -154,6 +154,8 @@ function EditorLayout() {
           } bg-white shadow transition-all duration-300 overflow-y-scroll`}
         >
           <EditorWrapper
+            saveTrigger={saveTrigger}
+            setSaveTrigger={setSaveTrigger}
             currentWebsite={currentWebsite}
             setCurrentWebsite={setCurrentWebsite}
             templete={templete}
