@@ -78,4 +78,5 @@ export type BasicEditorContextType = {
   baseFunctions: BaseFunctions;
   isEditMode: boolean;
   originOfCoordinates: Position;
+  duplicateElement: (element:RenderElement3) => void;
 };

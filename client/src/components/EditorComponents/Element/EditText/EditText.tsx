@@ -87,7 +87,7 @@ const boldButtonNotPressed = "p-1 hover:bg-gray-100 rounded";
 
 
 const FormattingToolbar = ({ element }: { element: RenderElement3 }) => {
-  const { baseFunctions } = useContext(BasicEditorContext)
+  const { baseFunctions, duplicateElement } = useContext(BasicEditorContext)
   const [textColor, setTextColor] = useState(element.data.style.color || "#000000");
   const [isBold, setIsBold] = useState<boolean>(element.data.style.fontWeight === "bold");
   const [isItalics, setIsItalics] = useState<boolean>(element.data.style.fontStyle === "italic");
@@ -111,6 +111,10 @@ const FormattingToolbar = ({ element }: { element: RenderElement3 }) => {
   function handleParagraphOptionChange(newValue: string) {
     const style = element.data.style;
     baseFunctions.setStyle(element.data.id, { ...style, ...styleOptions[newValue] });
+  }
+
+  function handleDuplicateClick(){
+    duplicateElement(element);
   }
 
   return (
@@ -208,7 +212,9 @@ const FormattingToolbar = ({ element }: { element: RenderElement3 }) => {
       <div className="h-4 w-px bg-gray-300 mx-1" />
 
       <div className="flex items-center gap-2">
-        <button className="p-1 hover:bg-gray-100 rounded">
+        <button 
+        onClick={handleDuplicateClick}
+        className="p-1 hover:bg-gray-100 rounded">
           <Copy size={18} />
         </button>
         <button className="p-1 hover:bg-gray-100 rounded text-red-500">

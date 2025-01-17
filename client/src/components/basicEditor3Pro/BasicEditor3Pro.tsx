@@ -240,6 +240,11 @@ function BasicEditor3Pro({
     }
   }
 
+  function duplicateElement(element:RenderElement3){
+    const { renderElementName, position, content, style } = element.data;
+    addRenderElement(renderElementName, {x:position.x + 10, y:position.y + 10}, content, style);
+  }
+
   function mapRenderElements(): ReactNode[] {
     return isRenderElements
       ? renderElements.map((element) => (
@@ -284,7 +289,7 @@ function BasicEditor3Pro({
 
   return (
     <BasicEditorContext.Provider
-      value={{ renderElements, baseFunctions, isEditMode, originOfCoordinates }}
+      value={{ renderElements, baseFunctions, isEditMode, originOfCoordinates, duplicateElement }}
     >
       <div ref={editorRef} style={{ position: "relative" }}>
         {isEditMode && (

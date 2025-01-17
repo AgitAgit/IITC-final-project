@@ -1,5 +1,6 @@
 import { BaseFunctions, RenderElement3 } from "./BasicEditor3ProTypes";
 
+
 export const utils2 = {
     detectBorderHover: function (rect: DOMRect, mouseX: number, mouseY: number, borderWidth: number):string{
         //need to compensate for different ooc? maybe not.
@@ -37,5 +38,5 @@ export const utils2 = {
         const newStyle = { ...element.data.style }
         newStyle[field] = newValue;
         baseFunctions.setStyle(element.data.id, newStyle)
-    }
+    },
 }
