@@ -7,7 +7,6 @@ interface EditorHeaderProps {
   isMobileView: boolean;
   isSidebarOpen: boolean;
   siteId: string;
-  setSaveTrigger: Dispatch<SetStateAction<boolean>>;
 }
 
 const EditorHeader: React.FC<EditorHeaderProps> = ({
@@ -22,7 +21,9 @@ const EditorHeader: React.FC<EditorHeaderProps> = ({
     location.pathname === "/"
       ? "hidden p-0 m-0"
       : location.pathname === "/editor-page/website" ||
-        location.pathname === "/editor-page/website/pages"
+        location.pathname === "/editor-page/website/pages" ||
+        location.pathname === `/editor-page/website/${siteId}` ||
+        location.pathname === `/editor-page/website/pages/${siteId}`
       ? "flex p-5 mt-2"
       : "hidden p-0 m-0";
   console.log(siteId);

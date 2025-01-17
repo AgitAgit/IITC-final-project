@@ -101,7 +101,9 @@ function EditorLayout() {
     location.pathname === "/"
       ? "top-0"
       : location.pathname === "/editor-page/website" ||
-        location.pathname === "/editor-page/website/pages"
+        location.pathname === "/editor-page/website/pages" ||
+        location.pathname === `/editor-page/website/${id}` ||
+        location.pathname === `/editor-page/website/pages/${id}`
       ? "top-[73px]"
       : "top-0";
 
