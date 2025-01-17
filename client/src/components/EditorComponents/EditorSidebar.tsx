@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useUserProfile } from "../../hooks/useUser";
 import PagesSidebar from "./sidebarComponents/PagesSidebar";
 
-const EditorSidebar = ({ siteId }) => {
+const EditorSidebar = ({ siteId }: any) => {
   const [expandedItems, setExpandedItems] = useState<string | null>(null);
   const [showCustomSidebar, setShowCustomSidebar] = useState(false);
   const { data: userData } = useUserProfile();

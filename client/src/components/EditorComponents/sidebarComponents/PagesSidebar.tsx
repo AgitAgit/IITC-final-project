@@ -29,7 +29,7 @@ function PagesSidebar() {
       {/* Back Button */}
       {activeSidebar === "main" && (
         <button
-          onClick={() => navigate("/editor-page/website")}
+          onClick={() => navigate(-1)}
           className="absolute left-5 top-5 transform flex items-center text-gray-600 hover:text-black p-2 rounded-md"
         >
           <svg
