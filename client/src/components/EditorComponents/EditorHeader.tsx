@@ -43,16 +43,12 @@ const EditorHeader: React.FC<EditorHeaderProps> = ({
         >
           {isSidebarOpen ? "Edit" : "Exit"}
         </span>
-        {isSidebarOpen ? (
-          <span className="hidden"></span>
-        ) : (
-          <span
-            onClick={() => setSaveTrigger((prev: boolean) => !prev)}
-            className="flex justify-center items-center font-bold bg-black text-white rounded-lg px-5 cursor-pointer"
-          >
-            Save
-          </span>
-        )}
+        <span
+          onClick={() => setSaveTrigger((prev: boolean) => !prev)}
+          className="flex justify-center items-center font-bold bg-black text-white rounded-lg px-5 cursor-pointer"
+        >
+          Save
+        </span>
       </div>
       {/* Buttons for switching views */}
       <div className="flex gap-4">
