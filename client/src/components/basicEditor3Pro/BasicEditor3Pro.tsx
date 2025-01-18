@@ -10,7 +10,8 @@ import React, {
 } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-import { Position } from "../basicEditor/basicEditorTypes";
+import { Position } from "./BasicEditor3ProTypes";
+
 import {
   DataObject3Content,
   DataObject3Style,
@@ -36,6 +37,7 @@ import Header3, { Header3Data } from "./Header3";
 import MouseLocator from "./MouseLocator";
 import DisplayWebsite3 from "../basicDisplay3Pro/DisplayWebsite3";
 
+import { EditorLayoutContext } from "../../pages/EditorLayout";
 //goal 0.
 // Update the data structure of BasicEditor3 to fit the new data structure:
 // Website {
@@ -88,13 +90,12 @@ import DisplayWebsite3 from "../basicDisplay3Pro/DisplayWebsite3";
 //create editor mode. the components should not be editable/moveable when not in editor mode
 
 export type BasicEditor3ProProps = {
-  // websites: BasicEditor3Website[]
   currentWebsite: BasicEditor3Website;
   saveCurrentWebsite?: () => void;
   isEditModeProp?: boolean;
   saveTrigger: boolean;
   setSaveTrigger: Dispatch<SetStateAction<boolean>>;
-  // setCurrentWebsite:Dispatch<SetStateAction<string>>
+  // pageNameFromLayout?: string
 };
 
 export const BasicEditorContext = createContext<BasicEditorContextType>({});
@@ -105,23 +106,24 @@ function BasicEditor3Pro({
   isEditModeProp = undefined,
   saveTrigger,
   setSaveTrigger,
+  // pageNameFromLayout
 }: BasicEditor3ProProps) {
   const [isEditMode, setIsEditMode] = useState(true);
   const [headerEditMode, setHeaderEditMode] = useState(false);
-  const [originOfCoordinates, setOriginOfCoordinates] = useState<Position>({
-    x: 0,
-    y: 0,
-  });
+  const [originOfCoordinates, setOriginOfCoordinates] = useState<Position>({ x: 0,y: 0,});
 
   const [headerData, setHeaderData] = useState(currentWebsite.headerData);
   const [pages, setPages] = useState<BasicEditor3Page[]>(currentWebsite.pages);
   const [currentPage, setCurrentPage] = useState<string>(pages[0]?.name);
   const [renderElements, setRenderElements] = useState<RenderElement3[]>([]);
 
+  const { pageNameFromLayout } = useContext(EditorLayoutContext) || {}
+
   const isPages = !(pages.length === 0);
   const isRenderElements = !(renderElements.length === 0);
   const isPagesFetched = useRef(false);
   const editorRef = useRef();
+  const TOLERANCE = 1;
 
   useEffect(() => {
     if (typeof isEditModeProp !== "undefined") {
@@ -139,22 +141,6 @@ function BasicEditor3Pro({
     console.log(saveTrigger + "is Not !!!!!");
   }, [saveTrigger]);
 
-  //resize event? look for a react hooks that checks for a change in div position?
-  const TOLERANCE = 1;
-  function updateOOC() {
-    //SHOULD REFACTOR currently works, but wasteful. For some reason the position is always considered different.
-    if (!editorRef.current) return;
-    const rect: DOMRect = editorRef.current.getBoundingClientRect();
-    const newPosition: Position = { x: rect.left, y: rect.top };
-    const updateRule2 =
-      Math.abs(newPosition.x - originOfCoordinates.x) > TOLERANCE ||
-      Math.abs(newPosition.y - originOfCoordinates.y) > TOLERANCE;
-    if (updateRule2) {
-      setOriginOfCoordinates(newPosition);
-      // console.log("new OoC:", newPosition);
-    }
-    setTimeout(updateOOC, 300);
-  }
 
   useEffect(() => {
     setPages(currentWebsite.pages);
@@ -174,6 +160,15 @@ function BasicEditor3Pro({
     currentWebsite.pages = pages;
   }, [currentPage, pages]);
 
+  useEffect(() => {
+    if(pageNameFromLayout && pages.find(page => page.name === pageNameFromLayout)){
+      setCurrentPage(pageNameFromLayout);
+    }
+    else if(pageNameFromLayout){
+      saveSnapshotToPages(pageNameFromLayout, []);
+    }
+  },[pageNameFromLayout])
+
   const baseFunctions = {
     deleteObject: function (id: string) {
       setRenderElements((prev) =>
@@ -185,9 +180,9 @@ function BasicEditor3Pro({
         prev.map((element) =>
           element.data.id === id
             ? {
-                data: { ...element.data, position: newPosition },
-                body: element.body,
-              }
+              data: { ...element.data, position: newPosition },
+              body: element.body,
+            }
             : element
         )
       );
@@ -197,9 +192,9 @@ function BasicEditor3Pro({
         prev.map((element) =>
           element.data.id === id
             ? {
-                data: { ...element.data, content: newContent },
-                body: element.body,
-              }
+              data: { ...element.data, content: newContent },
+              body: element.body,
+            }
             : element
         )
       );
@@ -216,6 +211,22 @@ function BasicEditor3Pro({
     },
     saveChanges: () => saveCurrentWebsite(currentWebsite),
   };
+
+  //resize event? look for a react hooks that checks for a change in div position?
+  function updateOOC() {
+    //SHOULD REFACTOR currently works, but wasteful. For some reason the position is always considered different.
+    if (!editorRef.current) return;
+    const rect: DOMRect = editorRef.current.getBoundingClientRect();
+    const newPosition: Position = { x: rect.left, y: rect.top };
+    const updateRule2 =
+      Math.abs(newPosition.x - originOfCoordinates.x) > TOLERANCE ||
+      Math.abs(newPosition.y - originOfCoordinates.y) > TOLERANCE;
+    if (updateRule2) {
+      setOriginOfCoordinates(newPosition);
+      // console.log("new OoC:", newPosition);
+    }
+    setTimeout(updateOOC, 300);
+  }
 
   function addRenderElement(
     renderElementName: RenderElementNames,
@@ -240,16 +251,16 @@ function BasicEditor3Pro({
     }
   }
 
-  function duplicateElement(element:RenderElement3){
+  function duplicateElement(element: RenderElement3) {
     const { renderElementName, position, content, style } = element.data;
-    addRenderElement(renderElementName, {x:position.x + 10, y:position.y + 10}, content, style);
+    addRenderElement(renderElementName, { x: position.x + 10, y: position.y + 10 }, content, style);
   }
 
   function mapRenderElements(): ReactNode[] {
     return isRenderElements
       ? renderElements.map((element) => (
-          <DraggableFrame3 key={element.data.id} renderElement={element} />
-        ))
+        <DraggableFrame3 key={element.data.id} renderElement={element} />
+      ))
       : [];
   }
 
@@ -311,13 +322,13 @@ function BasicEditor3Pro({
             {isEditMode && (
               <label style={{ border: "1px solid red" }}>edit mode on</label>
             )}
-            <PageNav3
+            {/* <PageNav3
               pages={pages}
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
               saveSnapshotToPages={saveSnapshotToPages}
               savePagesToLS={saveCurrentWebsite}
-            />
+            /> */}
             <div>
               <button
                 onClick={() => addRenderElement(RenderElementNames.Text_Block3)}

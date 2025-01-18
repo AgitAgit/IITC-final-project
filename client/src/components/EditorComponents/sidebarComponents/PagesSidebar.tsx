@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 // Import your other sidebar components
@@ -7,10 +7,24 @@ import WebsiteTools from "./WebsiteTools";
 import TrashSidebar from "./TrashSidebar";
 import { EditorLayoutContext } from "../../../pages/EditorLayout";
 
+const addPageFormStyle = {
+  display:'flex',
+  flexDirection:'column'
+}
+
 function PagesSidebar() {
   const navigate = useNavigate();
   const [activeSidebar, setActiveSidebar] = useState("main");
   const { currentWebsite, pageNameFromLayout, setPageNameFromLayout } = useContext(EditorLayoutContext)
+  const [addPageFormVisible, setAddPageFormVisible] = useState<boolean>(false);
+
+  const newPageNameInputRef = useRef();
+
+  function handleAddPage(pageName:string){
+    setAddPageFormVisible(false);
+    if(!pageName || typeof pageName !== 'string' || pageName === '') return;
+    setPageNameFromLayout(pageName);
+  }
 
   // Function to render the correct sidebar based on `activeSidebar`
   const renderSidebar = () => {
@@ -80,14 +94,24 @@ function PagesSidebar() {
           {/* Main Navigation Items */}
           <div className="mt-16 text-xl">
             <ul className="space-y-2 mb-4">
-              <span>Main Navigation 3000</span>
-              {currentWebsite && currentWebsite.pages.map(page =>
-                <li key={page.name} className="flex justify-between items-center p-2 rounded-md">
-                  {page.name}
+                { currentWebsite && currentWebsite.pages.map(page => 
+              <li key={page.name} 
+              onClick={() => setPageNameFromLayout(page.name)}
+              className="flex justify-between items-center p-2 rounded-md">
+                {page.name}
                 </li>
-              )}
+                )}
+                {addPageFormVisible && 
+                  <div style={addPageFormStyle}>
+                    <label>New page name:</label>
+                    <input ref={newPageNameInputRef}></input>
+                    <button onClick={() => handleAddPage(newPageNameInputRef.current.value)}>Add Page</button>
+                  </div>
+                }
               <li className="flex justify-between items-center p-2 rounded-md">
-                <button className="text-gray-600 hover:text-black hover:bg-gray-200 p-3 cursor-pointer">
+                <button 
+                onClick={() => setAddPageFormVisible(prev => !prev)}
+                className="text-gray-600 hover:text-black hover:bg-gray-200 p-3 cursor-pointer">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-5 w-5"
