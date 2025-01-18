@@ -64,13 +64,13 @@ const EditElement = ({ element, handleEditClick, handleDeleteClick }: EditElemen
       <div className="relative">
         <PositionContent isOpen={isOpen} setIsOpen={handleToggleOpen} />
       </div>
-      <button
+      {/* <button
         className="p-2 mx-1 text-gray-600 hover:text-gray-800 hover:bg-gray-200 rounded focus:outline-none"
         data-action="cross"
         title="Cross"
       >
         <X size={18} />
-      </button>
+      </button> */}
       <button
         className="p-2 mx-1 text-gray-600 hover:text-gray-800 hover:bg-gray-200 rounded focus:outline-none"
         data-action="duplicate"

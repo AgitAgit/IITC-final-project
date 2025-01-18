@@ -304,6 +304,17 @@ function BasicEditor3Pro({
     }
   }
 
+  function closeMenuAndRemoveListener(){
+    setAddBlockMenuVisible(false)
+    window.removeEventListener('click', closeMenuAndRemoveListener);
+  }
+  
+  function handleAddMenuClick(e){
+    e.stopPropagation();
+    setAddBlockMenuVisible(true);
+    window.addEventListener('click', closeMenuAndRemoveListener);
+  }
+
   return (
     <BasicEditorContext.Provider
       value={{ renderElements, baseFunctions, isEditMode, originOfCoordinates, duplicateElement }}
@@ -314,66 +325,6 @@ function BasicEditor3Pro({
             <button onClick={saveChangesToWebsite} style={{ border: '1px solid gray' }}>
               save changes from Basic editor
             </button>
-            {!addBlockMenuVisible ?
-              <button
-                onClick={() => setAddBlockMenuVisible(true)}
-                className="flex font-bold items-center gap-2 bg-gray-100 text-gray-700 px-5 py-3 rounded-lg hover:bg-gray-200 transition-colors duration-200 shadow-sm">
-                <Plus size={26} />
-                <span className="font-medium">Add Block</span>
-              </button>
-              :<DialogAddElement />
-            }
-            <div>
-              <button
-                onClick={() => addRenderElement(RenderElementNames.Text_Block3)}
-              >
-                +TextBlock3
-              </button>
-              <button
-                onClick={() =>
-                  addRenderElement(RenderElementNames.red_rectangle3)
-                }
-              >
-                +RedRectangle3
-              </button>
-              <button
-                onClick={() =>
-                  addRenderElement(RenderElementNames.red_text_rectangle3)
-                }
-              >
-                +RedTextRectangle3
-              </button>
-              <button
-                onClick={() =>
-                  addRenderElement(RenderElementNames.color_rectangle3)
-                }
-              >
-                +ColorRectangle3
-              </button>
-              <button
-                onClick={() => addRenderElement(RenderElementNames.text_box3)}
-              >
-                +TextBox3
-              </button>
-              <button>
-                <span
-                  onClick={() =>
-                    addRenderElement(RenderElementNames.ImgContainer)
-                  }
-                >
-                  +ImgContainer
-                </span>
-              </button>
-              <button>
-                <span
-                  onClick={() =>
-                    addRenderElement(RenderElementNames.VideoContainer)
-                  }
-                >
-                  +VideoContainer
-                </span>
-              </button>
-            </div>
           </div>
         )}
         <Header3
@@ -384,7 +335,16 @@ function BasicEditor3Pro({
           setHeaderEditMode={setHeaderEditMode}
           data={headerData}
           setData={setHeaderData}
-        />
+          />
+          {!addBlockMenuVisible ?
+            <button
+              onClick={(e) => handleAddMenuClick(e)}
+              className="flex font-bold items-center gap-2 bg-gray-100 text-gray-700 px-5 py-3 rounded-lg hover:bg-gray-200 transition-colors duration-200 shadow-sm">
+              <Plus size={26} />
+              <span className="font-medium">Add Block</span>
+            </button>
+            :<DialogAddElement addRenderElement={addRenderElement} />
+          }
         <div>{mapRenderElements()}</div>
       </div>
     </BasicEditorContext.Provider>

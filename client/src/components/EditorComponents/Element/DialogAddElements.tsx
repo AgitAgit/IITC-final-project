@@ -20,6 +20,8 @@ import {
   Code,
 } from "lucide-react";
 
+import { RenderElementNames } from "../../basicEditor3Pro/BasicEditor3ProTypes";
+
 const menuItems = [
   { icon: Type, label: "Text" },
   { icon: Square, label: "Button" },
@@ -39,12 +41,26 @@ const menuItems = [
   // { icon: Code, label: "Code" },
 ];
 
-export const DialogAddElement: React.FC = () => {
+const labelToRenderElementName:{[key:string]:RenderElementNames} = {
+  "Text":RenderElementNames.Text_Block3
+}
+
+export type DialogAddElementProps = {
+  addRenderElement:(RenderElementName:RenderElementNames, ...args:any[]) => void
+}
+
+export const DialogAddElement: React.FC<DialogAddElementProps> = ({addRenderElement}) => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredMenuItems = menuItems.filter((item) =>
     item.label.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  function handleItemClick(e, label:string) {
+    e.stopPropagation();
+    console.log(label);
+    addRenderElement(labelToRenderElementName[label]);
+  }
 
   return (
     <div
@@ -77,6 +93,7 @@ export const DialogAddElement: React.FC = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
             className="bg-gray-100 p-2 pl-10 pr-10 w-full rounded-md focus:outline-none"
           />
+
           <button className="absolute left-2 text-gray-900">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -100,11 +117,11 @@ export const DialogAddElement: React.FC = () => {
               <div
                 key={index}
                 className="flex items-center space-x-3 py-2 px-2 rounded-md hover:bg-gray-200 transition-colors cursor-pointer"
+                onClick={(e) => handleItemClick(e, item.label)}
               >
                 <item.icon className="w-5 h-5 text-gray-700" />
                 <span
-                  className={`${item.highlight ? "text-red-800" : "text-gray-700"
-                    }`}
+                  className={`${item.highlight ? "text-red-800" : "text-gray-700"}`}
                 >
                   {item.label}
                 </span>
