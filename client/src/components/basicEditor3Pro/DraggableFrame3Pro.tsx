@@ -56,9 +56,10 @@ function DraggableFrame3({ renderElement }: DraggableFrame3Props) {
         top: position.y,
         cursor: "grab",
         overflow: "hidden",
-        border: frameBorder,
-        borderRight: borderHover === "right" ? `${borderWidth}px solid blue` : "none",
-        borderBottom: borderHover === "bottom" ? `${borderWidth}px solid blue` : "none",
+        borderTop: frameBorder,
+        borderRight: borderHover === "right" ? `${borderWidth}px solid blue` : frameBorder,
+        borderBottom: borderHover === "bottom" ? `${borderWidth}px solid blue` : frameBorder,
+        borderLeft:frameBorder,
         backgroundColor: "none"
     };
 

@@ -18,6 +18,7 @@ export type EditorLayoutContextType = {
   pageNameFromLayout: string
   setPageNameFromLayout: Dispatch<SetStateAction<string>>
   setSaveTrigger:Dispatch<SetStateAction<boolean>>
+  setCurrentWebsite:Dispatch<SetStateAction<BasicEditor3Website>>
 }
 
 export const EditorLayoutContext = createContext<EditorLayoutContextType>({});
@@ -140,7 +141,7 @@ function EditorLayout() {
   }
 
   return (
-    <EditorLayoutContext.Provider value={{currentWebsite, pageNameFromLayout, setPageNameFromLayout, setSaveTrigger}}>
+    <EditorLayoutContext.Provider value={{currentWebsite, pageNameFromLayout, setPageNameFromLayout, setSaveTrigger, setCurrentWebsite}}>
 
       <div className="flex min-h-screen bg-gray-50 overflow-hidden relative ">
         {/* Sidebar */}

@@ -29,7 +29,7 @@ const EditorHeader: React.FC<EditorHeaderProps> = ({
         location.pathname === `/editor-page/website/pages/${siteId}`
       ? "flex p-5 mt-2"
       : "hidden p-0 m-0";
-  console.log(siteId);
+  // console.log(siteId);
 
   return (
     <div

@@ -165,7 +165,7 @@ function BasicEditor3Pro({
       setCurrentPage(pageNameFromLayout);
     }
     else if (pageNameFromLayout) {
-      saveSnapshotToPages(pageNameFromLayout);
+      saveSnapshotToPages(pageNameFromLayout, []);
     }
   }, [pageNameFromLayout])
 
@@ -291,6 +291,7 @@ function BasicEditor3Pro({
   }
 
   function displayPage(pageName: string) {
+    console.log("Attempting to display page:", pageName);
     const displayPageElements = pages.find(
       (page) => page.name === pageName
     )?.renderElements;
