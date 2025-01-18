@@ -1,11 +1,11 @@
 // File: ColorPicker.js
 import { useState } from "react";
 
-const ColorPicker = ({ color, onChange }) => {
+const ColorPicker = ({ color, onChange }: any) => {
   const [hsv, setHsv] = useState({ h: 0, s: 0, v: 100 });
 
-  const hsvToRgb = (h, s, v) => {
-    const f = (n, k = (n + h / 60) % 6) =>
+  const hsvToRgb = (h: any, s: any, v: any) => {
+    const f = (n: any, k = (n + h / 60) % 6) =>
       v - v * s * Math.max(Math.min(k, 4 - k, 1), 0);
     return {
       r: Math.round(f(5) * 255),
@@ -14,15 +14,15 @@ const ColorPicker = ({ color, onChange }) => {
     };
   };
 
-  const rgbToHex = (r, g, b) => {
-    const toHex = (x) => {
+  const rgbToHex = (r: any, g: any, b: any) => {
+    const toHex = (x: any) => {
       const hex = x.toString(16);
       return hex.length === 1 ? "0" + hex : hex;
     };
     return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
   };
 
-  const handleSaturationValueChange = (e) => {
+  const handleSaturationValueChange = (e: any) => {
     const rect = e.target.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
@@ -37,7 +37,7 @@ const ColorPicker = ({ color, onChange }) => {
     onChange(rgbToHex(rgb.r, rgb.g, rgb.b));
   };
 
-  const handleHueChange = (e) => {
+  const handleHueChange = (e: any) => {
     const rect = e.target.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const h = Math.min(360, Math.max(0, (x / rect.width) * 360));
@@ -60,7 +60,7 @@ const ColorPicker = ({ color, onChange }) => {
         }}
         onMouseDown={(e) => {
           handleSaturationValueChange(e);
-          const handleMove = (moveEvent) =>
+          const handleMove = (moveEvent: any) =>
             handleSaturationValueChange(moveEvent);
           const handleUp = () => {
             document.removeEventListener("mousemove", handleMove);
@@ -80,7 +80,7 @@ const ColorPicker = ({ color, onChange }) => {
         }}
         onMouseDown={(e) => {
           handleHueChange(e);
-          const handleMove = (moveEvent) => handleHueChange(moveEvent);
+          const handleMove = (moveEvent: any) => handleHueChange(moveEvent);
           const handleUp = () => {
             document.removeEventListener("mousemove", handleMove);
             document.removeEventListener("mouseup", handleUp);
