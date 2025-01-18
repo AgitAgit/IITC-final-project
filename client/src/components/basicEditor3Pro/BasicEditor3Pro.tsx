@@ -91,7 +91,7 @@ import { EditorLayoutContext } from "../../pages/EditorLayout";
 
 export type BasicEditor3ProProps = {
   currentWebsite: BasicEditor3Website;
-  saveCurrentWebsite?: () => void;
+  saveCurrentWebsite?: (newWebsite?: any) => void;
   isEditModeProp?: boolean;
   saveTrigger: boolean;
   setSaveTrigger: Dispatch<SetStateAction<boolean>>;
@@ -110,7 +110,7 @@ function BasicEditor3Pro({
 }: BasicEditor3ProProps) {
   const [isEditMode, setIsEditMode] = useState(true);
   const [headerEditMode, setHeaderEditMode] = useState(false);
-  const [originOfCoordinates, setOriginOfCoordinates] = useState<Position>({ x: 0,y: 0,});
+  const [originOfCoordinates, setOriginOfCoordinates] = useState<Position>({ x: 0, y: 0, });
 
   const [headerData, setHeaderData] = useState(currentWebsite.headerData);
   const [pages, setPages] = useState<BasicEditor3Page[]>(currentWebsite.pages);
@@ -161,13 +161,13 @@ function BasicEditor3Pro({
   }, [currentPage, pages]);
 
   useEffect(() => {
-    if(pageNameFromLayout && pages.find(page => page.name === pageNameFromLayout)){
+    if (pageNameFromLayout && pages.find(page => page.name === pageNameFromLayout)) {
       setCurrentPage(pageNameFromLayout);
     }
-    else if(pageNameFromLayout){
-      saveSnapshotToPages(pageNameFromLayout, []);
+    else if (pageNameFromLayout) {
+      saveSnapshotToPages(pageNameFromLayout);
     }
-  },[pageNameFromLayout])
+  }, [pageNameFromLayout])
 
   const baseFunctions = {
     deleteObject: function (id: string) {
@@ -286,6 +286,7 @@ function BasicEditor3Pro({
 
   function saveChangesToWebsite() {
     saveSnapshotToPages(currentPage, renderElements);
+    if (!saveCurrentWebsite) return;
     saveCurrentWebsite(currentWebsite);
   }
 

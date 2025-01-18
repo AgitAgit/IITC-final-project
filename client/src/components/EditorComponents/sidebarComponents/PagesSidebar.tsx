@@ -15,7 +15,7 @@ const addPageFormStyle = {
 function PagesSidebar() {
   const navigate = useNavigate();
   const [activeSidebar, setActiveSidebar] = useState("main");
-  const { currentWebsite, pageNameFromLayout, setPageNameFromLayout } = useContext(EditorLayoutContext)
+  const { currentWebsite, pageNameFromLayout, setPageNameFromLayout, setSaveTrigger } = useContext(EditorLayoutContext)
   const [addPageFormVisible, setAddPageFormVisible] = useState<boolean>(false);
 
   const newPageNameInputRef = useRef();
@@ -24,6 +24,7 @@ function PagesSidebar() {
     setAddPageFormVisible(false);
     if(!pageName || typeof pageName !== 'string' || pageName === '') return;
     setPageNameFromLayout(pageName);
+    setTimeout(() => setSaveTrigger(true),1);
   }
 
   // Function to render the correct sidebar based on `activeSidebar`
