@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 // Import your other sidebar components
 import SystemPagesSidebar from "./SystemPagesSidebar";
 import WebsiteTools from "./WebsiteTools";
 import TrashSidebar from "./TrashSidebar";
+import { EditorLayoutContext } from "../../../pages/EditorLayout";
 
 function PagesSidebar() {
   const navigate = useNavigate();
   const [activeSidebar, setActiveSidebar] = useState("main");
+  const { currentWebsite, pageNameFromLayout, setPageNameFromLayout } = useContext(EditorLayoutContext)
 
   // Function to render the correct sidebar based on `activeSidebar`
   const renderSidebar = () => {
@@ -78,8 +80,13 @@ function PagesSidebar() {
           {/* Main Navigation Items */}
           <div className="mt-16 text-xl">
             <ul className="space-y-2 mb-4">
+              <span>Main Navigation 3000</span>
+              {currentWebsite && currentWebsite.pages.map(page =>
+                <li key={page.name} className="flex justify-between items-center p-2 rounded-md">
+                  {page.name}
+                </li>
+              )}
               <li className="flex justify-between items-center p-2 rounded-md">
-                <span>Main Navigation </span>
                 <button className="text-gray-600 hover:text-black hover:bg-gray-200 p-3 cursor-pointer">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

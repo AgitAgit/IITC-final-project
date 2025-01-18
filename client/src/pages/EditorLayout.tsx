@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext, createContext, SetStateAction, Dispatch } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import EditorHeader from "../components/EditorComponents/EditorHeader";
 import EditorSideBar from "../components/EditorComponents/EditorSidebar";
@@ -12,6 +12,16 @@ import WebsiteNameDialog from "../components/WebsiteNameDialog";
 import { BasicEditor3Website } from "../components/basicEditor3Pro/BasicEditor3ProTypes";
 import toast, { Toaster } from "react-hot-toast";
 
+
+export type EditorLayoutContextType = {
+  currentWebsite: BasicEditor3Website | undefined
+  pageNameFromLayout: string
+  setPageNameFromLayout: Dispatch<SetStateAction<string>>
+}
+
+export const EditorLayoutContext = createContext<EditorLayoutContextType>({});
+
+
 function EditorLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isMobileView, setIsMobileView] = useState(false);
@@ -22,6 +32,7 @@ function EditorLayout() {
   const [websiteToSave, setWebsiteToSave]: any = useState();
   const [currentWebsite, setCurrentWebsite] = useState<BasicEditor3Website>();
   const [saveTrigger, setSaveTrigger] = useState(false);
+  const [pageNameFromLayout, setPageNameFromLayout] = useState(currentWebsite?.pages[0].name || "Home");
 
   const { id } = useParams();
   const location = useLocation();
@@ -105,8 +116,8 @@ function EditorLayout() {
         location.pathname === "/editor-page/website/pages" ||
         location.pathname === `/editor-page/website/${id}` ||
         location.pathname === `/editor-page/website/pages/${id}`
-      ? "top-[73px]"
-      : "top-0";
+        ? "top-[73px]"
+        : "top-0";
 
   // Loading spinner if data is still loading
   if (isLoading) {
@@ -128,60 +139,60 @@ function EditorLayout() {
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-50 overflow-hidden relative ">
-      {/* Sidebar */}
-      <div
-        className={`flex-shrink-0 ${
-          isSidebarOpen ? "w-72" : "w-0"
-        } overflow-hidden transition-all duration-300 ease-in-out`}
-        style={{ height: "100vh" }}
-      >
-        <EditorSideBar siteId={id} />
-      </div>
+    <EditorLayoutContext.Provider value={{currentWebsite, pageNameFromLayout, setPageNameFromLayout}}>
 
-      {/* Main content */}
-      <div className="flex-1 flex flex-col relative">
-        {/* Header */}
-        <EditorHeader
-          setSaveTrigger={setSaveTrigger}
-          siteId={id!}
-          toggleSidebarLayout={toggleSidebarLayout}
-          setMobileView={setMobileView}
-          isMobileView={isMobileView}
-          isSidebarOpen={isSidebarOpen}
-        />
-
-        {/* Editor Page */}
+      <div className="flex min-h-screen bg-gray-50 overflow-hidden relative ">
+        {/* Sidebar */}
         <div
-          className={`absolute ${counterPageTop} transition-all duration-500 bottom-0 ${
-            isMobileView
-              ? "w-[375px] mx-auto left-0 right-0"
-              : "w-full h-screen left-0 right-0"
-          } ${
-            isSidebarOpen ? "overflow-x-scroll" : "overflow-auto"
-          } bg-white shadow transition-all duration-300 overflow-y-scroll`}
+          className={`flex-shrink-0 ${isSidebarOpen ? "w-72" : "w-0"
+            } overflow-hidden transition-all duration-300 ease-in-out`}
+          style={{ height: "100vh" }}
         >
-          <EditorWrapper
-            saveTrigger={saveTrigger}
-            setSaveTrigger={setSaveTrigger}
-            currentWebsite={currentWebsite}
-            setCurrentWebsite={setCurrentWebsite}
-            templete={templete}
-            websiteToEdit={websiteToEdit}
-            saveCurrentWebsite={saveCurrentWebsite}
-          />
+          <EditorSideBar siteId={id} />
         </div>
-      </div>
 
-      {isOpenDialogName && (
-        <WebsiteNameDialog
-          setWebsiteName={(name) => {
-            setWebsiteName(name);
-          }}
-          setIsOpen={(isOpen) => setIsOpenDialogName(isOpen)}
-        />
-      )}
-    </div>
+        {/* Main content */}
+        <div className="flex-1 flex flex-col relative">
+          {/* Header */}
+          <EditorHeader
+            setSaveTrigger={setSaveTrigger}
+            siteId={id!}
+            toggleSidebarLayout={toggleSidebarLayout}
+            setMobileView={setMobileView}
+            isMobileView={isMobileView}
+            isSidebarOpen={isSidebarOpen}
+          />
+
+          {/* Editor Page */}
+          <div
+            className={`absolute ${counterPageTop} transition-all duration-500 bottom-0 ${isMobileView
+                ? "w-[375px] mx-auto left-0 right-0"
+                : "w-full h-screen left-0 right-0"
+              } ${isSidebarOpen ? "overflow-x-scroll" : "overflow-auto"
+              } bg-white shadow transition-all duration-300 overflow-y-scroll`}
+          >
+            <EditorWrapper
+              saveTrigger={saveTrigger}
+              setSaveTrigger={setSaveTrigger}
+              currentWebsite={currentWebsite}
+              setCurrentWebsite={setCurrentWebsite}
+              templete={templete}
+              websiteToEdit={websiteToEdit}
+              saveCurrentWebsite={saveCurrentWebsite}
+            />
+          </div>
+        </div>
+
+        {isOpenDialogName && (
+          <WebsiteNameDialog
+            setWebsiteName={(name) => {
+              setWebsiteName(name);
+            }}
+            setIsOpen={(isOpen) => setIsOpenDialogName(isOpen)}
+          />
+        )}
+      </div>
+    </EditorLayoutContext.Provider>
   );
 }
 
