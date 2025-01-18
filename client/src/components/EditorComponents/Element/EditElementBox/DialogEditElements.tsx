@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const DialogEditElement = () => {
+const ContentForm = () => {
   const [activeTab, setActiveTab] = useState("content");
   const [cornerRadius, setCornerRadius] = useState(0);
 
@@ -30,31 +30,39 @@ const DialogEditElement = () => {
       {activeTab === "content" && (
         <div className="space-y-6">
           {/* Add Media Button */}
-          {/* <div className="border-2 border-dashed border-gray-300 rounded p-4 text-center">
-            <span className="block mb-2">+ Replace or add image/video</span>
-          </div> */}
+          <div className="border-2 border-dashed border-gray-300 rounded p-4 text-center cursor-pointer hover:bg-gray-50 transition-colors">
+            <span className="block text-gray-600">
+              + Replace or add image/video
+            </span>
+          </div>
 
           {/* Text Input */}
           <div className="space-y-2">
-            <label className="block text-sm font-medium">Text:</label>
-            <div className="relative">
+            <label className="block text-sm font-medium text-gray-700">
+              Text:
+            </label>
+            <div className="relative group">
               <input
                 type="text"
-                className="w-full p-2 border-b border-gray-200 focus:border-black transition-colors duration-300 outline-none"
+                className="peer w-full p-2 outline-none border-b border-gray-200"
                 placeholder="Enter text"
               />
+              <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-black transition-all duration-1000 group-focus-within:w-full" />
             </div>
           </div>
 
           {/* Link Input */}
           <div className="space-y-2">
-            <label className="block text-sm font-medium">Link:</label>
-            <div className="relative">
+            <label className="block text-sm font-medium text-gray-700">
+              Link:
+            </label>
+            <div className="relative group">
               <input
                 type="url"
-                className="w-full p-2 border-b border-gray-200 focus:border-black transition-colors duration-300 outline-none"
+                className="peer w-full p-2 outline-none border-b border-gray-200"
                 placeholder="Enter link"
               />
+              <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-black transition-all duration-1000 group-focus-within:w-full" />
             </div>
           </div>
         </div>
@@ -64,14 +72,19 @@ const DialogEditElement = () => {
       {activeTab === "design" && (
         <div className="space-y-6">
           <div className="space-y-2">
-            <span className="block text-sm font-medium">Corner Radius:</span>
-            <input
-              type="number"
-              className="w-full p-2 border-b border-gray-200 focus:border-black transition-colors duration-300 outline-none"
-              value={cornerRadius}
-              onChange={(e) => setCornerRadius(parseInt(e.target.value) || 0)}
-              min="0"
-            />
+            <span className="block text-sm font-medium text-gray-700">
+              Corner Radius:
+            </span>
+            <div className="relative group">
+              <input
+                type="number"
+                className="peer w-full p-2 outline-none border-b border-gray-200"
+                value={cornerRadius}
+                onChange={(e) => setCornerRadius(parseInt(e.target.value) || 0)}
+                min="0"
+              />
+              <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-black transition-all duration-1000 group-focus-within:w-full" />
+            </div>
           </div>
         </div>
       )}
@@ -79,4 +92,4 @@ const DialogEditElement = () => {
   );
 };
 
-export default DialogEditElement;
+export default ContentForm;
