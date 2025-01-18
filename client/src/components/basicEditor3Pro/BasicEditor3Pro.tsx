@@ -9,6 +9,7 @@ import React, {
   SetStateAction,
 } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { Plus } from "lucide-react";
 
 import { Position } from "./BasicEditor3ProTypes";
 
@@ -38,6 +39,7 @@ import MouseLocator from "./MouseLocator";
 import DisplayWebsite3 from "../basicDisplay3Pro/DisplayWebsite3";
 
 import { EditorLayoutContext } from "../../pages/EditorLayout";
+import { DialogAddElement } from "../EditorComponents/Element/DialogAddElements";
 //goal 0.
 // Update the data structure of BasicEditor3 to fit the new data structure:
 // Website {
@@ -116,6 +118,8 @@ function BasicEditor3Pro({
   const [pages, setPages] = useState<BasicEditor3Page[]>(currentWebsite.pages);
   const [currentPage, setCurrentPage] = useState<string>(pages[0]?.name);
   const [renderElements, setRenderElements] = useState<RenderElement3[]>([]);
+
+  const [addBlockMenuVisible, setAddBlockMenuVisible] = useState<boolean>(false);
 
   const { pageNameFromLayout } = useContext(EditorLayoutContext) || {}
 
@@ -307,30 +311,18 @@ function BasicEditor3Pro({
       <div ref={editorRef} style={{ position: "relative" }}>
         {isEditMode && (
           <div>
-            BasicEditor3
-            <button onClick={saveChangesToWebsite}>
+            <button onClick={saveChangesToWebsite} style={{ border: '1px solid gray' }}>
               save changes from Basic editor
             </button>
-            {/* <button onClick={() => { retrievePagesFromLS() }}>Retrieve pages</button> */}
-            <button
-              onClick={() => {
-                setIsEditMode((prev) => !prev);
-              }}
-            >
-              toggle edit mode
-            </button>
-            {/* <button onClick={saveHeaderToLS}>save header data</button> */}
-            {/* <button onClick={retrieveHeaderFromLS}>retrieve header data</button> */}
-            {isEditMode && (
-              <label style={{ border: "1px solid red" }}>edit mode on</label>
-            )}
-            {/* <PageNav3
-              pages={pages}
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-              saveSnapshotToPages={saveSnapshotToPages}
-              savePagesToLS={saveCurrentWebsite}
-            /> */}
+            {!addBlockMenuVisible ?
+              <button
+                onClick={() => setAddBlockMenuVisible(true)}
+                className="flex font-bold items-center gap-2 bg-gray-100 text-gray-700 px-5 py-3 rounded-lg hover:bg-gray-200 transition-colors duration-200 shadow-sm">
+                <Plus size={26} />
+                <span className="font-medium">Add Block</span>
+              </button>
+              :<DialogAddElement />
+            }
             <div>
               <button
                 onClick={() => addRenderElement(RenderElementNames.Text_Block3)}

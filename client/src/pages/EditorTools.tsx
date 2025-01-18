@@ -9,8 +9,8 @@ const FakeEditor = () => {
     <div>
       {/* <DialogAddElementHeader /> */}
       {/* <DialogEditHeader /> */}
-      <EditElement />
-      <EditText />
+      {/* <EditElement /> */}
+      {/* <EditText /> */}
       <DialogAddElement />
     </div>
   );
