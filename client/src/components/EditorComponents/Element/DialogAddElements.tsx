@@ -42,7 +42,9 @@ const menuItems = [
 ];
 
 const labelToRenderElementName:{[key:string]:RenderElementNames} = {
-  "Text":RenderElementNames.Text_Block3
+  "Text":RenderElementNames.Text_Block3,
+  "Image":RenderElementNames.ImgContainer,
+  "Video":RenderElementNames.VideoContainer
 }
 
 export type DialogAddElementProps = {
@@ -64,7 +66,7 @@ export const DialogAddElement: React.FC<DialogAddElementProps> = ({addRenderElem
 
   return (
     <div
-      className="absolute top-full mt-2 left-0 w-auto bg-gray-50 rounded-lg shadow-lg border border-gray-300 flex flex-col p-6 min-w-[300px] overflow-y-auto"
+      className="absolute z-50 top-full mt-2 left-0 w-auto bg-gray-50 rounded-lg shadow-lg border border-gray-300 flex flex-col p-6 min-w-[300px] overflow-y-auto"
       style={{ transform: "none" }}
     >
 

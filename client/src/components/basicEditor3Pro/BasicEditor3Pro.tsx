@@ -234,7 +234,7 @@ function BasicEditor3Pro({
 
   function addRenderElement(
     renderElementName: RenderElementNames,
-    position: Position = { x: 0, y: 0 },
+    position: Position = { x: 225, y: 225 },
     content: DataObject3Content = {},
     style: DataObject3Style = {}
   ) {
@@ -320,13 +320,6 @@ function BasicEditor3Pro({
       value={{ renderElements, baseFunctions, isEditMode, originOfCoordinates, duplicateElement }}
     >
       <div ref={editorRef} style={{ position: "relative" }}>
-        {isEditMode && (
-          <div>
-            <button onClick={saveChangesToWebsite} style={{ border: '1px solid gray' }}>
-              save changes from Basic editor
-            </button>
-          </div>
-        )}
         <Header3
           pages={pages}
           currentPage={currentPage}
@@ -343,7 +336,7 @@ function BasicEditor3Pro({
               <Plus size={26} />
               <span className="font-medium">Add Block</span>
             </button>
-            :<DialogAddElement addRenderElement={addRenderElement} />
+            :<DialogAddElement addRenderElement={addRenderElement}/>
           }
         <div>{mapRenderElements()}</div>
       </div>
